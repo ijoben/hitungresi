@@ -133,7 +133,7 @@
                 <div class="periode-box"><h4>TGL 1-15 DIBAYAR</h4><div class="angka">Rp <span id="gaji1">0</span></div><div class="sub"><span id="resi1">0</span> resi | 50%</div></div>
                 <div class="periode-box"><h4>TGL 16-AKHIR DIBAYAR</h4><div class="angka">Rp <span id="gaji2">0</span></div><div class="sub"><span id="resi2">0</span> resi | 50%</div></div>
             </div>
-            <div class="total-resi"><div class="label">TOTAL BULAN INI</div><div class="angka"><span id="totalResi">0</span> Resi = Rp <span id="totalGaji">0</span></div></div>
+            <div class="total-resi"><div class="label">TOTAL BULAN INI</div><div class="angka"><span id="totalResi">0</span> Resi <br> Rp <span id="totalGaji">0</span></div></div>
             <div class="input-tanggal">
                 <label>📦 INPUT RESI HARIAN</label>
                 <div class="input-group">
@@ -312,14 +312,24 @@ function hapusTanggal(e){if(confirm(`Hapus data resi tanggal ${e}?`)){dataHarian
 function hitungTotal(){
 let resi1=0,resi2=0;const bulanIni=getBulanTahun();
 Object.keys(dataHarian).forEach(tgl=>{if(tgl.startsWith(bulanIni)){const tglNum=new Date(tgl).getDate();const jumlah=parseInt(dataHarian[tgl])||0;if(tglNum>=1&&tglNum<=15)resi1+=jumlah;else if(tglNum>=16)resi2+=jumlah}});
-const totalResi=resi1+resi2,totalGajiBulan=totalResi*tarif,gajiDibayar1=totalGajiBulan*0.5,gajiDibayar2=totalGajiBulan*0.5;
+// Hitung terpisah per periode
+const gajiPeriode1 = resi1 * tarif; // 100% P1
+const gajiPeriode2 = resi2 * tarif; // 100% P2
+const dibayarPeriode1 = gajiPeriode1 * 0.5; // P1 cuma dibayar 50%
+const sisaPeriode1 = gajiPeriode1 * 0.5; // 50% ditahan
+const dibayarTanggal5 = gajiPeriode2 + sisaPeriode1; // P2 dibayar tgl 5 + sisa P1
+const totalResi = resi1 + resi2;
+const totalGajiBulan = gajiPeriode1 + gajiPeriode2;
+
 document.getElementById('resi1').textContent=resi1.toLocaleString('id-ID');
 document.getElementById('resi2').textContent=resi2.toLocaleString('id-ID');
-document.getElementById('gaji1').textContent=gajiDibayar1.toLocaleString('id-ID');
-document.getElementById('gaji2').textContent=gajiDibayar2.toLocaleString('id-ID');
+document.getElementById('gaji1').textContent=dibayarPeriode1.toLocaleString('id-ID');
+document.getElementById('gaji2').textContent=dibayarTanggal5.toLocaleString('id-ID');
 document.getElementById('totalResi').textContent=totalResi.toLocaleString('id-ID');
 document.getElementById('totalGaji').textContent=totalGajiBulan.toLocaleString('id-ID');
-if(totalResi>0){dataBulanan[bulanIni]={resi1,resi2,gajiDibayar1,gajiDibayar2,totalGaji:totalGajiBulan,totalResi}}else delete dataBulanan[bulanIni];
+if(document.getElementById('sisa1'))document.getElementById('sisa1').textContent='Sisa: Rp '+sisaPeriode1.toLocaleString('id-ID');
+
+if(totalResi>0){dataBulanan[bulanIni]={resi1,resi2,dibayarPeriode1,dibayarTanggal5,sisaPeriode1,totalGaji:totalGajiBulan,totalResi}}else delete dataBulanan[bulanIni];
 localStorage.setItem('gajiSicepat',JSON.stringify(dataBulanan));loadRiwayat();
 }
 
