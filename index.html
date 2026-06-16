@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>Gaji Kurir SiCepat</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ED1C24">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root{--primary:#ED1C24;--bg:white;--text:#333;--text2:#666;--border:#eee;--box:#f8f9fa;--bg-opacity:.6}
+        body.dark{--bg:#2a2a2a;--text:#e0e0e0;--text2:#b0b0b0;--border:#404040;--box:#333}
+        *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+        body{font-family:Arial,sans-serif;max-width:430px;margin:0 auto;padding:0;background:var(--bg);min-height:100vh;color:var(--text);transition:.2s}
+        .container{padding:12px 10px 100px 10px;position:relative;z-index:1}
+        .container.custom-bg{background-image:var(--bg-image);background-size:cover;background-position:center;background-repeat:no-repeat}
+        .container.custom-bg::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg);opacity:var(--bg-opacity);z-index:-1;pointer-events:none}
+        .top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:8px 10px;background:var(--box);border-radius:10px}
+        .logo-sicepat{flex:1;text-align:center;position:relative}
+        .logo-sicepat svg{height:30px}
+        .top-btn-group{display:flex;gap:6px}
+        .btn-dark,.btn-install{background:var(--bg);border:1px solid var(--border);width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:18px}
+        .btn-install{display:none}
+        .btn-install.show{display:flex;align-items:center;justify-content:center}
+        .badge-reminder{position:absolute;top:-5px;right:50px;background:#f00;color:#fff;font-size:8px;padding:2px 5px;border-radius:8px;font-weight:bold}
+        .rekor-banner{background:#FFD700;color:#8B4513;padding:6px 10px;border-radius:8px;text-align:center;font-size:11px;font-weight:bold;margin-bottom:12px}
+        .rekor-banner.kosong{display:none}
+        h2{color:var(--primary);margin:0 0 12px 0;text-align:center;font-size:15px;font-weight:800}
+        .gaji-2kolom{display:flex;gap:6px;margin:10px 0}
+        .periode-box{background:var(--box);padding:12px 6px;border-radius:12px;flex:1;text-align:center;border:1px solid var(--primary)}
+        .periode-box h4{margin:0 0 4px 0;font-size:10px;color:var(--text2);text-transform:uppercase}
+        .periode-box .angka{font-size:18px;font-weight:900;color:var(--primary);margin:3px 0}
+        .periode-box .sub{font-size:10px;color:var(--text2);margin-top:3px;font-weight:600}
+        .total-resi{background:var(--primary);padding:12px;border-radius:12px;margin-top:12px;text-align:center;color:#fff}
+        .total-resi .label{font-size:10px;opacity:.9;text-transform:uppercase}
+        .total-resi .angka{font-size:18px;font-weight:900;margin-top:4px}
+        .input-tanggal{background:var(--box);padding:12px;border-radius:12px;margin:14px 0;border:1px solid var(--primary)}
+        .input-tanggal label{font-size:11px;color:var(--primary);font-weight:900;display:block;margin-bottom:10px;text-align:center;text-transform:uppercase}
+        .input-group{display:flex;flex-direction:column;gap:8px}
+        .input-row{display:flex;gap:6px}
+        .input-tanggal input[type="text"],.input-tanggal input[type="number"],.input-tanggal select{width:100%;padding:10px 6px;border:1px solid var(--border);border-radius:8px;font-size:12px;outline:none;background:var(--bg);color:var(--text);font-weight:700}
+        .input-tanggal input[type="number"]{font-weight:900;text-align:center}
+        .btn-simpan{background:var(--primary);color:#fff;border:none;padding:12px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:900;width:100%;text-transform:uppercase}
+        .log-harian{font-size:11px}
+        .log-harian h5{margin:0 0 8px 0;font-size:12px;text-align:center;color:var(--text2);font-weight:700;text-transform:uppercase}
+        .log-item{display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--box);margin-bottom:5px;border-radius:8px}
+        .log-item.kosong{opacity:.5}
+        .log-info{flex:1}
+        .log-tgl{font-weight:800;color:var(--primary);font-size:11px}
+        .log-resi{font-size:10px;color:var(--text2);margin-top:2px;font-weight:600}
+        .log-btn{display:flex;gap:4px}
+        .btn-edit,.btn-hapus-log{border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:10px;color:#fff;font-weight:700}
+        .btn-edit{background:#1976d2}
+        .btn-hapus-log{background:#e53935}
+        .grafik-container{background:var(--bg);padding:10px;border-radius:12px;margin-top:14px;border:1px solid var(--primary)}
+        .grafik-container h5{margin:0 0 8px 0;text-align:center;color:var(--primary);font-size:12px;font-weight:800;text-transform:uppercase}
+        #chartResi{max-height:180px}
+        .setting-box{background:var(--box);padding:12px;border-radius:12px;margin-bottom:10px;border:1px solid var(--primary)}
+        .setting-box h5{margin:0 0 10px 0;text-align:center;color:var(--primary);font-size:12px;font-weight:800;text-transform:uppercase}
+        .setting-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+        .setting-row:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+        .setting-label{font-size:11px;font-weight:700}
+        .setting-control{display:flex;gap:6px;align-items:center}
+        .color-input{width:45px;height:32px;border:1px solid var(--border);border-radius:6px;cursor:pointer}
+        .btn-setting{padding:7px 12px;border:none;border-radius:6px;cursor:pointer;font-size:10px;font-weight:800;color:#fff}
+        .btn-upload{background:#1976d2}
+        .btn-reset{background:#ff9800}
+        .switch{position:relative;width:46px;height:24px}
+        .switch input{opacity:0;width:0;height:0}
+        .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:var(--border);transition:.2s;border-radius:24px}
+        .slider:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background:#fff;transition:.2s;border-radius:50%}
+        input:checked +.slider{background:var(--primary)}
+        input:checked +.slider:before{transform:translateX(22px)}
+        .backup-container{background:var(--box);padding:12px;border-radius:12px;margin-bottom:12px;border:1px solid #4caf50}
+        .backup-container h5{margin:0 0 8px 0;text-align:center;color:#4caf50;font-size:12px;font-weight:800;text-transform:uppercase}
+        .backup-btn-group{display:flex;gap:6px;margin-bottom:6px}
+        .btn-backup{flex:1;padding:10px;border:none;border-radius:8px;cursor:pointer;font-size:10px;font-weight:800;color:#fff;text-transform:uppercase}
+        .btn-export{background:#4caf50}
+        .btn-import{background:#ff9800}
+        .backup-info{font-size:9px;color:var(--text2);text-align:center;line-height:1.4;font-weight:600}
+        #inputFileBackup,#inputFileBg{display:none}
+        .riwayat-item{background:var(--box);padding:10px;border-radius:12px;margin-bottom:8px;border-left:3px solid var(--primary)}
+        .riwayat-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:6px}
+        .riwayat-bulan{font-weight:900;font-size:13px;flex:1}
+        .riwayat-total{color:#ff5252;font-weight:900;font-size:14px;white-space:nowrap}
+        .riwayat-stats{display:grid;grid-template-columns:1fr 1fr;gap:5px;font-size:9px;color:var(--text2)}
+        .stat-box{background:var(--bg);padding:6px;border-radius:6px;text-align:center}
+        .stat-label{color:var(--text2);font-size:8px;text-transform:uppercase;font-weight:700}
+        .stat-angka{font-weight:900;color:var(--text);margin-top:2px;font-size:12px}
+        .riwayat-footer{margin-top:6px;text-align:right}
+        .hapus-riwayat{background:#e53935;color:#fff;border:none;padding:5px 12px;border-radius:6px;cursor:pointer;font-size:9px;font-weight:700}
+        .total-bulanan{background:#4caf50;padding:14px;border-radius:12px;margin:12px 0;text-align:center;color:#fff}
+        .total-bulanan .label{font-size:10px;opacity:.9;text-transform:uppercase}
+        .total-bulanan .angka{font-size:22px;font-weight:900;margin-top:4px}
+        .total-bulanan .sub{font-size:12px;margin-top:3px;opacity:.95;font-weight:700}
+        .tab-menu{position:fixed;bottom:0;left:0;right:0;max-width:430px;margin:0 auto;display:flex;background:var(--bg);border-top:1px solid var(--border);padding:6px 3px;gap:2px;z-index:100;align-items:flex-end}
+        .tab-btn{flex:1;padding:8px 2px;border:none;background:transparent;border-radius:10px;cursor:pointer;font-size:8px;font-weight:800;color:var(--text2);display:flex;flex-direction:column;align-items:center;gap:3px}
+        .tab-btn.active{color:var(--primary);background:var(--box)}
+        .tab-icon{font-size:18px}
+        .tab-btn-center{position:relative;margin-top:-22px}
+        .tab-btn-center .tab-icon{width:50px;height:50px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;border:3px solid var(--bg);color:#fff;margin:0 auto}
+        .tab-btn-center.active .tab-icon{transform:scale(1.05)}
+        .tab-btn-center span:last-child{margin-top:3px;font-size:8px;font-weight:800}
+        .tab-content{display:none}
+        .tab-content.active{display:block}
+        .popup-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:999;display:none;align-items:center;justify-content:center}
+        .popup-overlay.show{display:flex}
+        .popup-box{background:var(--primary);padding:28px 20px;border-radius:20px;text-align:center;max-width:260px}
+        .popup-emot{font-size:70px;line-height:1;margin-bottom:12px}
+        .popup-text{color:#fff;font-size:16px;font-weight:900;text-transform:uppercase;line-height:1.3}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-bar">
+            <div class="logo-sicepat">
+                <span class="badge-reminder" id="badgeReminder">BELUM INPUT!</span>
+                <svg viewBox="0 0 240 50" xmlns="http://www.w3.org/2000/svg"><path d="M18 5 L10 28 L22 28 L15 48 L32 22 L20 22 L28 5 Z" fill="#FFD700"/><text x="50" y="32" font-family="Arial Black, Arial" font-size="26" font-weight="900" fill="#ED1C24">SiCepat</text><text x="50" y="44" font-family="Arial" font-size="10" fill="#ED1C24">EKSPRES</text></svg>
+            </div>
+            <div class="top-btn-group">
+                <button class="btn-install" id="btnInstall" onclick="installPWA()">📲</button>
+                <button class="btn-dark" onclick="toggleDarkMode()" id="btnDark">🌙</button>
+            </div>
+        </div>
+        <h2>GAJI KURIR <span id="bulanIni"></span></h2>
+        <div class="rekor-banner kosong" id="rekorBanner"></div>
+
+        <div id="tab-input" class="tab-content active">
+            <div class="gaji-2kolom">
+                <div class="periode-box"><h4>TGL 1-15 DIBAYAR</h4><div class="angka">Rp <span id="gaji1">0</span></div><div class="sub"><span id="resi1">0</span> resi | 50%</div></div>
+                <div class="periode-box"><h4>TGL 16-AKHIR DIBAYAR</h4><div class="angka">Rp <span id="gaji2">0</span></div><div class="sub"><span id="resi2">0</span> resi | 50%</div></div>
+            </div>
+            <div class="total-resi"><div class="label">TOTAL BULAN INI</div><div class="angka"><span id="totalResi">0</span> Resi = Rp <span id="totalGaji">0</span></div></div>
+            <div class="input-tanggal">
+                <label>📦 INPUT RESI HARIAN</label>
+                <div class="input-group">
+                    <div class="input-row">
+                        <input type="text" id="inputTanggal" placeholder="2026-10-05" maxlength="10">
+                        <input type="number" id="inputResi" min="0" placeholder="0 Resi" inputmode="numeric">
+                    </div>
+                    <button class="btn-simpan" onclick="simpanResi()"><span>💾</span> SIMPAN RESI</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-log" class="tab-content"><div class="log-harian" id="logHarian"></div></div>
+
+        <div id="tab-setting" class="tab-content">
+            <div class="setting-box">
+                <h5>🎨 TEMA & TAMPILAN</h5>
+                <div class="setting-row">
+                    <span class="setting-label">Warna Utama</span>
+                    <div class="setting-control">
+                        <input type="color" class="color-input" id="warnaUtama" value="#ED1C24" onchange="ubahWarnaUtama(this.value)">
+                        <button class="btn-setting btn-reset" onclick="resetWarna()">Reset</button>
+                    </div>
+                </div>
+                <div class="setting-row">
+                    <span class="setting-label">Background Custom</span>
+                    <div class="setting-control">
+                        <button class="btn-setting btn-upload" onclick="document.getElementById('inputFileBg').click()">Upload</button>
+                        <button class="btn-setting btn-reset" onclick="hapusBackground()">Hapus</button>
+                    </div>
+                </div>
+                <div class="setting-row" id="bgTransparanRow" style="display:none;flex-direction:column;align-items:stretch;gap:8px">
+                    <div style="display:flex;justify-content:space-between;align-items:center">
+                        <span class="setting-label">Transparansi BG</span>
+                        <span id="bgOpacityText" style="font-size:11px;font-weight:700;color:var(--primary)">40%</span>
+                    </div>
+                    <input type="range" id="bgOpacity" min="10" max="100" value="40" oninput="ubahTransparansiBg(this.value)" style="width:100%;height:6px;border-radius:3px;accent-color:var(--primary)">
+                </div>
+                <input type="file" id="inputFileBg" accept="image/*" onchange="uploadBackground(event)">
+            </div>
+
+            <div class="setting-box">
+                <h5>🔔 NOTIFIKASI</h5>
+                <div class="setting-row">
+                    <span class="setting-label">Reminder Jam 21:00</span>
+                    <label class="switch">
+                        <input type="checkbox" id="checkReminder" onchange="toggleReminder()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="backup-container">
+                <h5>☁️ BACKUP & RESTORE</h5>
+                <div class="backup-btn-group">
+                    <button class="btn-backup btn-export" onclick="exportBackup()">📥 Download</button>
+                    <button class="btn-backup btn-import" onclick="document.getElementById('inputFileBackup').click()">📤 Upload</button>
+                </div>
+                <input type="file" id="inputFileBackup" accept=".json" onchange="importBackup(event)">
+                <div class="backup-info">✅ Auto backup tiap tgl 15 & 30!</div>
+            </div>
+        </div>
+
+        <div id="tab-statistik" class="tab-content">
+            <div id="listRiwayat"></div>
+            <div class="grafik-container"><h5>📈 GRAFIK RESI BULAN INI</h5><canvas id="chartResi"></canvas></div>
+        </div>
+
+        <div id="tab-tahunan" class="tab-content">
+            <h2>REKAP BULANAN <span id="tahunBulanan"></span></h2>
+
+            <div class="input-tanggal">
+                <label>📅 INPUT RESI PER BULAN</label>
+                <div class="input-group">
+                    <div class="input-row">
+                        <select id="pilihBulan">
+                            <option value="">Pilih Bulan</option>
+                        </select>
+                        <input type="number" id="inputResiBulan" min="0" placeholder="0 Resi" inputmode="numeric">
+                    </div>
+                    <button class="btn-simpan" onclick="simpanResiBulan()"><span>💾</span> SIMPAN BULAN</button>
+                </div>
+            </div>
+
+            <div class="total-bulanan">
+                <div class="label">TOTAL SETAHUN</div>
+                <div class="angka">Rp <span id="totalGajiBulanan">0</span></div>
+                <div class="sub"><span id="totalResiBulanan">0</span> Resi</div>
+            </div>
+
+            <div class="log-harian" id="logBulanan" style="margin-top:16px"></div>
+
+            <div class="setting-box" style="border-color:#e53935;margin-top:16px">
+                <div class="setting-row">
+                    <div class="setting-label" style="color:#e53935">⚠️ HAPUS SEMUA DATA TAHUNAN</div>
+                    <button class="btn-setting" style="background:#e53935" onclick="hapusDataTahunan()">HAPUS</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-menu">
+        <button class="tab-btn" data-tab="log"><span class="tab-icon">📋</span><span>Log</span></button>
+        <button class="tab-btn" data-tab="statistik"><span class="tab-icon">📊</span><span>Stats</span></button>
+        <button class="tab-btn tab-btn-center active" data-tab="input"><span class="tab-icon">💰</span><span>Input</span></button>
+        <button class="tab-btn" data-tab="tahunan"><span class="tab-icon">📅</span><span>Tahunan</span></button>
+        <button class="tab-btn" data-tab="setting"><span class="tab-icon">⚙️</span><span>Setting</span></button>
+    </div>
+
+    <div class="popup-overlay" id="popupSemangat">
+        <div class="popup-box">
+            <div class="popup-emot" id="popupEmot">🔥</div>
+            <div class="popup-text" id="popupText">GAS TERUS BOS!</div>
+        </div>
+    </div>
+
+    <script>
+const tarif=2500;let dataBulanan=JSON.parse(localStorage.getItem('gajiSicepat')||'{}'),dataHarian=JSON.parse(localStorage.getItem('gajiSicepatHarian')||'{}'),dataRekor=JSON.parse(localStorage.getItem('gajiSicepatRekor')||'{"resi":0,"tanggal":""}'),dataTahunan=JSON.parse(localStorage.getItem('dataTahunan')||'[]'),dataBulananManual=JSON.parse(localStorage.getItem('dataBulananManual')||'{}'),reminderAktif=localStorage.getItem('reminderAktif')==='true',darkMode=localStorage.getItem('darkMode')==='true',warnaCustom=localStorage.getItem('warnaCustom')||'#ED1C24',bgCustom=localStorage.getItem('bgCustom')||'',bgOpacity=localStorage.getItem('bgOpacity')||'40',chartInstance=null,bulanLalu=getBulanTahun(),deferredPrompt;
+
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;document.getElementById('btnInstall').classList.add('show')});
+function installPWA(){if(!deferredPrompt)return alert('App udah diinstall atau browser gak support bos!');deferredPrompt.prompt();deferredPrompt.userChoice.then(r=>{if(r.outcome==='accepted'){document.getElementById('btnInstall').classList.remove('show');alert('App berhasil diinstall ke layar utama! 🎉')}deferredPrompt=null})}
+window.addEventListener('appinstalled',()=>{document.getElementById('btnInstall').classList.remove('show');deferredPrompt=null});
+
+document.addEventListener('DOMContentLoaded',function(){
+document.getElementById('checkReminder').checked=reminderAktif;
+if(darkMode){document.body.classList.add('dark');document.getElementById('btnDark').textContent='☀️'}
+document.getElementById('warnaUtama').value=warnaCustom;
+document.getElementById('bgOpacity').value=bgOpacity;
+document.getElementById('bgOpacityText').textContent=bgOpacity+'%';
+document.documentElement.style.setProperty('--bg-opacity',bgOpacity/100);
+if(bgCustom)document.getElementById('bgTransparanRow').style.display='flex';
+terapkanWarnaCustom();terapkanBackground();
+document.getElementById('inputTanggal').value=getTanggalHariIni();
+document.getElementById('bulanIni').textContent=new Date().toLocaleDateString('id-ID',{month:'long',year:'numeric'}).toUpperCase();
+document.getElementById('tahunBulanan').textContent=new Date().getFullYear();
+
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+btn.addEventListener('click',function(){
+const tabName=this.getAttribute('data-tab');
+document.querySelectorAll('.tab-content').forEach(e=>e.classList.remove('active'));
+document.querySelectorAll('.tab-btn').forEach(e=>e.classList.remove('active'));
+document.getElementById('tab-'+tabName).classList.add('active');
+this.classList.add('active');
+if(tabName==='statistik')setTimeout(updateGrafik,100);
+if(tabName==='tahunan'){loadPilihBulan();tampilLogBulanan()}
+})});
+
+cekSimpanTahunan();autoIsiNol();loadRiwayat();hitungTotal();tampilLogHarian();cekBadgeReminder();tampilRekor();cekBackupReminder();if(reminderAktif)mintaIzinNotifikasi();
+});
+
+function getBulanTahun(){const e=new Date;return`${e.getFullYear()}-${String(e.getMonth()+1).padStart(2,'0')}`}
+function getTanggalHariIni(){const e=new Date;return`${e.getFullYear()}-${String(e.getMonth()+1).padStart(2,'0')}-${String(e.getDate()).padStart(2,'0')}`}
+function autoIsiNol(){const e=new Date,t=e.getFullYear(),n=e.getMonth()+1,o=e.getDate();for(let e=1;e<=o;e++){const o=`${t}-${String(n).padStart(2,'0')}-${String(e).padStart(2,'0')}`;if(dataHarian[o]===undefined)dataHarian[o]=0}localStorage.setItem('gajiSicepatHarian',JSON.stringify(dataHarian))}
+function cekRekor(e,t){if(e>dataRekor.resi){const n=dataRekor.resi;dataRekor={resi:e,tanggal:t};localStorage.setItem('gajiSicepatRekor',JSON.stringify(dataRekor));tampilRekor();if(e>0&&n>0)setTimeout(()=>alert(`🔥 PECAH REKOR BOS! ${e} resi hari ini! Gacor kang! 🔥`),500)}}
+function tampilRekor(){const e=document.getElementById('rekorBanner');if(dataRekor.resi>0){const t=new Date(dataRekor.tanggal).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'});e.innerHTML=`🏆 Rekor: ${dataRekor.resi} resi - ${t}`;e.classList.remove('kosong')}else e.classList.add('kosong')}
+function cekBadgeReminder(){const e=getTanggalHariIni(),t=document.getElementById('badgeReminder');t.style.display=(dataHarian[e]===0||dataHarian[e]===undefined)?'block':'none'}
+
+function simpanResi(){
+const e=document.getElementById('inputTanggal').value,t=parseInt(document.getElementById('inputResi').value)||0;
+if(!e.match(/^\d{4}-\d{2}-\d{2}$/))return alert('Format tanggal salah bos! Pake 2026-10-05');
+if(t<0)return alert('Jumlah resi nggak boleh minus bos!');
+dataHarian[e]=t;localStorage.setItem('gajiSicepatHarian',JSON.stringify(dataHarian));cekRekor(t,e);
+document.getElementById('inputResi').value='';hitungTotal();tampilLogHarian();cekBadgeReminder();updateGrafik();
+navigator.vibrate&&navigator.vibrate(50);
+const quotes=['🔥 Gas terus bos!','💪 Lu paling gacor!','🚀 Resi meledak!','⚡ Petir! Mantap!','💯 Kerja keras = Cuan keras!','🏆 Juara sehari!','💎 Sultan resi!','🎯 On target!','✨ Nggak ada obat!','🌟 Bintang lapangan!','👑 King of kurir!','🦾 Tangan besi!','😎 Cool abis bos!','🔱 Dewa resi!','💥 Boom! Keren!','🚨 Gacor parah!','🤑 Cuan ngalir!','🎊 Pesta resi!','💸 Dompet tebel!','⚔️ Gaspol terus!'];
+const randomQuote=quotes[Math.floor(Math.random()*quotes.length)];
+document.getElementById('popupEmot').textContent=randomQuote.split(' ')[0];
+document.getElementById('popupText').textContent=randomQuote.substring(randomQuote.indexOf(' ')+1);
+document.getElementById('popupSemangat').classList.add('show');
+setTimeout(()=>{document.getElementById('popupSemangat').classList.remove('show')},800);
+}
+
+function editTanggal(e){const t=dataHarian[e]||0,n=prompt(`Edit resi tanggal ${e}:`,t);if(n!==null&&!isNaN(n)&&parseInt(n)>=0){dataHarian[e]=parseInt(n);localStorage.setItem('gajiSicepatHarian',JSON.stringify(dataHarian));cekRekor(parseInt(n),e);hitungTotal();tampilLogHarian();cekBadgeReminder();updateGrafik()}}
+function hapusTanggal(e){if(confirm(`Hapus data resi tanggal ${e}?`)){dataHarian[e]=0;localStorage.setItem('gajiSicepatHarian',JSON.stringify(dataHarian));hitungTotal();tampilLogHarian();cekBadgeReminder();updateGrafik()}}
+
+function hitungTotal(){
+let resi1=0,resi2=0;const bulanIni=getBulanTahun();
+Object.keys(dataHarian).forEach(tgl=>{if(tgl.startsWith(bulanIni)){const tglNum=new Date(tgl).getDate();const jumlah=parseInt(dataHarian[tgl])||0;if(tglNum>=1&&tglNum<=15)resi1+=jumlah;else if(tglNum>=16)resi2+=jumlah}});
+const totalResi=resi1+resi2,totalGajiBulan=totalResi*tarif,gajiDibayar1=totalGajiBulan*0.5,gajiDibayar2=totalGajiBulan*0.5;
+document.getElementById('resi1').textContent=resi1.toLocaleString('id-ID');
+document.getElementById('resi2').textContent=resi2.toLocaleString('id-ID');
+document.getElementById('gaji1').textContent=gajiDibayar1.toLocaleString('id-ID');
+document.getElementById('gaji2').textContent=gajiDibayar2.toLocaleString('id-ID');
+document.getElementById('totalResi').textContent=totalResi.toLocaleString('id-ID');
+document.getElementById('totalGaji').textContent=totalGajiBulan.toLocaleString('id-ID');
+if(totalResi>0){dataBulanan[bulanIni]={resi1,resi2,gajiDibayar1,gajiDibayar2,totalGaji:totalGajiBulan,totalResi}}else delete dataBulanan[bulanIni];
+localStorage.setItem('gajiSicepat',JSON.stringify(dataBulanan));loadRiwayat();
+}
+
+function hitungStatistik(e){const t=Object.keys(dataHarian).filter(t=>t.startsWith(e)).map(e=>dataHarian[e]);if(t.length===0)return{totalHari:0,rata2:0,tertinggi:0,hariKerja:0};const n=t.reduce((e,t)=>e+t,0),o=t.filter(e=>e>0).length;return{totalHari:t.length,rata2:o>0?Math.round(n/o):0,tertinggi:Math.max(...t),hariKerja:o}}
+function tampilLogHarian(){autoIsiNol();const e=document.getElementById('logHarian'),t=getBulanTahun();let n='<h5>LOG INPUT BULAN INI</h5>';const o=Object.keys(dataHarian).filter(e=>e.startsWith(t)).sort().reverse();if(o.length>0){o.forEach(o=>{const r=dataHarian[o],a=new Date(o).toLocaleDateString('id-ID',{day:'2-digit',month:'short',weekday:'short'}),i=r===0?'kosong':'';n+=`<div class="log-item ${i}"><div class="log-info"><div class="log-tgl">${a}</div><div class="log-resi">${r} resi = Rp ${(r*tarif).toLocaleString('id-ID')}</div></div><div class="log-btn"><button class="btn-edit" onclick="editTanggal('${o}')">Edit</button>${r>0?`<button class="btn-hapus-log" onclick="hapusTanggal('${o}')">X</button>`:''}</div></div>`})}else n+='<div style="text-align:center;color:#999;padding:20px;">Belum ada input bulan ini</div>';e.innerHTML=n}
+function updateGrafik(){const e=[],t=[],n=new Date,o=n.getDate(),r=n.getFullYear(),a=n.getMonth()+1;for(let n=1;n<=o;n++){const o=`${r}-${String(a).padStart(2,'0')}-${String(n).padStart(2,'0')}`;e.push(n);t.push(dataHarian[o]||0)}const i=document.getElementById('chartResi');if(!i)return;const l=i.getContext('2d'),s=darkMode?'#e0e0':'#666',c=darkMode?'#404040':'#e0e0e0';if(chartInstance)chartInstance.destroy();chartInstance=new Chart(l,{type:'line',data:{labels:e,datasets:[{label:'Resi Harian',data:t,borderColor:warnaCustom,backgroundColor:warnaCustom+'1A',tension:.3,fill:true,pointBackgroundColor:warnaCustom,pointRadius:4,pointHoverRadius:6,borderWidth:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:e=>`${e.parsed.y} resi = Rp ${(e.parsed.y*tarif).toLocaleString('id-ID')}`}}},scales:{y:{beginAtZero:true,ticks:{font:{size:10,weight:'600'},color:s},grid:{color:c}},x:{ticks:{font:{size:9,weight:'600'},color:s},grid:{color:c}}}}})}
+function loadRiwayat(){const e=document.getElementById('listRiwayat');e.innerHTML='';const t=Object.keys(dataBulanan).sort().reverse();if(t.length>0){t.forEach(t=>{const n=dataBulanan[t],o=new Date(t+'-01').toLocaleDateString('id-ID',{month:'long',year:'numeric'}),r=hitungStatistik(t),a=n.totalResi||(n.resi1+n.resi2);e.innerHTML+=`<div class="riwayat-item"><div class="riwayat-header"><div class="riwayat-bulan">${o}</div><div class="riwayat-total">Rp ${n.totalGaji.toLocaleString('id-ID')}</div></div><div class="riwayat-stats"><div class="stat-box"><div class="stat-label">Total Resi</div><div class="stat-angka">${a.toLocaleString('id-ID')}</div></div><div class="stat-box"><div class="stat-label">Hari Kerja</div><div class="stat-angka">${r.hariKerja} hari</div></div><div class="stat-box"><div class="stat-label">Rata-rata</div><div class="stat-angka">${r.rata2} resi/hari</div></div><div class="stat-box"><div class="stat-label">Tertinggi</div><div class="stat-angka">${r.tertinggi} resi</div></div></div><div class="riwayat-footer"><button class="hapus-riwayat" onclick="hapusRiwayat('${t}')">Hapus Bulan</button></div></div>`})}else e.innerHTML='<div style="text-align:center;color:#999;padding:20px;">Belum ada riwayat</div>'}
+function hapusRiwayat(e){if(confirm(`Hapus semua data bulan ${e}?`)){Object.keys(dataHarian).forEach(t=>{if(t.startsWith(e))delete dataHarian[t]});delete dataBulanan[e];localStorage.setItem('gajiSicepatHarian',JSON.stringify(dataHarian));localStorage.setItem('gajiSicepat',JSON.stringify(dataBulanan));hitungTotal();tampilLogHarian();loadRiwayat();updateGrafik();cekBadgeReminder()}}
+function toggleDarkMode(){darkMode=!darkMode;document.body.classList.toggle('dark');document.getElementById('btnDark').textContent=darkMode?'☀️':'🌙';localStorage.setItem('darkMode',darkMode);if(chartInstance)updateGrafik()}
+
+function ubahWarnaUtama(warna){warnaCustom=warna;localStorage.setItem('warnaCustom',warna);terapkanWarnaCustom()}
+function terapkanWarnaCustom(){document.documentElement.style.setProperty('--primary',warnaCustom);document.querySelector('meta[name="theme-color"]').setAttribute('content',warnaCustom);if(chartInstance)updateGrafik()}
+function resetWarna(){warnaCustom='#ED1C24';localStorage.setItem('warnaCustom',warnaCustom);document.getElementById('warnaUtama').value=warnaCustom;terapkanWarnaCustom()}
+
+function uploadBackground(e){
+const file=e.target.files[0];if(!file)return;
+if(file.size>819200){alert('Gambar kegedean bos! Maks 800KB. Kompres dulu di TinyPNG');e.target.value='';return}
+const reader=new FileReader();
+reader.onload=function(event){bgCustom=event.target.result;localStorage.setItem('bgCustom',bgCustom);terapkanBackground();alert('Background berhasil diganti bos! Atur transparansi biar teks tetep kebaca 🎨')};
+reader.readAsDataURL(file);e.target.value=''
+}
+
+function terapkanBackground(){
+const container=document.querySelector('.container');
+if(bgCustom){container.classList.add('custom-bg');container.style.setProperty('--bg-image',`url(${bgCustom})`);document.getElementById('bgTransparanRow').style.display='flex'}
+else{container.classList.remove('custom-bg');document.getElementById('bgTransparanRow').style.display='none'}
+}
+
+function hapusBackground(){
+if(!bgCustom)return alert('Belum ada background custom bos');
+if(confirm('Hapus background custom?')){bgCustom='';localStorage.removeItem('bgCustom');const container=document.querySelector('.container');container.classList.remove('custom-bg');container.style.removeProperty('--bg-image');document.getElementById('bgTransparanRow').style.display='none'}
+}
+
+function ubahTransparansiBg(val){bgOpacity=val;localStorage.setItem('bgOpacity',val);document.getElementById('bgOpacityText').textContent=val+'%';document.documentElement.style.setProperty('--bg-opacity',val/100)}
+
+function toggleReminder(){reminderAktif=document.getElementById('checkReminder').checked;localStorage.setItem('reminderAktif',reminderAktif);if(reminderAktif){mintaIzinNotifikasi();alert('Reminder aktif! Notif jam 21:00 kalo belum input')}else alert('Reminder dimatiin bos')}
+function mintaIzinNotifikasi(){if('Notification'in window&&Notification.permission==='default')Notification.requestPermission()}
+function cekReminder(){if(!reminderAktif)return;const e=new Date,t=e.getHours(),n=e.getMinutes(),o=getTanggalHariIni();if(t===21&&n<=5&&(dataHarian[o]===0||dataHarian[o]===undefined)){if('Notification'in window&&Notification.permission==='granted')new Notification('SiCepat Gaji Reminder',{body:'Bos, hari ini belum input resi! Buruan input sebelum lupa 📦'})}}
+setInterval(cekReminder,6e4);
+
+function cekBackupReminder(){
+const e=new Date,t=e.getDate(),bulanIni=getBulanTahun(),keyBackup=`autoBackup_${bulanIni}_${t}`;
+if((t===15||t===30)&&!localStorage.getItem(keyBackup)){
+const data={dataHarian,dataBulanan,dataRekor,dataTahunan,dataBulananManual,tanggalBackup:new Date().toISOString(),versi:'4.0'};
+const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+a.href=url;a.download=`AUTO-backup-gaji-${getTanggalHariIni()}.json`;a.style.display='none';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+localStorage.setItem(keyBackup,'true');setTimeout(()=>{alert(`✅ BACKUP OTOMATIS BERHASIL!\n\nFile: AUTO-backup-gaji-${getTanggalHariIni()}.json\nUdah masuk folder Download HP lu bos.`)},500);
+}}
+
+function exportBackup(){const e={dataHarian,dataBulanan,dataRekor,dataTahunan,dataBulananManual,tanggalBackup:new Date().toISOString(),versi:'4.0'},t=new Blob([JSON.stringify(e,null,2)],{type:'application/json'}),n=URL.createObjectURL(t),o=document.createElement('a');o.href=n;o.download=`backup-gaji-sicepat-${getTanggalHariIni()}.json`;o.click();URL.revokeObjectURL(n);alert('Backup berhasil didownload bos! Simpen di Google Drive biar aman ☁️')}
+function importBackup(e){const t=e.target.files[0];if(!t)return;const n=new FileReader;n.onload=function(e){try{const t=JSON.parse(e.target.result);if(confirm('Restore data dari backup? Data sekarang bakal ketimpa bos!')){dataHarian=t.dataHarian||{};dataBulanan=t.dataBulanan||{};dataRekor=t.dataRekor||{resi:0,tanggal:''};dataTahunan=t.dataTahunan||[];dataBulananManual=t.dataBulananManual||{};localStorage.setItem('gajiSicepatHarian',JSON.stringify(dataHarian));localStorage.setItem('gajiSicepat',JSON.stringify(dataBulanan));localStorage.setItem('gajiSicepatRekor',JSON.stringify(dataRekor));localStorage.setItem('dataTahunan',JSON.stringify(dataTahunan));localStorage.setItem('dataBulananManual',JSON.stringify(dataBulananManual));alert('Restore berhasil bos! Halaman bakal reload 🔄');location.reload()}}catch(e){alert('File backup rusak bos! Pastiin file.json yang bener')}};n.readAsText(t);e.target.value=''}
+
+function cekSimpanTahunan(){
+const bulanSekarang=getBulanTahun();
+if(bulanSekarang!==bulanLalu&&dataBulanan[bulanLalu]){
+const d=new Date(bulanLalu+'-01'),namaBulan=d.toLocaleDateString('id-ID',{month:'long'}),dataLama=dataBulanan[bulanLalu];
+const simpanData={bulan:namaBulan,tahun:d.getFullYear(),gaji:dataLama.totalGaji,resi:dataLama.totalResi,key:bulanLalu};
+dataTahunan=dataTahunan.filter(x=>x.key!==bulanLalu);dataTahunan.push(simpanData);
+if(dataTahunan.length>12)dataTahunan=dataTahunan.slice(-12);
+localStorage.setItem('dataTahunan',JSON.stringify(dataTahunan));bulanLalu=bulanSekarang;
+}}
+
+function loadPilihBulan(){
+const tahun=new Date().getFullYear();
+const namaBulan=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+const select=document.getElementById('pilihBulan');
+select.innerHTML='<option value="">Pilih Bulan</option>';
+namaBulan.forEach((bulan,idx)=>{
+const key=`${tahun}-${String(idx+1).padStart(2,'0')}`;
+select.innerHTML+=`<option value="${key}">${bulan} ${tahun}</option>`;
+});
+}
+
+function simpanResiBulan(){
+const bulan=document.getElementById('pilihBulan').value;
+const resi=parseInt(document.getElementById('inputResiBulan').value)||0;
+if(!bulan)return alert('Pilih bulan dulu bos!');
+if(resi<0)return alert('Resi gak boleh minus bos!');
+
+dataBulananManual[bulan]=resi;
+localStorage.setItem('dataBulananManual',JSON.stringify(dataBulananManual));
+
+const tahun=new Date().getFullYear();
+const namaBulan=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+dataTahunan=[];
+Object.keys(dataBulananManual).forEach(key=>{
+const bulanIdx=parseInt(key.split('-')[1])-1;
+const resi=dataBulananManual[key];
+if(resi>0){
+dataTahunan.push({
+bulan:namaBulan[bulanIdx],
+tahun:tahun,
+gaji:resi*tarif,
+resi:resi,
+key:key
+});
+}
+});
+localStorage.setItem('dataTahunan',JSON.stringify(dataTahunan));
+
+document.getElementById('inputResiBulan').value='';
+document.getElementById('pilihBulan').value='';
+tampilLogBulanan();
+navigator.vibrate&&navigator.vibrate(50);
+
+const quotes=['🔥 Mantap bos!','💪 Gacor!','🚀 Bulan ini cuan!','⚡ Petir!','💯 Keren!'];
+const randomQuote=quotes[Math.floor(Math.random()*quotes.length)];
+document.getElementById('popupEmot').textContent=randomQuote.split(' ')[0];
+document.getElementById('popupText').textContent=randomQuote.substring(randomQuote.indexOf(' ')+1);
+document.getElementById('popupSemangat').classList.add('show');
+setTimeout(()=>{document.getElementById('popupSemangat').classList.remove('show')},800);
+}
+
+function tampilLogBulanan(){
+const tahun=new Date().getFullYear();
+const namaBulan=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+const e=document.getElementById('logBulanan');
+let html='<h5>LOG BULANAN '+tahun+'</h5>';
+let totalResi=0;
+
+const sortedKeys=Object.keys(dataBulananManual).filter(k=>k.startsWith(tahun)).sort().reverse();
+
+if(sortedKeys.length>0){
+sortedKeys.forEach(key=>{
+const resi=dataBulananManual[key];
+const bulanIdx=parseInt(key.split('-')[1])-1;
+const namaBln=namaBulan[bulanIdx];
+totalResi+=resi;
+html+=`<div class="log-item">
+<div class="log-info">
+<div class="log-tgl">${namaBln}</div>
+<div class="log-resi">${resi} resi = Rp ${(resi*tarif).toLocaleString('id-ID')}</div>
+</div>
+<div class="log-btn">
+<button class="btn-edit" onclick="editBulan('${key}')">Edit</button>
+<button class="btn-hapus-log" onclick="hapusBulan('${key}')">X</button>
+</div>
+</div>`;
+});
+}else{
+html+='<div style="text-align:center;color:#999;padding:20px;">Belum ada data bulan ini</div>';
+}
+
+e.innerHTML=html;
+document.getElementById('totalResiBulanan').textContent=totalResi.toLocaleString('id-ID');
+document.getElementById('totalGajiBulanan').textContent=(totalResi*tarif).toLocaleString('id-ID');
+}
+
+function editBulan(key){
+const resi=dataBulananManual[key]||0;
+const bulanIdx=parseInt(key.split('-')[1])-1;
+const namaBulan=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+const n=prompt(`Edit resi bulan ${namaBulan[bulanIdx]}:`,resi);
+if(n!==null&&!isNaN(n)&&parseInt(n)>=0){
+dataBulananManual[key]=parseInt(n);
+localStorage.setItem('dataBulananManual',JSON.stringify(dataBulananManual));
+const tahun=new Date().getFullYear();
+dataTahunan=[];
+Object.keys(dataBulananManual).forEach(key=>{
+const bulanIdx=parseInt(key.split('-')[1])-1;
+const resi=dataBulananManual[key];
+if(resi>0){
+dataTahunan.push({
+bulan:namaBulan[bulanIdx],
+tahun:tahun,
+gaji:resi*tarif,
+resi:resi,
+key:key
+});
+}
+});
+localStorage.setItem('dataTahunan',JSON.stringify(dataTahunan));
+tampilLogBulanan();
+}
+}
+
+function hapusBulan(key){
+if(confirm(`Hapus data bulan ini?`)){
+delete dataBulananManual[key];
+localStorage.setItem('dataBulananManual',JSON.stringify(dataBulananManual));
+dataTahunan=dataTahunan.filter(d=>d.key!==key);
+localStorage.setItem('dataTahunan',JSON.stringify(dataTahunan));
+tampilLogBulanan();
+}
+}
+
+function hapusDataTahunan(){if(!confirm('Hapus SEMUA data tahunan? Data gak bisa dibalikin bos!'))return;dataTahunan=[];dataBulananManual={};localStorage.setItem('dataTahunan',JSON.stringify(dataTahunan));localStorage.setItem('dataBulananManual',JSON.stringify(dataBulananManual));tampilLogBulanan()}
+
+</script>
+</body>
+</html>
