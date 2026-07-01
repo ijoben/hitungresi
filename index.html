@@ -9,7 +9,44 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="icon-192.png">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js">
+        // Auto isi tab tahunan dari data harian saat akhir bulan
+        function cekAkhirBulanDanUpdateTahunan() {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+            
+            if (tomorrow.getDate() === 1) {
+                const bulanIni = today.getMonth();
+                const tahunIni = today.getFullYear();
+                const keyBulanan = `${tahunIni}-${String(bulanIni+1).padStart(2,'0')}`;
+                
+                const dataHarian = JSON.parse(localStorage.getItem('gajiSicepatHarian') || '{}');
+                let totalResiBulan = 0;
+                
+                for (let tgl = 1; tgl <= today.getDate(); tgl++) {
+                    const keyHarian = `${tahunIni}-${String(bulanIni+1).padStart(2,'0')}-${String(tgl).padStart(2,'0')}`;
+                    totalResiBulan += dataHarian[keyHarian] || 0;
+                }
+                
+                const dataBulananManual = JSON.parse(localStorage.getItem('dataBulananManual') || '{}');
+                dataBulananManual[keyBulanan] = totalResiBulan;
+                localStorage.setItem('dataBulananManual', JSON.stringify(dataBulananManual));
+                
+                if (document.getElementById('tab-tahunan') && document.getElementById('tab-tahunan').classList.contains('active')) {
+                    if (typeof tampilLogBulanan === 'function') tampilLogBulanan();
+                }
+            }
+        }
+        
+        // Hook ke simpanResi
+        const _originalSimpanResi = window.simpanResi;
+        window.simpanResi = function() {
+            if (_originalSimpanResi) _originalSimpanResi.apply(this, arguments);
+            cekAkhirBulanDanUpdateTahunan();
+        };
+
+    </script>
     <style>
         :root{--primary:#ED1C24;--bg:white;--text:#333;--text2:#666;--border:#eee;--box:#f8f9fa;--bg-opacity:.6}
         body.dark{--bg:#2a2a2a;--text:#e0e0e0;--text2:#b0b0b0;--border:#404040;--box:#333}
@@ -189,7 +226,7 @@
             <div class="backup-container">
                 <h5>☁️ BACKUP & RESTORE</h5>
                 <div class="backup-btn-group">
-                    <button class="btn-backup btn-export" onclick="exportBackup()">📥 Download</button>
+                    <button class="btn-backup btn-export" onclick="exportBackup()">📥 Download</button><button class="btn-backup" style="background:#2196F3" onclick="showBackupFallback(JSON.stringify({dataHarian,dataBulanan,dataRekor,dataTahunan,dataBulananManual},null,2), `backup-manual-${getTanggalHariIni()}.json`)">📋 Salin</button>
                     <button class="btn-backup btn-import" onclick="document.getElementById('inputFileBackup').click()">📤 Upload</button>
                 </div>
                 <input type="file" id="inputFileBackup" accept=".json" onchange="importBackup(event)">
@@ -518,6 +555,43 @@ tampilLogBulanan();
 
 function hapusDataTahunan(){if(!confirm('Hapus SEMUA data tahunan? Data gak bisa dibalikin bos!'))return;dataTahunan=[];dataBulananManual={};localStorage.setItem('dataTahunan',JSON.stringify(dataTahunan));localStorage.setItem('dataBulananManual',JSON.stringify(dataBulananManual));tampilLogBulanan()}
 
-</script>
+
+        // Auto isi tab tahunan dari data harian saat akhir bulan
+        function cekAkhirBulanDanUpdateTahunan() {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+            
+            if (tomorrow.getDate() === 1) {
+                const bulanIni = today.getMonth();
+                const tahunIni = today.getFullYear();
+                const keyBulanan = `${tahunIni}-${String(bulanIni+1).padStart(2,'0')}`;
+                
+                const dataHarian = JSON.parse(localStorage.getItem('gajiSicepatHarian') || '{}');
+                let totalResiBulan = 0;
+                
+                for (let tgl = 1; tgl <= today.getDate(); tgl++) {
+                    const keyHarian = `${tahunIni}-${String(bulanIni+1).padStart(2,'0')}-${String(tgl).padStart(2,'0')}`;
+                    totalResiBulan += dataHarian[keyHarian] || 0;
+                }
+                
+                const dataBulananManual = JSON.parse(localStorage.getItem('dataBulananManual') || '{}');
+                dataBulananManual[keyBulanan] = totalResiBulan;
+                localStorage.setItem('dataBulananManual', JSON.stringify(dataBulananManual));
+                
+                if (document.getElementById('tab-tahunan') && document.getElementById('tab-tahunan').classList.contains('active')) {
+                    if (typeof tampilLogBulanan === 'function') tampilLogBulanan();
+                }
+            }
+        }
+        
+        // Hook ke simpanResi
+        const _originalSimpanResi = window.simpanResi;
+        window.simpanResi = function() {
+            if (_originalSimpanResi) _originalSimpanResi.apply(this, arguments);
+            cekAkhirBulanDanUpdateTahunan();
+        };
+
+    </script>
 </body>
 </html>
