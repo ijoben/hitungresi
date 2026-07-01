@@ -203,7 +203,12 @@
 
         <div id="tab-statistik" class="tab-content">
             <div id="listRiwayat"></div>
-            <div class="grafik-container"><h5>📈 GRAFIK RESI BULAN INI</h5><canvas id="chartResi" height="180" style="max-height:180px"></canvas></div>
+            
+            <div class="grafik-container">
+                <h5>📈 GRAFIK RESI BULAN INI</h5>
+                <canvas id="chartResi" height="180" style="max-height:180px;width:100%"></canvas>
+                <button onclick="updateGrafik()" style="margin-top:8px;width:100%;padding:8px;background:var(--primary);color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:bold">🔄 RENDER ULANG GRAFIK</button>
+            </div>
         </div>
 
         <div id="tab-tahunan" class="tab-content">
@@ -342,6 +347,14 @@
             hitungTotal();
             tampilLogHarian();
             cekBadgeReminder();
+            // Paksa render grafik 1 detik setelah load kalau tab statistik aktif
+            setTimeout(() => {
+                if (document.getElementById('tab-statistik').classList.contains('active')) {
+                    console.log('[Chart] Force render on load');
+                    updateGrafik();
+                }
+            }, 1000);
+
             if (document.querySelector('.tab-btn[data-tab="statistik"]').classList.contains('active')) {
                 setTimeout(updateGrafik, 100);
             }
@@ -405,6 +418,14 @@
             hitungTotal();
             tampilLogHarian();
             cekBadgeReminder();
+            // Paksa render grafik 1 detik setelah load kalau tab statistik aktif
+            setTimeout(() => {
+                if (document.getElementById('tab-statistik').classList.contains('active')) {
+                    console.log('[Chart] Force render on load');
+                    updateGrafik();
+                }
+            }, 1000);
+
             if (document.querySelector('.tab-btn[data-tab="statistik"]').classList.contains('active')) {
                 setTimeout(updateGrafik, 100);
             }
@@ -430,6 +451,14 @@
                 hitungTotal();
                 tampilLogHarian();
                 cekBadgeReminder();
+            // Paksa render grafik 1 detik setelah load kalau tab statistik aktif
+            setTimeout(() => {
+                if (document.getElementById('tab-statistik').classList.contains('active')) {
+                    console.log('[Chart] Force render on load');
+                    updateGrafik();
+                }
+            }, 1000);
+
             if (document.querySelector('.tab-btn[data-tab="statistik"]').classList.contains('active')) {
                 setTimeout(updateGrafik, 100);
             }
@@ -446,6 +475,14 @@
                 hitungTotal();
                 tampilLogHarian();
                 cekBadgeReminder();
+            // Paksa render grafik 1 detik setelah load kalau tab statistik aktif
+            setTimeout(() => {
+                if (document.getElementById('tab-statistik').classList.contains('active')) {
+                    console.log('[Chart] Force render on load');
+                    updateGrafik();
+                }
+            }, 1000);
+
             if (document.querySelector('.tab-btn[data-tab="statistik"]').classList.contains('active')) {
                 setTimeout(updateGrafik, 100);
             }
