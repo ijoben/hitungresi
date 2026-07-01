@@ -46,6 +46,38 @@
             cekAkhirBulanDanUpdateTahunan();
         };
 
+    
+        function generateDummyData(){
+            if(!confirm('Generate data dummy Oktober 2026?\nData harian bulan ini bakal ketimpa!')) return;
+            
+            const tahun = 2026, bulan = 10;
+            const dataHarian = JSON.parse(localStorage.getItem('gajiSicepatHarian') || '{}');
+            
+            // Isi 30 hari Oktober
+            for(let tgl=1; tgl<=30; tgl++){
+                const key = `${tahun}-${String(bulan).padStart(2,'0')}-${String(tgl).padStart(2,'0')}`;
+                dataHarian[key] = Math.floor(Math.random()*80)+50; // 50-130 resi
+            }
+            
+            localStorage.setItem('gajiSicepatHarian', JSON.stringify(dataHarian));
+            
+            // Trigger auto tahunan manual
+            const keyBulanan = `${tahun}-${String(bulan).padStart(2,'0')}`;
+            let totalResi = 0;
+            for(let tgl=1; tgl<=30; tgl++){
+                const key = `${tahun}-${String(bulan).padStart(2,'0')}-${String(tgl).padStart(2,'0')}`;
+                totalResi += dataHarian[key] || 0;
+            }
+            
+            const dataBulananManual = JSON.parse(localStorage.getItem('dataBulananManual') || '{}');
+            dataBulananManual[keyBulanan] = totalResi;
+            localStorage.setItem('dataBulananManual', JSON.stringify(dataBulananManual));
+            
+            alert(`✅ Dummy data berhasil!\n\nOktober 2026: ${totalResi} resi\nCek di log bulanan di bawah`);
+            if(typeof tampilLogBulanan === 'function') tampilLogBulanan();
+            if(typeof hitungTotal === 'function') hitungTotal();
+        }
+
     </script>
     <style>
         :root{--primary:#ED1C24;--bg:white;--text:#333;--text2:#666;--border:#eee;--box:#f8f9fa;--bg-opacity:.6}
@@ -53,7 +85,7 @@
         *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
         body{font-family:Arial,sans-serif;max-width:430px;margin:0 auto;padding:0;background:var(--bg);min-height:100vh;color:var(--text);transition:.2s}
         .container{padding:12px 10px 100px 10px;position:relative;z-index:1}
-        .container.custom-bg{background-image:var(--bg-image);background-size:cover;background-position:center;background-repeat:no-repeat}
+        .container.custom-bg{background-image:var(--bg-image);background-size:100% 100%;background-position:center;background-repeat:no-repeat;background-attachment:fixed;min-height:100vh}
         .container.custom-bg::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg);opacity:var(--bg-opacity);z-index:-1;pointer-events:none}
         .top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:8px 10px;background:var(--box);border-radius:10px}
         .logo-sicepat{flex:1;text-align:center;position:relative}
@@ -262,6 +294,15 @@
             </div>
 
             <div class="log-harian" id="logBulanan" style="margin-top:16px"></div>
+
+            
+            <div class="setting-box" style="border-color:#2196F3;margin-top:16px">
+                <div class="setting-row">
+                    <div class="setting-label" style="color:#2196F3">🧪 TEST DUMMY DATA</div>
+                    <button class="btn-setting" style="background:#2196F3" onclick="generateDummyData()">TEST</button>
+                </div>
+                <div style="font-size:9px;color:var(--text2);margin-top:6px">Klik buat isi data Oktober 2026 otomatis</div>
+            </div>
 
             <div class="setting-box" style="border-color:#e53935;margin-top:16px">
                 <div class="setting-row">
@@ -592,6 +633,57 @@ function hapusDataTahunan(){if(!confirm('Hapus SEMUA data tahunan? Data gak bisa
             cekAkhirBulanDanUpdateTahunan();
         };
 
+    
+        function generateDummyData(){
+            if(!confirm('Generate data dummy Oktober 2026?\nData harian bulan ini bakal ketimpa!')) return;
+            
+            const tahun = 2026, bulan = 10;
+            const dataHarian = JSON.parse(localStorage.getItem('gajiSicepatHarian') || '{}');
+            
+            // Isi 30 hari Oktober
+            for(let tgl=1; tgl<=30; tgl++){
+                const key = `${tahun}-${String(bulan).padStart(2,'0')}-${String(tgl).padStart(2,'0')}`;
+                dataHarian[key] = Math.floor(Math.random()*80)+50; // 50-130 resi
+            }
+            
+            localStorage.setItem('gajiSicepatHarian', JSON.stringify(dataHarian));
+            
+            // Trigger auto tahunan manual
+            const keyBulanan = `${tahun}-${String(bulan).padStart(2,'0')}`;
+            let totalResi = 0;
+            for(let tgl=1; tgl<=30; tgl++){
+                const key = `${tahun}-${String(bulan).padStart(2,'0')}-${String(tgl).padStart(2,'0')}`;
+                totalResi += dataHarian[key] || 0;
+            }
+            
+            const dataBulananManual = JSON.parse(localStorage.getItem('dataBulananManual') || '{}');
+            dataBulananManual[keyBulanan] = totalResi;
+            localStorage.setItem('dataBulananManual', JSON.stringify(dataBulananManual));
+            
+            alert(`✅ Dummy data berhasil!\n\nOktober 2026: ${totalResi} resi\nCek di log bulanan di bawah`);
+            if(typeof tampilLogBulanan === 'function') tampilLogBulanan();
+            if(typeof hitungTotal === 'function') hitungTotal();
+        }
+
     </script>
+<script>
+// Revised: log tab loads only last 10 days
+if(typeof loadLogs === 'function'){
+    const originalLoadLogs = loadLogs;
+    loadLogs = function(){
+        const tenDaysAgo = new Date();
+        tenDaysAgo.setDate(tenDaysAgo.getDate() - 10);
+        // filter logs
+        const allLogs = originalLoadLogs.apply(this, arguments);
+        if(Array.isArray(allLogs)){
+            return allLogs.filter(log => {
+                const logDate = new Date(log.date || log.timestamp || 0);
+                return logDate >= tenDaysAgo;
+            });
+        }
+        return allLogs;
+    };
+}
+</script>
 </body>
 </html>
