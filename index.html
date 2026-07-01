@@ -4,19 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
     <title>Gaji Kurir SiCepat</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#ED1C24">
+        <meta name="theme-color" content="#ED1C24">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="icon-192.png">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root{--primary:#ED1C24;--bg:white;--text:#333;--text2:#666;--border:#eee;--box:#f8f9fa;--bg-opacity:.6}
         body.dark{--bg:#2a2a2a;--text:#e0e0e0;--text2:#b0b0b0;--border:#404040;--box:#333}
         *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
         body{font-family:Arial,sans-serif;max-width:430px;margin:0 auto;padding:0;background:var(--bg);min-height:100vh;color:var(--text);transition:.2s}
         .container{padding:12px 10px 100px 10px;position:relative;z-index:1}
-        .container.custom-bg{background-image:var(--bg-image);background-size:cover;background-position:center;background-repeat:no-repeat}
+        .container.custom-bg{background-image:var(--bg-image);background-size:100% 100%;background-position:center;background-repeat:no-repeat;background-attachment:fixed;min-height:100vh}
         .container.custom-bg::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg);opacity:var(--bg-opacity);z-index:-1;pointer-events:none}
         .top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:8px 10px;background:var(--box);border-radius:10px}
         .logo-sicepat{flex:1;text-align:center;position:relative}
@@ -55,6 +53,7 @@
         .btn-edit,.btn-hapus-log{border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:10px;color:#fff;font-weight:700}
         .btn-edit{background:#1976d2}
         .btn-hapus-log{background:#e53935}
+        .btn-load-more{background:var(--box);color:var(--primary);border:1px solid var(--primary);padding:10px;border-radius:8px;cursor:pointer;font-size:11px;font-weight:800;width:100%;text-align:center;margin-top:5px;text-transform:uppercase}
         .grafik-container{background:var(--bg);padding:10px;border-radius:12px;margin-top:14px;border:1px solid var(--primary)}
         .grafik-container h5{margin:0 0 8px 0;text-align:center;color:var(--primary);font-size:12px;font-weight:800;text-transform:uppercase}
         #chartResi{max-height:180px}
@@ -146,7 +145,9 @@
             </div>
         </div>
 
-        <div id="tab-log" class="tab-content"><div class="log-harian" id="logHarian"></div></div>
+        <div id="tab-log" class="tab-content">
+            <div class="log-harian" id="logHarian"></div>
+        </div>
 
         <div id="tab-setting" class="tab-content">
             <div class="setting-box">
@@ -190,6 +191,7 @@
                 <h5>☁️ BACKUP & RESTORE</h5>
                 <div class="backup-btn-group">
                     <button class="btn-backup btn-export" onclick="exportBackup()">📥 Download</button>
+                    <button class="btn-backup" style="background:#2196F3" onclick="showBackupFallback()">📋 Salin</button>
                     <button class="btn-backup btn-import" onclick="document.getElementById('inputFileBackup').click()">📤 Upload</button>
                 </div>
                 <input type="file" id="inputFileBackup" accept=".json" onchange="importBackup(event)">
@@ -206,7 +208,7 @@
             <h2>REKAP BULANAN <span id="tahunBulanan"></span></h2>
 
             <div class="input-tanggal">
-                <label>📅 INPUT RESI PER BULAN</label>
+                <label>📅 INPUT RESI PER BULAN (MANUAL)</label>
                 <div class="input-group">
                     <div class="input-row">
                         <select id="pilihBulan">
@@ -251,273 +253,658 @@
     </div>
 
     <script>
-const tarif=2500;let dataBulanan=JSON.parse(localStorage.getItem('gajiSicepat')||'{}'),dataHarian=JSON.parse(localStorage.getItem('gajiSicepatHarian')||'{}'),dataRekor=JSON.parse(localStorage.getItem('gajiSicepatRekor')||'{"resi":0,"tanggal":""}'),dataTahunan=JSON.parse(localStorage.getItem('dataTahunan')||'[]'),dataBulananManual=JSON.parse(localStorage.getItem('dataBulananManual')||'{}'),reminderAktif=localStorage.getItem('reminderAktif')==='true',darkMode=localStorage.getItem('darkMode')==='true',warnaCustom=localStorage.getItem('warnaCustom')||'#ED1C24',bgCustom=localStorage.getItem('bgCustom')||'',bgOpacity=localStorage.getItem('bgOpacity')||'40',chartInstance=null,bulanLalu=getBulanTahun(),deferredPrompt;
+        const tarif = 2500;
+        let dataBulanan = JSON.parse(localStorage.getItem('gajiSicepat') || '{}');
+        let dataHarian = JSON.parse(localStorage.getItem('gajiSicepatHarian') || '{}');
+        let dataRekor = JSON.parse(localStorage.getItem('gajiSicepatRekor') || '{"resi":0,"tanggal":""}');
+        let dataTahunan = JSON.parse(localStorage.getItem('dataTahunan') || '[]');
+        let dataBulananManual = JSON.parse(localStorage.getItem('dataBulananManual') || '{}');
+        let reminderAktif = localStorage.getItem('reminderAktif') === 'true';
+        let darkMode = localStorage.getItem('darkMode') === 'true';
+        let warnaCustom = localStorage.getItem('warnaCustom') || '#ED1C24';
+        let bgCustom = localStorage.getItem('bgCustom') || '';
+        let bgOpacity = localStorage.getItem('bgOpacity') || '40';
+        let chartInstance = null;
+        let bulanLalu = getBulanTahun();
+        let deferredPrompt;
+            // Force re-render chart when tab statistik dibuka
+            const statistikTab = document.getElementById('tab-statistik');
+            const observer = new MutationObserver(() => {
+                if (statistikTab.classList.contains('active')) {
+                    setTimeout(updateGrafik, 50);
+                }
+            });
+            observer.observe(statistikTab, { attributes: true, attributeFilter: ['class'] });
 
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;document.getElementById('btnInstall').classList.add('show')});
-function installPWA(){if(!deferredPrompt)return alert('App udah diinstall atau browser gak support bos!');deferredPrompt.prompt();deferredPrompt.userChoice.then(r=>{if(r.outcome==='accepted'){document.getElementById('btnInstall').classList.remove('show');alert('App berhasil diinstall ke layar utama! 🎉')}deferredPrompt=null})}
-window.addEventListener('appinstalled',()=>{document.getElementById('btnInstall').classList.remove('show');deferredPrompt=null});
+        
+        // Limit untuk pagination tab log harian
+        let logLimit = 10;
 
-document.addEventListener('DOMContentLoaded',function(){
-document.getElementById('checkReminder').checked=reminderAktif;
-if(darkMode){document.body.classList.add('dark');document.getElementById('btnDark').textContent='☀️'}
-document.getElementById('warnaUtama').value=warnaCustom;
-document.getElementById('bgOpacity').value=bgOpacity;
-document.getElementById('bgOpacityText').textContent=bgOpacity+'%';
-document.documentElement.style.setProperty('--bg-opacity',bgOpacity/100);
-if(bgCustom)document.getElementById('bgTransparanRow').style.display='flex';
-terapkanWarnaCustom();terapkanBackground();
-document.getElementById('inputTanggal').value=getTanggalHariIni();
-document.getElementById('bulanIni').textContent=new Date().toLocaleDateString('id-ID',{month:'long',year:'numeric'}).toUpperCase();
-document.getElementById('tahunBulanan').textContent=new Date().getFullYear();
+        window.addEventListener('beforeinstallprompt', e => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('btnInstall').classList.add('show');
+        });
 
-document.querySelectorAll('.tab-btn').forEach(btn=>{
-btn.addEventListener('click',function(){
-const tabName=this.getAttribute('data-tab');
-document.querySelectorAll('.tab-content').forEach(e=>e.classList.remove('active'));
-document.querySelectorAll('.tab-btn').forEach(e=>e.classList.remove('active'));
-document.getElementById('tab-'+tabName).classList.add('active');
-this.classList.add('active');
-if(tabName==='statistik')setTimeout(updateGrafik,100);
-if(tabName==='tahunan'){loadPilihBulan();tampilLogBulanan()}
-})});
+        function installPWA() {
+            if (!deferredPrompt) return alert('App udah diinstall atau browser gak support bos!');
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then(r => {
+                if (r.outcome === 'accepted') {
+                    document.getElementById('btnInstall').classList.remove('show');
+                    alert('App berhasil diinstall ke layar utama! 🎉');
+                }
+                deferredPrompt = null;
+            });
+        }
+        window.addEventListener('appinstalled', () => {
+            document.getElementById('btnInstall').classList.remove('show');
+            deferredPrompt = null;
+        });
 
-cekSimpanTahunan();autoIsiNol();loadRiwayat();hitungTotal();tampilLogHarian();cekBadgeReminder();tampilRekor();cekBackupReminder();if(reminderAktif)mintaIzinNotifikasi();
-});
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('checkReminder').checked = reminderAktif;
+            if (darkMode) {
+                document.body.classList.add('dark');
+                document.getElementById('btnDark').textContent = '☀️';
+            }
+            document.getElementById('warnaUtama').value = warnaCustom;
+            document.getElementById('bgOpacity').value = bgOpacity;
+            document.getElementById('bgOpacityText').textContent = bgOpacity + '%';
+            document.documentElement.style.setProperty('--bg-opacity', bgOpacity / 100);
+            if (bgCustom) document.getElementById('bgTransparanRow').style.display = 'flex';
+            terapkanWarnaCustom();
+            terapkanBackground();
+            document.getElementById('inputTanggal').value = getTanggalHariIni();
+            document.getElementById('bulanIni').textContent = new Date().toLocaleDateString('id-ID', { month: 'long', year: 'numeric' }).toUpperCase();
+            document.getElementById('tahunBulanan').textContent = new Date().getFullYear();
 
-function getBulanTahun(){const e=new Date;return`${e.getFullYear()}-${String(e.getMonth()+1).padStart(2,'0')}`}
-function getTanggalHariIni(){const e=new Date;return`${e.getFullYear()}-${String(e.getMonth()+1).padStart(2,'0')}-${String(e.getDate()).padStart(2,'0')}`}
-function autoIsiNol(){const e=new Date,t=e.getFullYear(),n=e.getMonth()+1,o=e.getDate();for(let e=1;e<=o;e++){const o=`${t}-${String(n).padStart(2,'0')}-${String(e).padStart(2,'0')}`;if(dataHarian[o]===undefined)dataHarian[o]=0}localStorage.setItem('gajiSicepatHarian',JSON.stringify(dataHarian))}
-function cekRekor(e,t){if(e>dataRekor.resi){const n=dataRekor.resi;dataRekor={resi:e,tanggal:t};localStorage.setItem('gajiSicepatRekor',JSON.stringify(dataRekor));tampilRekor();if(e>0&&n>0)setTimeout(()=>alert(`🔥 PECAH REKOR BOS! ${e} resi hari ini! Gacor kang! 🔥`),500)}}
-function tampilRekor(){const e=document.getElementById('rekorBanner');if(dataRekor.resi>0){const t=new Date(dataRekor.tanggal).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'});e.innerHTML=`🏆 Rekor: ${dataRekor.resi} resi - ${t}`;e.classList.remove('kosong')}else e.classList.add('kosong')}
-function cekBadgeReminder(){const e=getTanggalHariIni(),t=document.getElementById('badgeReminder');t.style.display=(dataHarian[e]===0||dataHarian[e]===undefined)?'block':'none'}
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active'));
+                    document.querySelectorAll('.tab-btn').forEach(e => e.classList.remove('active'));
+                    document.getElementById('tab-' + tabName).classList.add('active');
+                    this.classList.add('active');
+                    if (tabName === 'log') {
+                        logLimit = 10; // Reset limit tiap kali buka tab log
+                        tampilLogHarian();
+                    }
+                    if (tabName === 'statistik') { setTimeout(updateGrafik, 50); }
+                    if (tabName === 'tahunan') {
+                        loadPilihBulan();
+                        tampilLogBulanan();
+                    }
+                });
+            });
 
-function simpanResi(){
-const e=document.getElementById('inputTanggal').value,t=parseInt(document.getElementById('inputResi').value)||0;
-if(!e.match(/^\d{4}-\d{2}-\d{2}$/))return alert('Format tanggal salah bos! Pake 2026-10-05');
-if(t<0)return alert('Jumlah resi nggak boleh minus bos!');
-dataHarian[e]=t;localStorage.setItem('gajiSicepatHarian',JSON.stringify(dataHarian));cekRekor(t,e);
-document.getElementById('inputResi').value='';hitungTotal();tampilLogHarian();cekBadgeReminder();updateGrafik();
-navigator.vibrate&&navigator.vibrate(50);
-const quotes=['🔥 Gas terus bos!','💪 Lu paling gacor!','🚀 Resi meledak!','⚡ Petir! Mantap!','💯 Kerja keras = Cuan keras!','🏆 Juara sehari!','💎 Sultan resi!','🎯 On target!','✨ Nggak ada obat!','🌟 Bintang lapangan!','👑 King of kurir!','🦾 Tangan besi!','😎 Cool abis bos!','🔱 Dewa resi!','💥 Boom! Keren!','🚨 Gacor parah!','🤑 Cuan ngalir!','🎊 Pesta resi!','💸 Dompet tebel!','⚔️ Gaspol terus!'];
-const randomQuote=quotes[Math.floor(Math.random()*quotes.length)];
-document.getElementById('popupEmot').textContent=randomQuote.split(' ')[0];
-document.getElementById('popupText').textContent=randomQuote.substring(randomQuote.indexOf(' ')+1);
-document.getElementById('popupSemangat').classList.add('show');
-setTimeout(()=>{document.getElementById('popupSemangat').classList.remove('show')},800);
-}
+            cekSimpanTahunan();
+            cekAkhirBulanDanUpdateTahunan(); // Otomatisasi cek saat load aplikasi
+            autoIsiNol();
+            loadRiwayat();
+            hitungTotal();
+            tampilLogHarian();
+            cekBadgeReminder();
+            tampilRekor();
+            cekBackupReminder();
+            if (reminderAktif) mintaIzinNotifikasi();
+        });
 
-function editTanggal(e){const t=dataHarian[e]||0,n=prompt(`Edit resi tanggal ${e}:`,t);if(n!==null&&!isNaN(n)&&parseInt(n)>=0){dataHarian[e]=parseInt(n);localStorage.setItem('gajiSicepatHarian',JSON.stringify(dataHarian));cekRekor(parseInt(n),e);hitungTotal();tampilLogHarian();cekBadgeReminder();updateGrafik()}}
-function hapusTanggal(e){if(confirm(`Hapus data resi tanggal ${e}?`)){dataHarian[e]=0;localStorage.setItem('gajiSicepatHarian',JSON.stringify(dataHarian));hitungTotal();tampilLogHarian();cekBadgeReminder();updateGrafik()}}
+        function getBulanTahun() {
+            const e = new Date;
+            return `${e.getFullYear()}-${String(e.getMonth() + 1).padStart(2, '0')}`;
+        }
 
-function hitungTotal(){
-let resi1=0,resi2=0;const bulanIni=getBulanTahun();
-Object.keys(dataHarian).forEach(tgl=>{if(tgl.startsWith(bulanIni)){const tglNum=new Date(tgl).getDate();const jumlah=parseInt(dataHarian[tgl])||0;if(tglNum>=1&&tglNum<=15)resi1+=jumlah;else if(tglNum>=16)resi2+=jumlah}});
-// Hitung terpisah per periode
-const gajiPeriode1 = resi1 * tarif; // 100% P1
-const gajiPeriode2 = resi2 * tarif; // 100% P2
-const dibayarPeriode1 = gajiPeriode1 * 0.5; // P1 cuma dibayar 50%
-const sisaPeriode1 = gajiPeriode1 * 0.5; // 50% ditahan
-const dibayarTanggal5 = gajiPeriode2 + sisaPeriode1; // P2 dibayar tgl 5 + sisa P1
-const totalResi = resi1 + resi2;
-const totalGajiBulan = gajiPeriode1 + gajiPeriode2;
+        function getTanggalHariIni() {
+            const e = new Date;
+            return `${e.getFullYear()}-${String(e.getMonth() + 1).padStart(2, '0')}-${String(e.getDate()).padStart(2, '0')}`;
+        }
 
-document.getElementById('resi1').textContent=resi1.toLocaleString('id-ID');
-document.getElementById('resi2').textContent=resi2.toLocaleString('id-ID');
-document.getElementById('gaji1').textContent=dibayarPeriode1.toLocaleString('id-ID');
-document.getElementById('gaji2').textContent=dibayarTanggal5.toLocaleString('id-ID');
-document.getElementById('totalResi').textContent=totalResi.toLocaleString('id-ID');
-document.getElementById('totalGaji').textContent=totalGajiBulan.toLocaleString('id-ID');
-if(document.getElementById('sisa1'))document.getElementById('sisa1').textContent='Sisa: Rp '+sisaPeriode1.toLocaleString('id-ID');
+        function autoIsiNol() {
+            const e = new Date, t = e.getFullYear(), n = e.getMonth() + 1, o = e.getDate();
+            for (let e = 1; e <= o; e++) {
+                const o = `${t}-${String(n).padStart(2, '0')}-${String(e).padStart(2, '0')}`;
+                if (dataHarian[o] === undefined) dataHarian[o] = 0;
+            }
+            localStorage.setItem('gajiSicepatHarian', JSON.stringify(dataHarian));
+        }
 
-if(totalResi>0){dataBulanan[bulanIni]={resi1,resi2,dibayarPeriode1,dibayarTanggal5,sisaPeriode1,totalGaji:totalGajiBulan,totalResi}}else delete dataBulanan[bulanIni];
-localStorage.setItem('gajiSicepat',JSON.stringify(dataBulanan));loadRiwayat();
-}
+        function cekRekor(e, t) {
+            if (e > dataRekor.resi) {
+                const n = dataRekor.resi;
+                dataRekor = { resi: e, tanggal: t };
+                localStorage.setItem('gajiSicepatRekor', JSON.stringify(dataRekor));
+                tampilRekor();
+                if (e > 0 && n > 0) setTimeout(() => alert(`🔥 PECAH REKOR BOS! ${e} resi hari ini! Gacor kang! 🔥`), 500);
+            }
+        }
 
-function hitungStatistik(e){const t=Object.keys(dataHarian).filter(t=>t.startsWith(e)).map(e=>dataHarian[e]);if(t.length===0)return{totalHari:0,rata2:0,tertinggi:0,hariKerja:0};const n=t.reduce((e,t)=>e+t,0),o=t.filter(e=>e>0).length;return{totalHari:t.length,rata2:o>0?Math.round(n/o):0,tertinggi:Math.max(...t),hariKerja:o}}
-function tampilLogHarian(){autoIsiNol();const e=document.getElementById('logHarian'),t=getBulanTahun();let n='<h5>LOG INPUT BULAN INI</h5>';const o=Object.keys(dataHarian).filter(e=>e.startsWith(t)).sort().reverse();if(o.length>0){o.forEach(o=>{const r=dataHarian[o],a=new Date(o).toLocaleDateString('id-ID',{day:'2-digit',month:'short',weekday:'short'}),i=r===0?'kosong':'';n+=`<div class="log-item ${i}"><div class="log-info"><div class="log-tgl">${a}</div><div class="log-resi">${r} resi = Rp ${(r*tarif).toLocaleString('id-ID')}</div></div><div class="log-btn"><button class="btn-edit" onclick="editTanggal('${o}')">Edit</button>${r>0?`<button class="btn-hapus-log" onclick="hapusTanggal('${o}')">X</button>`:''}</div></div>`})}else n+='<div style="text-align:center;color:#999;padding:20px;">Belum ada input bulan ini</div>';e.innerHTML=n}
-function updateGrafik(){const e=[],t=[],n=new Date,o=n.getDate(),r=n.getFullYear(),a=n.getMonth()+1;for(let n=1;n<=o;n++){const o=`${r}-${String(a).padStart(2,'0')}-${String(n).padStart(2,'0')}`;e.push(n);t.push(dataHarian[o]||0)}const i=document.getElementById('chartResi');if(!i)return;const l=i.getContext('2d'),s=darkMode?'#e0e0':'#666',c=darkMode?'#404040':'#e0e0e0';if(chartInstance)chartInstance.destroy();chartInstance=new Chart(l,{type:'line',data:{labels:e,datasets:[{label:'Resi Harian',data:t,borderColor:warnaCustom,backgroundColor:warnaCustom+'1A',tension:.3,fill:true,pointBackgroundColor:warnaCustom,pointRadius:4,pointHoverRadius:6,borderWidth:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:e=>`${e.parsed.y} resi = Rp ${(e.parsed.y*tarif).toLocaleString('id-ID')}`}}},scales:{y:{beginAtZero:true,ticks:{font:{size:10,weight:'600'},color:s},grid:{color:c}},x:{ticks:{font:{size:9,weight:'600'},color:s},grid:{color:c}}}}})}
-function loadRiwayat(){const e=document.getElementById('listRiwayat');e.innerHTML='';const t=Object.keys(dataBulanan).sort().reverse();if(t.length>0){t.forEach(t=>{const n=dataBulanan[t],o=new Date(t+'-01').toLocaleDateString('id-ID',{month:'long',year:'numeric'}),r=hitungStatistik(t),a=n.totalResi||(n.resi1+n.resi2);e.innerHTML+=`<div class="riwayat-item"><div class="riwayat-header"><div class="riwayat-bulan">${o}</div><div class="riwayat-total">Rp ${n.totalGaji.toLocaleString('id-ID')}</div></div><div class="riwayat-stats"><div class="stat-box"><div class="stat-label">Total Resi</div><div class="stat-angka">${a.toLocaleString('id-ID')}</div></div><div class="stat-box"><div class="stat-label">Hari Kerja</div><div class="stat-angka">${r.hariKerja} hari</div></div><div class="stat-box"><div class="stat-label">Rata-rata</div><div class="stat-angka">${r.rata2} resi/hari</div></div><div class="stat-box"><div class="stat-label">Tertinggi</div><div class="stat-angka">${r.tertinggi} resi</div></div></div><div class="riwayat-footer"><button class="hapus-riwayat" onclick="hapusRiwayat('${t}')">Hapus Bulan</button></div></div>`})}else e.innerHTML='<div style="text-align:center;color:#999;padding:20px;">Belum ada riwayat</div>'}
-function hapusRiwayat(e){if(confirm(`Hapus semua data bulan ${e}?`)){Object.keys(dataHarian).forEach(t=>{if(t.startsWith(e))delete dataHarian[t]});delete dataBulanan[e];localStorage.setItem('gajiSicepatHarian',JSON.stringify(dataHarian));localStorage.setItem('gajiSicepat',JSON.stringify(dataBulanan));hitungTotal();tampilLogHarian();loadRiwayat();updateGrafik();cekBadgeReminder()}}
-function toggleDarkMode(){darkMode=!darkMode;document.body.classList.toggle('dark');document.getElementById('btnDark').textContent=darkMode?'☀️':'🌙';localStorage.setItem('darkMode',darkMode);if(chartInstance)updateGrafik()}
+        function tampilRekor() {
+            const e = document.getElementById('rekorBanner');
+            if (dataRekor.resi > 0) {
+                const t = new Date(dataRekor.tanggal).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+                e.innerHTML = `🏆 Rekor: ${dataRekor.resi} resi - ${t}`;
+                e.classList.remove('kosong');
+            } else e.classList.add('kosong');
+        }
 
-function ubahWarnaUtama(warna){warnaCustom=warna;localStorage.setItem('warnaCustom',warna);terapkanWarnaCustom()}
-function terapkanWarnaCustom(){document.documentElement.style.setProperty('--primary',warnaCustom);document.querySelector('meta[name="theme-color"]').setAttribute('content',warnaCustom);if(chartInstance)updateGrafik()}
-function resetWarna(){warnaCustom='#ED1C24';localStorage.setItem('warnaCustom',warnaCustom);document.getElementById('warnaUtama').value=warnaCustom;terapkanWarnaCustom()}
+        function cekBadgeReminder() {
+            const e = getTanggalHariIni(), t = document.getElementById('badgeReminder');
+            t.style.display = (dataHarian[e] === 0 || dataHarian[e] === undefined) ? 'block' : 'none';
+        }
 
-function uploadBackground(e){
-const file=e.target.files[0];if(!file)return;
-if(file.size>819200){alert('Gambar kegedean bos! Maks 800KB. Kompres dulu di TinyPNG');e.target.value='';return}
-const reader=new FileReader();
-reader.onload=function(event){bgCustom=event.target.result;localStorage.setItem('bgCustom',bgCustom);terapkanBackground();alert('Background berhasil diganti bos! Atur transparansi biar teks tetep kebaca 🎨')};
-reader.readAsDataURL(file);e.target.value=''
-}
+        function simpanResi() {
+            const e = document.getElementById('inputTanggal').value, t = parseInt(document.getElementById('inputResi').value) || 0;
+            if (!e.match(/^\d{4}-\d{2}-\d{2}$/)) return alert('Format tanggal salah bos! Pake 2026-10-05');
+            if (t < 0) return alert('Jumlah resi nggak boleh minus bos!');
+            dataHarian[e] = t;
+            localStorage.setItem('gajiSicepatHarian', JSON.stringify(dataHarian));
+            cekRekor(t, e);
+            document.getElementById('inputResi').value = '';
+            hitungTotal();
+            tampilLogHarian();
+            cekBadgeReminder();
+            updateGrafik();
+            cekAkhirBulanDanUpdateTahunan(); // Cek otomatisasi setiap kali simpan data
+            
+            if (navigator.vibrate) navigator.vibrate(50);
+            const quotes = ['🔥 Gas terus bos!', '💪 Lu paling gacor!', '🚀 Resi meledak!', '⚡ Petir! Mantap!', '💯 Kerja keras = Cuan keras!', '🏆 Juara sehari!', '💎 Sultan resi!', '🎯 On target!', '✨ Nggak ada obat!', '🌟 Bintang lapangan!', '👑 King of kurir!', '🦾 Tangan besi!', '😎 Cool abis bos!', '🔱 Dewa resi!', '💥 Boom! Keren!', '🚨 Gacor parah!', '🤑 Cuan ngalir!', '🎊 Pesta resi!', '💸 Dompet tebel!', '⚔️ Gaspol terus!'];
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById('popupEmot').textContent = randomQuote.split(' ')[0];
+            document.getElementById('popupText').textContent = randomQuote.substring(randomQuote.indexOf(' ') + 1);
+            document.getElementById('popupSemangat').classList.add('show');
+            setTimeout(() => { document.getElementById('popupSemangat').classList.remove('show') }, 800);
+        }
 
-function terapkanBackground(){
-const container=document.querySelector('.container');
-if(bgCustom){container.classList.add('custom-bg');container.style.setProperty('--bg-image',`url(${bgCustom})`);document.getElementById('bgTransparanRow').style.display='flex'}
-else{container.classList.remove('custom-bg');document.getElementById('bgTransparanRow').style.display='none'}
-}
+        function editTanggal(e) {
+            const t = dataHarian[e] || 0, n = prompt(`Edit resi tanggal ${e}:`, t);
+            if (n !== null && !isNaN(n) && parseInt(n) >= 0) {
+                dataHarian[e] = parseInt(n);
+                localStorage.setItem('gajiSicepatHarian', JSON.stringify(dataHarian));
+                cekRekor(parseInt(n), e);
+                hitungTotal();
+                tampilLogHarian();
+                cekBadgeReminder();
+                updateGrafik();
+                cekAkhirBulanDanUpdateTahunan();
+            }
+        }
 
-function hapusBackground(){
-if(!bgCustom)return alert('Belum ada background custom bos');
-if(confirm('Hapus background custom?')){bgCustom='';localStorage.removeItem('bgCustom');const container=document.querySelector('.container');container.classList.remove('custom-bg');container.style.removeProperty('--bg-image');document.getElementById('bgTransparanRow').style.display='none'}
-}
+        function hapusTanggal(e) {
+            if (confirm(`Hapus data resi tanggal ${e}?`)) {
+                dataHarian[e] = 0;
+                localStorage.setItem('gajiSicepatHarian', JSON.stringify(dataHarian));
+                hitungTotal();
+                tampilLogHarian();
+                cekBadgeReminder();
+                updateGrafik();
+                cekAkhirBulanDanUpdateTahunan();
+            }
+        }
 
-function ubahTransparansiBg(val){bgOpacity=val;localStorage.setItem('bgOpacity',val);document.getElementById('bgOpacityText').textContent=val+'%';document.documentElement.style.setProperty('--bg-opacity',val/100)}
+        function hitungTotal() {
+            let resi1 = 0, resi2 = 0;
+            const bulanIni = getBulanTahun();
+            Object.keys(dataHarian).forEach(tgl => {
+                if (tgl.startsWith(bulanIni)) {
+                    const tglNum = new Date(tgl).getDate();
+                    const jumlah = parseInt(dataHarian[tgl]) || 0;
+                    if (tglNum >= 1 && tglNum <= 15) resi1 += jumlah;
+                    else if (tglNum >= 16) resi2 += jumlah;
+                }
+            });
+            const gajiPeriode1 = resi1 * tarif;
+            const gajiPeriode2 = resi2 * tarif;
+            const dibayarPeriode1 = gajiPeriode1 * 0.5;
+            const sisaPeriode1 = gajiPeriode1 * 0.5;
+            const dibayarTanggal5 = gajiPeriode2 + sisaPeriode1;
+            const totalResi = resi1 + resi2;
+            const totalGajiBulan = gajiPeriode1 + gajiPeriode2;
 
-function toggleReminder(){reminderAktif=document.getElementById('checkReminder').checked;localStorage.setItem('reminderAktif',reminderAktif);if(reminderAktif){mintaIzinNotifikasi();alert('Reminder aktif! Notif jam 21:00 kalo belum input')}else alert('Reminder dimatiin bos')}
-function mintaIzinNotifikasi(){if('Notification'in window&&Notification.permission==='default')Notification.requestPermission()}
-function cekReminder(){if(!reminderAktif)return;const e=new Date,t=e.getHours(),n=e.getMinutes(),o=getTanggalHariIni();if(t===21&&n<=5&&(dataHarian[o]===0||dataHarian[o]===undefined)){if('Notification'in window&&Notification.permission==='granted')new Notification('SiCepat Gaji Reminder',{body:'Bos, hari ini belum input resi! Buruan input sebelum lupa 📦'})}}
-setInterval(cekReminder,6e4);
+            document.getElementById('resi1').textContent = resi1.toLocaleString('id-ID');
+            document.getElementById('resi2').textContent = resi2.toLocaleString('id-ID');
+            document.getElementById('gaji1').textContent = dibayarPeriode1.toLocaleString('id-ID');
+            document.getElementById('gaji2').textContent = dibayarTanggal5.toLocaleString('id-ID');
+            document.getElementById('totalResi').textContent = totalResi.toLocaleString('id-ID');
+            document.getElementById('totalGaji').textContent = totalGajiBulan.toLocaleString('id-ID');
 
-function cekBackupReminder(){
-const e=new Date,t=e.getDate(),bulanIni=getBulanTahun(),keyBackup=`autoBackup_${bulanIni}_${t}`;
-if((t===15||t===30)&&!localStorage.getItem(keyBackup)){
-const data={dataHarian,dataBulanan,dataRekor,dataTahunan,dataBulananManual,tanggalBackup:new Date().toISOString(),versi:'4.0'};
-const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
-a.href=url;a.download=`AUTO-backup-gaji-${getTanggalHariIni()}.json`;a.style.display='none';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
-localStorage.setItem(keyBackup,'true');setTimeout(()=>{alert(`✅ BACKUP OTOMATIS BERHASIL!\n\nFile: AUTO-backup-gaji-${getTanggalHariIni()}.json\nUdah masuk folder Download HP lu bos.`)},500);
-}}
+            if (totalResi > 0) {
+                dataBulanan[bulanIni] = { resi1, resi2, dibayarPeriode1, dibayarTanggal5, sisaPeriode1, totalGaji: totalGajiBulan, totalResi }
+            } else delete dataBulanan[bulanIni];
+            localStorage.setItem('gajiSicepat', JSON.stringify(dataBulanan));
+            loadRiwayat();
+        }
 
-function exportBackup(){const e={dataHarian,dataBulanan,dataRekor,dataTahunan,dataBulananManual,tanggalBackup:new Date().toISOString(),versi:'4.0'},t=new Blob([JSON.stringify(e,null,2)],{type:'application/json'}),n=URL.createObjectURL(t),o=document.createElement('a');o.href=n;o.download=`backup-gaji-sicepat-${getTanggalHariIni()}.json`;o.click();URL.revokeObjectURL(n);alert('Backup berhasil didownload bos! Simpen di Google Drive biar aman ☁️')}
-function importBackup(e){const t=e.target.files[0];if(!t)return;const n=new FileReader;n.onload=function(e){try{const t=JSON.parse(e.target.result);if(confirm('Restore data dari backup? Data sekarang bakal ketimpa bos!')){dataHarian=t.dataHarian||{};dataBulanan=t.dataBulanan||{};dataRekor=t.dataRekor||{resi:0,tanggal:''};dataTahunan=t.dataTahunan||[];dataBulananManual=t.dataBulananManual||{};localStorage.setItem('gajiSicepatHarian',JSON.stringify(dataHarian));localStorage.setItem('gajiSicepat',JSON.stringify(dataBulanan));localStorage.setItem('gajiSicepatRekor',JSON.stringify(dataRekor));localStorage.setItem('dataTahunan',JSON.stringify(dataTahunan));localStorage.setItem('dataBulananManual',JSON.stringify(dataBulananManual));alert('Restore berhasil bos! Halaman bakal reload 🔄');location.reload()}}catch(e){alert('File backup rusak bos! Pastiin file.json yang bener')}};n.readAsText(t);e.target.value=''}
+        function hitungStatistik(e) {
+            const t = Object.keys(dataHarian).filter(t => t.startsWith(e)).map(e => dataHarian[e]);
+            if (t.length === 0) return { totalHari: 0, rata2: 0, tertinggi: 0, hariKerja: 0 };
+            const n = t.reduce((e, t) => e + t, 0), o = t.filter(e => e > 0).length;
+            return { totalHari: t.length, rata2: o > 0 ? Math.round(n / o) : 0, tertinggi: Math.max(...t), hariKerja: o }
+        }
 
-function cekSimpanTahunan(){
-const bulanSekarang=getBulanTahun();
-if(bulanSekarang!==bulanLalu&&dataBulanan[bulanLalu]){
-const d=new Date(bulanLalu+'-01'),namaBulan=d.toLocaleDateString('id-ID',{month:'long'}),dataLama=dataBulanan[bulanLalu];
-const simpanData={bulan:namaBulan,tahun:d.getFullYear(),gaji:dataLama.totalGaji,resi:dataLama.totalResi,key:bulanLalu};
-dataTahunan=dataTahunan.filter(x=>x.key!==bulanLalu);dataTahunan.push(simpanData);
-if(dataTahunan.length>12)dataTahunan=dataTahunan.slice(-12);
-localStorage.setItem('dataTahunan',JSON.stringify(dataTahunan));bulanLalu=bulanSekarang;
-}}
+        function tampilLogHarian() {
+            autoIsiNol();
+            const e = document.getElementById('logHarian'), t = getBulanTahun();
+            let n = '<h5>LOG INPUT BULAN INI</h5>';
+            const o = Object.keys(dataHarian).filter(e => e.startsWith(t)).sort().reverse();
+            
+            if (o.length > 0) {
+                // Ambil data sesuai dengan limit saat ini (awal: 10)
+                const dataTampil = o.slice(0, logLimit);
+                
+                dataTampil.forEach(o => {
+                    const r = dataHarian[o], a = new Date(o).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', weekday: 'short' }), i = r === 0 ? 'kosong' : '';
+                    n += `<div class="log-item ${i}"><div class="log-info"><div class="log-tgl">${a}</div><div class="log-resi">${r} resi = Rp ${(r * tarif).toLocaleString('id-ID')}</div></div><div class="log-btn"><button class="btn-edit" onclick="editTanggal('${o}')">Edit</button>${r > 0 ? `<button class="btn-hapus-log" onclick="hapusTanggal('${o}')">X</button>` : ''}</div></div>`
+                });
+                
+                // Jika data total lebih banyak dari limit yang terlihat, munculkan tombol load more
+                if (o.length > logLimit) {
+                    n += `<button class="btn-load-more" onclick="loadMoreLog()">Tampilkan Lebih Banyak</button>`;
+                }
+            } else {
+                n += '<div style="text-align:center;color:#999;padding:20px;">Belum ada input bulan ini</div>';
+            }
+            e.innerHTML = n;
+        }
 
-function loadPilihBulan(){
-const tahun=new Date().getFullYear();
-const namaBulan=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-const select=document.getElementById('pilihBulan');
-select.innerHTML='<option value="">Pilih Bulan</option>';
-namaBulan.forEach((bulan,idx)=>{
-const key=`${tahun}-${String(idx+1).padStart(2,'0')}`;
-select.innerHTML+=`<option value="${key}">${bulan} ${tahun}</option>`;
-});
-}
+        function loadMoreLog() {
+            logLimit += 10; // Tambah 10 baris lagi
+            tampilLogHarian();
+        }
 
-function simpanResiBulan(){
-const bulan=document.getElementById('pilihBulan').value;
-const resi=parseInt(document.getElementById('inputResiBulan').value)||0;
-if(!bulan)return alert('Pilih bulan dulu bos!');
-if(resi<0)return alert('Resi gak boleh minus bos!');
+        function updateGrafik() {
+            const e = [], t = [], n = new Date, o = n.getDate(), r = n.getFullYear(), a = n.getMonth() + 1;
+            for (let n = 1; n <= o; n++) {
+                const o = `${r}-${String(a).padStart(2, '0')}-${String(n).padStart(2, '0')}`;
+                e.push(n);
+                t.push(dataHarian[o] || 0)
+            }
+            const i = document.getElementById('chartResi');
+            if (!i) return;
+            const l = i.getContext('2d'), s = darkMode ? '#e0e0e0' : '#666', c = darkMode ? '#404040' : '#e0e0e0';
+            if (chartInstance) chartInstance.destroy();
+            chartInstance = new Chart(l, {
+                type: 'line',
+                data: {
+                    labels: e,
+                    datasets: [{ label: 'Resi Harian', data: t, borderColor: warnaCustom, backgroundColor: warnaCustom + '1A', tension: .3, fill: true, pointBackgroundColor: warnaCustom, pointRadius: 4, pointHoverRadius: 6, borderWidth: 3 }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: e => `${e.parsed.y} resi = Rp ${(e.parsed.y * tarif).toLocaleString('id-ID')}` } } },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { font: { size: 10, weight: '600' }, color: s }, grid: { color: c } },
+                        x: { ticks: { font: { size: 9, weight: '600' }, color: s }, grid: { color: c } }
+                    }
+                }
+            })
+        }
 
-dataBulananManual[bulan]=resi;
-localStorage.setItem('dataBulananManual',JSON.stringify(dataBulananManual));
+        function loadRiwayat() {
+            const e = document.getElementById('listRiwayat');
+            e.innerHTML = '';
+            const t = Object.keys(dataBulanan).sort().reverse();
+            if (t.length > 0) {
+                t.forEach(t => {
+                    const n = dataBulanan[t], o = new Date(t + '-01').toLocaleDateString('id-ID', { month: 'long', year: 'numeric' }), r = hitungStatistik(t), a = n.totalResi || (n.resi1 + n.resi2);
+                    e.innerHTML += `<div class="riwayat-item"><div class="riwayat-header"><div class="riwayat-bulan">${o}</div><div class="riwayat-total">Rp ${n.totalGaji.toLocaleString('id-ID')}</div></div><div class="riwayat-stats"><div class="stat-box"><div class="stat-label">Total Resi</div><div class="stat-angka">${a.toLocaleString('id-ID')}</div></div><div class="stat-box"><div class="stat-label">Hari Kerja</div><div class="stat-angka">${r.hariKerja} hari</div></div><div class="stat-box"><div class="stat-label">Rata-rata</div><div class="stat-angka">${r.rata2} resi/hari</div></div><div class="stat-box"><div class="stat-label">Tertinggi</div><div class="stat-angka">${r.tertinggi} resi</div></div></div><div class="riwayat-footer"><button class="hapus-riwayat" onclick="hapusRiwayat('${t}')">Hapus Bulan</button></div></div>`
+                })
+            } else e.innerHTML = '<div style="text-align:center;color:#999;padding:20px;">Belum ada riwayat</div>'
+        }
 
-const tahun=new Date().getFullYear();
-const namaBulan=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-dataTahunan=[];
-Object.keys(dataBulananManual).forEach(key=>{
-const bulanIdx=parseInt(key.split('-')[1])-1;
-const resi=dataBulananManual[key];
-if(resi>0){
-dataTahunan.push({
-bulan:namaBulan[bulanIdx],
-tahun:tahun,
-gaji:resi*tarif,
-resi:resi,
-key:key
-});
-}
-});
-localStorage.setItem('dataTahunan',JSON.stringify(dataTahunan));
+        function hapusRiwayat(e) {
+            if (confirm(`Hapus semua data bulan ${e}?`)) {
+                Object.keys(dataHarian).forEach(t => { if (t.startsWith(e)) delete dataHarian[t] });
+                delete dataBulanan[e];
+                localStorage.setItem('gajiSicepatHarian', JSON.stringify(dataHarian));
+                localStorage.setItem('gajiSicepat', JSON.stringify(dataBulanan));
+                hitungTotal();
+                tampilLogHarian();
+                loadRiwayat();
+                updateGrafik();
+                cekBadgeReminder()
+            }
+        }
 
-document.getElementById('inputResiBulan').value='';
-document.getElementById('pilihBulan').value='';
-tampilLogBulanan();
-navigator.vibrate&&navigator.vibrate(50);
+        function toggleDarkMode() {
+            darkMode = !darkMode;
+            document.body.classList.toggle('dark');
+            document.getElementById('btnDark').textContent = darkMode ? '☀️' : '🌙';
+            localStorage.setItem('darkMode', darkMode);
+            if (chartInstance) updateGrafik()
+        }
 
-const quotes=['🔥 Mantap bos!','💪 Gacor!','🚀 Bulan ini cuan!','⚡ Petir!','💯 Keren!'];
-const randomQuote=quotes[Math.floor(Math.random()*quotes.length)];
-document.getElementById('popupEmot').textContent=randomQuote.split(' ')[0];
-document.getElementById('popupText').textContent=randomQuote.substring(randomQuote.indexOf(' ')+1);
-document.getElementById('popupSemangat').classList.add('show');
-setTimeout(()=>{document.getElementById('popupSemangat').classList.remove('show')},800);
-}
+        function ubahWarnaUtama(warna) {
+            warnaCustom = warna;
+            localStorage.setItem('warnaCustom', warna);
+            terapkanWarnaCustom()
+        }
 
-function tampilLogBulanan(){
-const tahun=new Date().getFullYear();
-const namaBulan=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-const e=document.getElementById('logBulanan');
-let html='<h5>LOG BULANAN '+tahun+'</h5>';
-let totalResi=0;
+        function terapkanWarnaCustom() {
+            document.documentElement.style.setProperty('--primary', warnaCustom);
+            document.querySelector('meta[name="theme-color"]').setAttribute('content', warnaCustom);
+            if (chartInstance) updateGrafik()
+        }
 
-const sortedKeys=Object.keys(dataBulananManual).filter(k=>k.startsWith(tahun)).sort().reverse();
+        function resetWarna() {
+            warnaCustom = '#ED1C24';
+            localStorage.setItem('warnaCustom', warnaCustom);
+            document.getElementById('warnaUtama').value = warnaCustom;
+            terapkanWarnaCustom()
+        }
 
-if(sortedKeys.length>0){
-sortedKeys.forEach(key=>{
-const resi=dataBulananManual[key];
-const bulanIdx=parseInt(key.split('-')[1])-1;
-const namaBln=namaBulan[bulanIdx];
-totalResi+=resi;
-html+=`<div class="log-item">
-<div class="log-info">
-<div class="log-tgl">${namaBln}</div>
-<div class="log-resi">${resi} resi = Rp ${(resi*tarif).toLocaleString('id-ID')}</div>
-</div>
-<div class="log-btn">
-<button class="btn-edit" onclick="editBulan('${key}')">Edit</button>
-<button class="btn-hapus-log" onclick="hapusBulan('${key}')">X</button>
-</div>
-</div>`;
-});
-}else{
-html+='<div style="text-align:center;color:#999;padding:20px;">Belum ada data bulan ini</div>';
-}
+        function uploadBackground(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            if (file.size > 819200) {
+                alert('Gambar kegedean bos! Maks 800KB. Kompres dulu di TinyPNG');
+                e.target.value = '';
+                return
+            }
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                bgCustom = event.target.result;
+                localStorage.setItem('bgCustom', bgCustom);
+                terapkanBackground();
+                alert('Background berhasil diganti bos! Atur transparansi biar teks tetep kebaca 🎨')
+            };
+            reader.readAsDataURL(file);
+            e.target.value = ''
+        }
 
-e.innerHTML=html;
-document.getElementById('totalResiBulanan').textContent=totalResi.toLocaleString('id-ID');
-document.getElementById('totalGajiBulanan').textContent=(totalResi*tarif).toLocaleString('id-ID');
-}
+        function terapkanBackground() {
+            const container = document.querySelector('.container');
+            if (bgCustom) {
+                container.classList.add('custom-bg');
+                container.style.setProperty('--bg-image', `url(${bgCustom})`);
+                document.getElementById('bgTransparanRow').style.display = 'flex'
+            } else {
+                container.classList.remove('custom-bg');
+                document.getElementById('bgTransparanRow').style.display = 'none'
+            }
+        }
 
-function editBulan(key){
-const resi=dataBulananManual[key]||0;
-const bulanIdx=parseInt(key.split('-')[1])-1;
-const namaBulan=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-const n=prompt(`Edit resi bulan ${namaBulan[bulanIdx]}:`,resi);
-if(n!==null&&!isNaN(n)&&parseInt(n)>=0){
-dataBulananManual[key]=parseInt(n);
-localStorage.setItem('dataBulananManual',JSON.stringify(dataBulananManual));
-const tahun=new Date().getFullYear();
-dataTahunan=[];
-Object.keys(dataBulananManual).forEach(key=>{
-const bulanIdx=parseInt(key.split('-')[1])-1;
-const resi=dataBulananManual[key];
-if(resi>0){
-dataTahunan.push({
-bulan:namaBulan[bulanIdx],
-tahun:tahun,
-gaji:resi*tarif,
-resi:resi,
-key:key
-});
-}
-});
-localStorage.setItem('dataTahunan',JSON.stringify(dataTahunan));
-tampilLogBulanan();
-}
-}
+        function hapusBackground() {
+            if (!bgCustom) return alert('Belum ada background custom bos');
+            if (confirm('Hapus background custom?')) {
+                bgCustom = '';
+                localStorage.removeItem('bgCustom');
+                const container = document.querySelector('.container');
+                container.classList.remove('custom-bg');
+                container.style.removeProperty('--bg-image');
+                document.getElementById('bgTransparanRow').style.display = 'none'
+            }
+        }
 
-function hapusBulan(key){
-if(confirm(`Hapus data bulan ini?`)){
-delete dataBulananManual[key];
-localStorage.setItem('dataBulananManual',JSON.stringify(dataBulananManual));
-dataTahunan=dataTahunan.filter(d=>d.key!==key);
-localStorage.setItem('dataTahunan',JSON.stringify(dataTahunan));
-tampilLogBulanan();
-}
-}
+        function ubahTransparansiBg(val) {
+            bgOpacity = val;
+            localStorage.setItem('bgOpacity', val);
+            document.getElementById('bgOpacityText').textContent = val + '%';
+            document.documentElement.style.setProperty('--bg-opacity', val / 100)
+        }
 
-function hapusDataTahunan(){if(!confirm('Hapus SEMUA data tahunan? Data gak bisa dibalikin bos!'))return;dataTahunan=[];dataBulananManual={};localStorage.setItem('dataTahunan',JSON.stringify(dataTahunan));localStorage.setItem('dataBulananManual',JSON.stringify(dataBulananManual));tampilLogBulanan()}
+        function toggleReminder() {
+            reminderAktif = document.getElementById('checkReminder').checked;
+            localStorage.setItem('reminderAktif', reminderAktif);
+            if (reminderAktif) { mintaIzinNotifikasi(); alert('Reminder aktif! Notif jam 21:00 kalo belum input') } else alert('Reminder dimatiin bos')
+        }
 
-</script>
+        function mintaIzinNotifikasi() { if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission() }
+
+        function cekReminder() {
+            if (!reminderAktif) return;
+            const e = new Date, t = e.getHours(), n = e.getMinutes(), o = getTanggalHariIni();
+            if (t === 21 && n <= 5 && (dataHarian[o] === 0 || dataHarian[o] === undefined)) {
+                if ('Notification' in window && Notification.permission === 'granted') new Notification('SiCepat Gaji Reminder', { body: 'Bos, hari ini belum input resi! Buruan input sebelum lupa 📦' })
+            }
+        }
+        setInterval(cekReminder, 6e4);
+
+        function cekBackupReminder() {
+            const e = new Date, t = e.getDate(), bulanIni = getBulanTahun(), keyBackup = `autoBackup_${bulanIni}_${t}`;
+            if ((t === 15 || t === 30) && !localStorage.getItem(keyBackup)) {
+                const data = { dataHarian, dataBulanan, dataRekor, dataTahunan, dataBulananManual, tanggalBackup: new Date().toISOString(), versi: '4.0' };
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }), url = URL.createObjectURL(blob), a = document.createElement('a');
+                a.href = url;
+                a.download = `AUTO-backup-gaji-${getTanggalHariIni()}.json`;
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                localStorage.setItem(keyBackup, 'true');
+                setTimeout(() => { alert(`✅ BACKUP OTOMATIS BERHASIL!\n\nFile: AUTO-backup-gaji-${getTanggalHariIni()}.json\nUdah masuk folder Download HP lu bos.`) }, 500);
+            }
+        }
+
+        function exportBackup() {
+            const e = { dataHarian, dataBulanan, dataRekor, dataTahunan, dataBulananManual, tanggalBackup: new Date().toISOString(), versi: '4.0' }, t = new Blob([JSON.stringify(e, null, 2)], { type: 'application/json' }), n = URL.createObjectURL(t), o = document.createElement('a');
+            o.href = n;
+            o.download = `backup-gaji-sicepat-${getTanggalHariIni()}.json`;
+            o.click();
+            URL.revokeObjectURL(n);
+            alert('Backup berhasil didownload bos! Simpen di Google Drive biar aman ☁️')
+        }
+
+        function showBackupFallback() {
+            const fallbackData = { dataHarian, dataBulanan, dataRekor, dataTahunan, dataBulananManual };
+            const textToCopy = JSON.stringify(fallbackData, null, 2);
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                alert('Teks backup berhasil disalin ke papan klip! 📋');
+            }).catch(() => {
+                alert('Gagal menyalin teks secara otomatis. Silakan gunakan tombol download.');
+            });
+        }
+
+        function importBackup(e) {
+            const t = e.target.files[0];
+            if (!t) return;
+            const n = new FileReader;
+            n.onload = function(e) {
+                try {
+                    const t = JSON.parse(e.target.result);
+                    if (confirm('Restore data dari backup? Data sekarang bakal ketimpa bos!')) {
+                        dataHarian = t.dataHarian || {};
+                        dataBulanan = t.dataBulanan || {};
+                        dataRekor = t.dataRekor || { resi: 0, tanggal: '' };
+                        dataTahunan = t.dataTahunan || [];
+                        dataBulananManual = t.dataBulananManual || {};
+                        localStorage.setItem('gajiSicepatHarian', JSON.stringify(dataHarian));
+                        localStorage.setItem('gajiSicepat', JSON.stringify(dataBulanan));
+                        localStorage.setItem('gajiSicepatRekor', JSON.stringify(dataRekor));
+                        localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
+                        localStorage.setItem('dataBulananManual', JSON.stringify(dataBulananManual));
+                        alert('Restore berhasil bos! Halaman bakal reload 🔄');
+                        location.reload()
+                    }
+                } catch (e) { alert('File backup rusak bos! Pastiin file.json yang bener') }
+            };
+            n.readAsText(t);
+            e.target.value = ''
+        }
+
+        function cekSimpanTahunan() {
+            const bulanSekarang = getBulanTahun();
+            if (bulanSekarang !== bulanLalu && dataBulanan[bulanLalu]) {
+                const d = new Date(bulanLalu + '-01'), namaBulan = d.toLocaleDateString('id-ID', { month: 'long' }), dataLama = dataBulanan[bulanLalu];
+                const simpanData = { bulan: namaBulan, tahun: d.getFullYear(), gaji: dataLama.totalGaji, resi: dataLama.totalResi, key: bulanLalu };
+                dataTahunan = dataTahunan.filter(x => x.key !== bulanLalu);
+                dataTahunan.push(simpanData);
+                if (dataTahunan.length > 12) dataTahunan = dataTahunan.slice(-12);
+                localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
+                bulanLalu = bulanSekarang;
+            }
+        }
+
+        // --- OTOMATISASI REKAP BULANAN SAAT AKHIR BULAN ---
+        function cekAkhirBulanDanUpdateTahunan() {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+            
+            // JIKA BESOK SUDAH TANGGAL 1 (BERARTI HARI INI AKHIR BULAN)
+            if (tomorrow.getDate() === 1) {
+                const bulanIni = today.getMonth();
+                const tahunIni = today.getFullYear();
+                const keyBulanan = `${tahunIni}-${String(bulanIni + 1).padStart(2, '0')}`;
+                
+                let totalResiBulan = 0;
+                // Hitung total resi dari data harian bulan ini
+                for (let tgl = 1; tgl <= today.getDate(); tgl++) {
+                    const keyHarian = `${tahunIni}-${String(bulanIni + 1).padStart(2, '0')}-${String(tgl).padStart(2, '0')}`;
+                    totalResiBulan += dataHarian[keyHarian] || 0;
+                }
+                
+                // Update ke data tahunan (manual list sync)
+                dataBulananManual[keyBulanan] = totalResiBulan;
+                localStorage.setItem('dataBulananManual', JSON.stringify(dataBulananManual));
+                
+                // Susun ulang objek dataTahunan utama agar sinkron
+                const namaBulanList = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                dataTahunan = [];
+                Object.keys(dataBulananManual).forEach(key => {
+                    const bIdx = parseInt(key.split('-')[1]) - 1;
+                    const resi = dataBulananManual[key];
+                    if (resi > 0) {
+                        dataTahunan.push({
+                            bulan: namaBulanList[bIdx],
+                            tahun: tahunIni,
+                            gaji: resi * tarif,
+                            resi: resi,
+                            key: key
+                        });
+                    }
+                });
+                localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
+                
+                // Refresh log bulanan jika user sedang membuka tab tahunan
+                if (document.getElementById('tab-tahunan') && document.getElementById('tab-tahunan').classList.contains('active')) {
+                    tampilLogBulanan();
+                }
+            }
+        }
+
+        function loadPilihBulan() {
+            const tahun = new Date().getFullYear();
+            const namaBulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            const select = document.getElementById('pilihBulan');
+            select.innerHTML = '<option value="">Pilih Bulan</option>';
+            namaBulan.forEach((bulan, idx) => {
+                const key = `${tahun}-${String(idx + 1).padStart(2, '0')}`;
+                select.innerHTML += `<option value="${key}">${bulan} ${tahun}</option>`;
+            });
+        }
+
+        function simpanResiBulan() {
+            const bulan = document.getElementById('pilihBulan').value;
+            const resi = parseInt(document.getElementById('inputResiBulan').value) || 0;
+            if (!bulan) return alert('Pilih bulan dulu bos!');
+            if (resi < 0) return alert('Resi gak boleh minus bos!');
+
+            dataBulananManual[bulan] = resi;
+            localStorage.setItem('dataBulananManual', JSON.stringify(dataBulananManual));
+
+            const tahun = new Date().getFullYear();
+            const namaBulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            dataTahunan = [];
+            Object.keys(dataBulananManual).forEach(key => {
+                const bulanIdx = parseInt(key.split('-')[1]) - 1;
+                const resi = dataBulananManual[key];
+                if (resi > 0) {
+                    dataTahunan.push({ bulan: namaBulan[bulanIdx], tahun: tahun, gaji: resi * tarif, resi: resi, key: key });
+                }
+            });
+            localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
+
+            document.getElementById('inputResiBulan').value = '';
+            document.getElementById('pilihBulan').value = '';
+            tampilLogBulanan();
+            if (navigator.vibrate) navigator.vibrate(50);
+
+            const quotes = ['🔥 Mantap bos!', '💪 Gacor!', '🚀 Bulan ini cuan!', '⚡ Petir!', '💯 Keren!'];
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById('popupEmot').textContent = randomQuote.split(' ')[0];
+            document.getElementById('popupText').textContent = randomQuote.substring(randomQuote.indexOf(' ') + 1);
+            document.getElementById('popupSemangat').classList.add('show');
+            setTimeout(() => { document.getElementById('popupSemangat').classList.remove('show') }, 800);
+        }
+
+        function tampilLogBulanan() {
+            const tahun = new Date().getFullYear();
+            const namaBulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            const e = document.getElementById('logBulanan');
+            let html = '<h5>LOG BULANAN ' + tahun + '</h5>';
+            let totalResi = 0;
+
+            const sortedKeys = Object.keys(dataBulananManual).filter(k => k.startsWith(tahun)).sort().reverse();
+
+            if (sortedKeys.length > 0) {
+                sortedKeys.forEach(key => {
+                    const resi = dataBulananManual[key];
+                    const bulanIdx = parseInt(key.split('-')[1]) - 1;
+                    const namaBln = namaBulan[bulanIdx];
+                    totalResi += resi;
+                    html += `<div class="log-item">
+                    <div class="log-info">
+                    <div class="log-tgl">${namaBln}</div>
+                    <div class="log-resi">${resi} resi = Rp ${(resi * tarif).toLocaleString('id-ID')}</div>
+                    </div>
+                    <div class="log-btn">
+                    <button class="btn-edit" onclick="editBulan('${key}')">Edit</button>
+                    <button class="btn-hapus-log" onclick="hapusBulan('${key}')">X</button>
+                    </div>
+                    </div>`;
+                });
+            } else {
+                html += '<div style="text-align:center;color:#999;padding:20px;">Belum ada data bulan ini</div>';
+            }
+
+            e.innerHTML = html;
+            document.getElementById('totalResiBulanan').textContent = totalResi.toLocaleString('id-ID');
+            document.getElementById('totalGajiBulanan').textContent = (totalResi * tarif).toLocaleString('id-ID');
+        }
+
+        function editBulan(key) {
+            const resi = dataBulananManual[key] || 0;
+            const bulanIdx = parseInt(key.split('-')[1]) - 1;
+            const namaBulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            const n = prompt(`Edit resi bulan ${namaBulan[bulanIdx]}:`, resi);
+            if (n !== null && !isNaN(n) && parseInt(n) >= 0) {
+                dataBulananManual[key] = parseInt(n);
+                localStorage.setItem('dataBulananManual', JSON.stringify(dataBulananManual));
+                const tahun = new Date().getFullYear();
+                dataTahunan = [];
+                Object.keys(dataBulananManual).forEach(key => {
+                    const bulanIdx = parseInt(key.split('-')[1]) - 1;
+                    const resi = dataBulananManual[key];
+                    if (resi > 0) {
+                        dataTahunan.push({ bulan: namaBulan[bulanIdx], tahun: tahun, gaji: resi * tarif, resi: resi, key: key });
+                    }
+                });
+                localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
+                tampilLogBulanan();
+            }
+        }
+
+        function hapusBulan(key) {
+            if (confirm(`Hapus data bulan ini?`)) {
+                delete dataBulananManual[key];
+                localStorage.setItem('dataBulananManual', JSON.stringify(dataBulananManual));
+                dataTahunan = dataTahunan.filter(d => d.key !== key);
+                localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
+                tampilLogBulanan();
+            }
+        }
+
+        function hapusDataTahunan() {
+            if (!confirm('Hapus SEMUA data tahunan? Data gak bisa dibalikin bos!')) return;
+            dataTahunan = [];
+            dataBulananManual = {};
+            localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
+            localStorage.setItem('dataBulananManual', JSON.stringify(dataBulananManual));
+            tampilLogBulanan();
+        }
+    </script>
 </body>
-</html
+</html>
