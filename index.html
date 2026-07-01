@@ -573,12 +573,10 @@
                 return;
             }
             
-            const labels = [], data = [], now = new Date, tgl = now.getDate(), thn = now.getFullYear(), bln = now.getMonth() + 1;
-            for (let i = 1; i <= tgl; i++) {
-                const key = `${thn}-${String(bln).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
-                labels.push(i);
-                data.push(dataHarian[key] || 0);
-            }
+            const bulanIni=getBulanTahun();
+            const tanggal=Object.keys(dataHarian).filter(k=>k.startsWith(bulanIni)).sort();
+            const labels=tanggal.map(t=>t.split('-')[2]);
+            const data=tanggal.map(t=>Number(dataHarian[t])||0);
             
             console.log('[Chart] Render data:', data);
             
