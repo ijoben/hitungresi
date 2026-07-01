@@ -11,7 +11,7 @@
     <link class="apple-touch-icon" href="icon-192.png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
-        :root{--primary:#ED1C24;--bg:white;--text:#333;--text2:#666;--border:#eee;--box:#f8f9fa;--bg-opacity:.6}
+        :root{--primary:#ED1C24;--primary-dark:#c9181f;--bg:white;--text:#333;--text2:#666;--border:#eee;--box:#f8f9fa;--bg-opacity:.6}
         body.dark{--bg:#2a2a2a;--text:#e0e0e0;--text2:#b0b0b0;--border:#404040;--box:#333}
         *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
         body{font-family:Arial,sans-serif;max-width:430px;margin:0 auto;padding:0;background:var(--bg);min-height:100vh;color:var(--text);transition:.2s}
@@ -175,63 +175,159 @@
             margin-bottom: 0;
         }
 
-        /* PREDIKSI GAJI */
-        .prediksi-box {
-            background: linear-gradient(135deg, #1a237e, #0d47a1);
+        /* TARGET & PREDIKSI GABUNGAN */
+        .target-prediksi-box {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             border-radius: 12px;
             padding: 14px;
             margin: 14px 0 4px 0;
             color: #fff;
             position: relative;
             overflow: hidden;
+            transition: background 0.3s ease;
         }
-        .prediksi-box::before {
-            content: '🔮';
+        .target-prediksi-box::before {
+            content: '🎯';
             position: absolute;
             right: 10px;
             top: -5px;
-            font-size: 50px;
-            opacity: 0.2;
+            font-size: 45px;
+            opacity: 0.15;
         }
-        .prediksi-box .label {
+        .target-prediksi-box .label {
             font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            opacity: 0.8;
-            font-weight: 700;
-        }
-        .prediksi-box .nilai {
-            font-size: 28px;
-            font-weight: 900;
-            margin: 4px 0 2px 0;
-        }
-        .prediksi-box .detail {
-            font-size: 11px;
             opacity: 0.85;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .target-prediksi-box .target-input-row {
             display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+        .target-prediksi-box .target-input-row input {
+            flex: 1;
+            padding: 8px 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            outline: none;
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            text-align: center;
+        }
+        .target-prediksi-box .target-input-row input::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+        .target-prediksi-box .target-input-row input:focus {
+            background: rgba(255,255,255,0.3);
+        }
+        .target-prediksi-box .btn-target-set {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.25);
+            color: #fff;
+            font-weight: 800;
+            font-size: 11px;
+            cursor: pointer;
+            transition: .2s;
+            white-space: nowrap;
+        }
+        .target-prediksi-box .btn-target-set:hover {
+            background: rgba(255,255,255,0.4);
+        }
+        .target-prediksi-box .progress-section {
+            margin: 8px 0 4px 0;
+        }
+        .target-prediksi-box .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            font-weight: 700;
+            opacity: 0.9;
+        }
+        .target-prediksi-box .progress-track {
+            width: 100%;
+            height: 10px;
+            background: rgba(255,255,255,0.25);
+            border-radius: 6px;
+            overflow: hidden;
             margin-top: 4px;
         }
-        .prediksi-box .detail span {
-            background: rgba(255,255,255,0.15);
-            padding: 2px 10px;
-            border-radius: 12px;
+        .target-prediksi-box .progress-bar {
+            height: 100%;
+            border-radius: 6px;
+            background: linear-gradient(90deg, #FFD700, #FF6F00);
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 0%;
         }
-        .prediksi-box .trend-up { color: #69f0ae; }
-        .prediksi-box .trend-down { color: #ff8a80; }
-        .prediksi-box .trend-stable { color: #ffd54f; }
-        .prediksi-kosong {
+        .target-prediksi-box .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 4px;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255,255,255,0.15);
+        }
+        .target-prediksi-box .info-item {
             text-align: center;
+            background: rgba(255,255,255,0.08);
+            padding: 4px 6px;
+            border-radius: 6px;
+        }
+        .target-prediksi-box .info-item .info-label {
+            font-size: 7px;
+            text-transform: uppercase;
+            opacity: 0.7;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .target-prediksi-box .info-item .info-value {
+            font-size: 13px;
+            font-weight: 900;
+            margin-top: 1px;
+        }
+        .target-prediksi-box .info-item .info-value.success { color: #69f0ae; }
+        .target-prediksi-box .info-item .info-value.warning { color: #ffd54f; }
+        .target-prediksi-box .info-item .info-value.danger { color: #ff8a80; }
+
+        .target-prediksi-kosong {
+            background: var(--box);
+            border-radius: 12px;
             padding: 16px;
+            margin: 14px 0 4px 0;
+            text-align: center;
             color: var(--text2);
             font-size: 12px;
             font-weight: 600;
+            border: 1px solid var(--border);
         }
-        .prediksi-kosong .icon-big {
+        .target-prediksi-kosong .icon-big {
             font-size: 32px;
             display: block;
             margin-bottom: 6px;
+        }
+        .target-prediksi-box .trend-up { color: #69f0ae; }
+        .target-prediksi-box .trend-down { color: #ff8a80; }
+        .target-prediksi-box .trend-stable { color: #ffd54f; }
+
+        .btn-hapus-target {
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            border: none;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 9px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: .2s;
+        }
+        .btn-hapus-target:hover {
+            background: rgba(255,255,255,0.3);
         }
     </style>
 </head>
@@ -267,21 +363,59 @@
                 </div>
             </div>
 
-            <!-- PREDIKSI GAJI BULAN DEPAN -->
-            <div id="prediksiContainer">
-                <div class="prediksi-box" id="prediksiBox">
-                    <div class="label">🔮 PREDIKSI GAJI BULAN DEPAN</div>
-                    <div class="nilai" id="prediksiNilai">Rp 0</div>
-                    <div class="detail" id="prediksiDetail">
-                        <span>📊 <span id="prediksiResi">0</span> resi</span>
-                        <span>📈 <span id="prediksiTrend">-</span></span>
-                        <span>📅 <span id="prediksiBulan">-</span></span>
+            <!-- TARGET BULANAN + PREDIKSI GABUNGAN -->
+            <div id="targetPrediksiContainer">
+                <div class="target-prediksi-box" id="targetPrediksiBox">
+                    <div class="label">
+                        🎯 TARGET BULAN INI
+                        <button class="btn-hapus-target" onclick="hapusTargetBulanan()" style="margin-left:6px;">✕</button>
+                    </div>
+                    
+                    <!-- Input Target -->
+                    <div class="target-input-row">
+                        <input type="number" id="inputTargetBulan" min="0" placeholder="Target resi bulan ini" inputmode="numeric">
+                        <button class="btn-target-set" onclick="setTargetBulanan()">SET</button>
+                    </div>
+                    
+                    <!-- Progress -->
+                    <div class="progress-section">
+                        <div class="progress-header">
+                            <span id="progressLabel">0 / 0 resi</span>
+                            <span id="progressPersen">0%</span>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-bar" id="progressBarTarget"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Info Grid: Capaian, Prediksi, Sisa -->
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">✅ Capaian</div>
+                            <div class="info-value" id="targetCapaian">Rp 0</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">🔮 Prediksi Akhir</div>
+                            <div class="info-value" id="targetPrediksi">Rp 0</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">📊 Sisa Target</div>
+                            <div class="info-value" id="targetSisa">0 resi</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Info tambahan: trend & estimasi -->
+                    <div style="display:flex;justify-content:space-between;font-size:10px;opacity:0.8;margin-top:6px;flex-wrap:wrap;gap:4px;">
+                        <span id="targetTrend">📈 Trend: Naik</span>
+                        <span id="targetRataHari">📅 Rata-rata/hari: 0 resi</span>
+                        <span id="targetEstimasiBulan">📆 Estimasi akhir: 0 resi</span>
                     </div>
                 </div>
-                <div id="prediksiKosong" class="prediksi-kosong" style="display:none;">
-                    <span class="icon-big">📊</span>
-                    Belum cukup data untuk prediksi<br>
-                    <span style="font-size:10px;">Butuh minimal 2 bulan data</span>
+                
+                <div id="targetPrediksiKosong" class="target-prediksi-kosong" style="display:none;">
+                    <span class="icon-big">🎯</span>
+                    Belum ada target bulan ini<br>
+                    <span style="font-size:10px;">Set target resi bulan ini untuk lihat progress!</span>
                 </div>
             </div>
         </div>
@@ -405,6 +539,7 @@
         let dataRekor = JSON.parse(localStorage.getItem('gajiSicepatRekor') || '{"resi":0,"tanggal":""}');
         let dataTahunan = JSON.parse(localStorage.getItem('dataTahunan') || '[]');
         let dataBulananManual = JSON.parse(localStorage.getItem('dataBulananManual') || '{}');
+        let targetBulanan = JSON.parse(localStorage.getItem('targetBulanan') || '{"target":0,"bulan":""}');
         let reminderAktif = localStorage.getItem('reminderAktif') === 'true';
         let darkMode = localStorage.getItem('darkMode') === 'true';
         let warnaCustom = localStorage.getItem('warnaCustom') || '#ED1C24';
@@ -485,8 +620,8 @@
             tampilLogHarian();
             cekBadgeReminder();
             
-            // PREDIKSI
-            updatePrediksi();
+            // TARGET & PREDIKSI
+            updateTargetPrediksi();
             
             setTimeout(() => {
                 if (document.getElementById('tab-statistik').classList.contains('active')) {
@@ -512,6 +647,26 @@
         function getTanggalHariIni() {
             const e = new Date;
             return `${e.getFullYear()}-${String(e.getMonth() + 1).padStart(2, '0')}-${String(e.getDate()).padStart(2, '0')}`;
+        }
+
+        function getTotalResiBulan(bulan) {
+            let total = 0;
+            Object.keys(dataHarian).forEach(tgl => {
+                if (tgl.startsWith(bulan)) {
+                    total += parseInt(dataHarian[tgl]) || 0;
+                }
+            });
+            return total;
+        }
+
+        function getHariKerjaBulan(bulan) {
+            let hari = 0;
+            Object.keys(dataHarian).forEach(tgl => {
+                if (tgl.startsWith(bulan) && (parseInt(dataHarian[tgl]) || 0) > 0) {
+                    hari++;
+                }
+            });
+            return hari;
         }
 
         function autoIsiNol() {
@@ -558,7 +713,7 @@
             hitungTotal();
             tampilLogHarian();
             cekBadgeReminder();
-            updatePrediksi();
+            updateTargetPrediksi();
             
             setTimeout(() => {
                 if (document.getElementById('tab-statistik').classList.contains('active')) {
@@ -592,7 +747,7 @@
                 hitungTotal();
                 tampilLogHarian();
                 cekBadgeReminder();
-                updatePrediksi();
+                updateTargetPrediksi();
                 setTimeout(() => {
                     if (document.getElementById('tab-statistik').classList.contains('active')) {
                         console.log('[Chart] Force render on load');
@@ -615,7 +770,7 @@
                 hitungTotal();
                 tampilLogHarian();
                 cekBadgeReminder();
-                updatePrediksi();
+                updateTargetPrediksi();
                 setTimeout(() => {
                     if (document.getElementById('tab-statistik').classList.contains('active')) {
                         console.log('[Chart] Force render on load');
@@ -846,7 +1001,7 @@
                 loadRiwayat();
                 updateGrafik();
                 cekBadgeReminder();
-                updatePrediksi();
+                updateTargetPrediksi();
             }
         }
 
@@ -866,8 +1021,19 @@
 
         function terapkanWarnaCustom() {
             document.documentElement.style.setProperty('--primary', warnaCustom);
+            document.documentElement.style.setProperty('--primary-dark', darkenColor(warnaCustom, 20));
             document.querySelector('meta[name="theme-color"]').setAttribute('content', warnaCustom);
             if (chartInstance) updateGrafik()
+        }
+        
+        function darkenColor(hex, percent) {
+            let r = parseInt(hex.slice(1,3), 16);
+            let g = parseInt(hex.slice(3,5), 16);
+            let b = parseInt(hex.slice(5,7), 16);
+            r = Math.max(0, r - percent);
+            g = Math.max(0, g - percent);
+            b = Math.max(0, b - percent);
+            return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
         }
 
         function resetWarna() {
@@ -947,7 +1113,7 @@
         function cekBackupReminder() {
             const e = new Date, t = e.getDate(), bulanIni = getBulanTahun(), keyBackup = `autoBackup_${bulanIni}_${t}`;
             if ((t === 15 || t === 30) && !localStorage.getItem(keyBackup)) {
-                const data = { dataHarian, dataBulanan, dataRekor, dataTahunan, dataBulananManual, tanggalBackup: new Date().toISOString(), versi: '4.0' };
+                const data = { dataHarian, dataBulanan, dataRekor, dataTahunan, dataBulananManual, targetBulanan, tanggalBackup: new Date().toISOString(), versi: '4.0' };
                 const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }), url = URL.createObjectURL(blob), a = document.createElement('a');
                 a.href = url;
                 a.download = `AUTO-backup-gaji-${getTanggalHariIni()}.json`;
@@ -962,7 +1128,7 @@
         }
 
         function exportBackup() {
-            const e = { dataHarian, dataBulanan, dataRekor, dataTahunan, dataBulananManual, tanggalBackup: new Date().toISOString(), versi: '4.0' }, t = new Blob([JSON.stringify(e, null, 2)], { type: 'application/json' }), n = URL.createObjectURL(t), o = document.createElement('a');
+            const e = { dataHarian, dataBulanan, dataRekor, dataTahunan, dataBulananManual, targetBulanan, tanggalBackup: new Date().toISOString(), versi: '4.0' }, t = new Blob([JSON.stringify(e, null, 2)], { type: 'application/json' }), n = URL.createObjectURL(t), o = document.createElement('a');
             o.href = n;
             o.download = `backup-gaji-sicepat-${getTanggalHariIni()}.json`;
             o.click();
@@ -971,7 +1137,7 @@
         }
 
         function showBackupFallback() {
-            const fallbackData = { dataHarian, dataBulanan, dataRekor, dataTahunan, dataBulananManual };
+            const fallbackData = { dataHarian, dataBulanan, dataRekor, dataTahunan, dataBulananManual, targetBulanan };
             const textToCopy = JSON.stringify(fallbackData, null, 2);
             navigator.clipboard.writeText(textToCopy).then(() => {
                 alert('Teks backup berhasil disalin ke papan klip! 📋');
@@ -993,11 +1159,13 @@
                         dataRekor = t.dataRekor || { resi: 0, tanggal: '' };
                         dataTahunan = t.dataTahunan || [];
                         dataBulananManual = t.dataBulananManual || {};
+                        targetBulanan = t.targetBulanan || { target: 0, bulan: '' };
                         localStorage.setItem('gajiSicepatHarian', JSON.stringify(dataHarian));
                         localStorage.setItem('gajiSicepat', JSON.stringify(dataBulanan));
                         localStorage.setItem('gajiSicepatRekor', JSON.stringify(dataRekor));
                         localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
                         localStorage.setItem('dataBulananManual', JSON.stringify(dataBulananManual));
+                        localStorage.setItem('targetBulanan', JSON.stringify(targetBulanan));
                         alert('Restore berhasil bos! Halaman bakal reload 🔄');
                         location.reload()
                     }
@@ -1017,7 +1185,7 @@
                 if (dataTahunan.length > 12) dataTahunan = dataTahunan.slice(-12);
                 localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
                 bulanLalu = bulanSekarang;
-                updatePrediksi();
+                updateTargetPrediksi();
             }
         }
 
@@ -1056,7 +1224,7 @@
                     }
                 });
                 localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
-                updatePrediksi();
+                updateTargetPrediksi();
                 
                 if (document.getElementById('tab-tahunan') && document.getElementById('tab-tahunan').classList.contains('active')) {
                     tampilLogBulanan();
@@ -1064,78 +1232,129 @@
             }
         }
 
-        // ==================== PREDIKSI GAJI BULAN DEPAN ====================
-        function updatePrediksi() {
-            const bulanKeys = Object.keys(dataBulananManual)
-                .filter(k => k <= getBulanTahun())
-                .sort();
+        // ==================== TARGET + PREDIKSI GABUNGAN ====================
+        function setTargetBulanan() {
+            const target = parseInt(document.getElementById('inputTargetBulan').value);
+            if (!target || target <= 0) return alert('Masukkan target resi bulan ini yang valid! (min 1)');
             
-            // Ambil 3 bulan terakhir
-            const last3 = bulanKeys.slice(-3);
-            const last6 = bulanKeys.slice(-6);
+            const bulanIni = getBulanTahun();
+            targetBulanan = { target: target, bulan: bulanIni };
+            localStorage.setItem('targetBulanan', JSON.stringify(targetBulanan));
+            document.getElementById('inputTargetBulan').value = '';
+            updateTargetPrediksi();
             
-            const prediksiBox = document.getElementById('prediksiBox');
-            const prediksiKosong = document.getElementById('prediksiKosong');
+            // Popup semangat
+            const quotes = ['🎯 Target diset! Gas pol!', '💪 Kejar target bos!', '🚀 Target ' + target + ' resi! Semangat!'];
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById('popupEmot').textContent = '🎯';
+            document.getElementById('popupText').textContent = randomQuote;
+            document.getElementById('popupSemangat').classList.add('show');
+            setTimeout(() => { document.getElementById('popupSemangat').classList.remove('show') }, 800);
+        }
+
+        function hapusTargetBulanan() {
+            if (!targetBulanan.target || targetBulanan.target === 0) return;
+            if (confirm('Hapus target bulan ini?')) {
+                targetBulanan = { target: 0, bulan: '' };
+                localStorage.setItem('targetBulanan', JSON.stringify(targetBulanan));
+                updateTargetPrediksi();
+            }
+        }
+
+        function updateTargetPrediksi() {
+            const bulanIni = getBulanTahun();
+            const totalResi = getTotalResiBulan(bulanIni);
+            const hariKerja = getHariKerjaBulan(bulanIni);
+            const tanggalHariIni = new Date().getDate();
+            const hariBulanIni = new Date(bulanIni + '-01').getDate();
             
-            if (last3.length < 2) {
-                prediksiBox.style.display = 'none';
-                prediksiKosong.style.display = 'block';
+            const box = document.getElementById('targetPrediksiBox');
+            const kosong = document.getElementById('targetPrediksiKosong');
+            
+            // Cek target
+            if (!targetBulanan.target || targetBulanan.target === 0 || targetBulanan.bulan !== bulanIni) {
+                box.style.display = 'none';
+                kosong.style.display = 'block';
                 return;
             }
             
-            prediksiBox.style.display = 'block';
-            prediksiKosong.style.display = 'none';
+            box.style.display = 'block';
+            kosong.style.display = 'none';
             
-            // Hitung rata-rata resi dari 3-6 bulan terakhir
-            let totalResi = 0;
-            let count = 0;
-            const dataTerpakai = last6.length >= 3 ? last6 : last3;
+            const target = targetBulanan.target;
+            const persen = Math.min(100, Math.round((totalResi / target) * 100));
+            const sisaResi = Math.max(0, target - totalResi);
+            const gajiCapaian = totalResi * tarif;
+            const targetGaji = target * tarif;
+            const sisaGaji = Math.max(0, targetGaji - gajiCapaian);
             
-            dataTerpakai.forEach(key => {
-                const resi = dataBulananManual[key] || 0;
-                if (resi > 0) {
-                    totalResi += resi;
-                    count++;
-                }
-            });
+            // Update progress
+            document.getElementById('progressLabel').textContent = `${totalResi} / ${target} resi`;
+            document.getElementById('progressPersen').textContent = `${persen}%`;
+            document.getElementById('progressBarTarget').style.width = `${persen}%`;
             
-            if (count === 0) {
-                prediksiBox.style.display = 'none';
-                prediksiKosong.style.display = 'block';
-                return;
+            // Update info grid
+            document.getElementById('targetCapaian').textContent = `Rp ${gajiCapaian.toLocaleString('id-ID')}`;
+            
+            // Prediksi akhir bulan
+            let prediksiAkhir = 0;
+            let prediksiResi = 0;
+            let rataHari = 0;
+            let estimasiAkhir = 0;
+            
+            if (hariKerja > 0) {
+                rataHari = Math.round(totalResi / hariKerja);
+                const sisaHari = hariBulanIni - tanggalHariIni;
+                prediksiResi = totalResi + (rataHari * sisaHari);
+                prediksiAkhir = prediksiResi * tarif;
+                estimasiAkhir = prediksiResi;
+            } else if (tanggalHariIni > 0) {
+                // Kalo belum ada hari kerja, estimasi dari total/hari
+                const avgPerDay = totalResi / tanggalHariIni;
+                prediksiResi = Math.round(avgPerDay * hariBulanIni);
+                prediksiAkhir = prediksiResi * tarif;
+                estimasiAkhir = prediksiResi;
+                rataHari = Math.round(avgPerDay);
             }
             
-            const rataResi = Math.round(totalResi / count);
-            const prediksiGaji = rataResi * tarif;
+            // Warna prediksi - hijau kalo diatas target, merah kalo dibawah
+            const prediksiColor = prediksiAkhir >= targetGaji ? 'success' : 'danger';
+            document.getElementById('targetPrediksi').textContent = `Rp ${prediksiAkhir.toLocaleString('id-ID')}`;
+            document.getElementById('targetPrediksi').className = `info-value ${prediksiColor}`;
             
-            // Hitung trend
-            let trend = '📈 Naik';
-            let trendClass = 'trend-up';
-            if (last3.length >= 2) {
-                const bulan1 = dataBulananManual[last3[last3.length - 2]] || 0;
-                const bulan2 = dataBulananManual[last3[last3.length - 1]] || 0;
-                if (bulan2 > bulan1) {
-                    trend = '📈 Naik ' + Math.round(((bulan2 - bulan1) / bulan1) * 100) + '%';
+            document.getElementById('targetSisa').textContent = `${sisaResi} resi`;
+            document.getElementById('targetSisa').className = `info-value ${sisaResi === 0 ? 'success' : 'warning'}`;
+            
+            // Info tambahan
+            // Trend
+            let trendText = '➖ Stabil';
+            let trendClass = 'trend-stable';
+            const bulanKeys = Object.keys(dataBulananManual).filter(k => k < bulanIni).sort().slice(-2);
+            if (bulanKeys.length >= 2) {
+                const b1 = dataBulananManual[bulanKeys[0]] || 0;
+                const b2 = dataBulananManual[bulanKeys[1]] || 0;
+                if (b2 > b1 && b1 > 0) {
+                    trendText = '📈 Naik ' + Math.round(((b2 - b1) / b1) * 100) + '%';
                     trendClass = 'trend-up';
-                } else if (bulan2 < bulan1) {
-                    trend = '📉 Turun ' + Math.round(((bulan1 - bulan2) / bulan1) * 100) + '%';
+                } else if (b2 < b1 && b1 > 0) {
+                    trendText = '📉 Turun ' + Math.round(((b1 - b2) / b1) * 100) + '%';
                     trendClass = 'trend-down';
-                } else {
-                    trend = '➖ Stabil';
-                    trendClass = 'trend-stable';
+                }
+            } else if (bulanKeys.length === 1) {
+                const b1 = dataBulananManual[bulanKeys[0]] || 0;
+                if (totalResi > b1 && b1 > 0) {
+                    trendText = '📈 Naik ' + Math.round(((totalResi - b1) / b1) * 100) + '%';
+                    trendClass = 'trend-up';
+                } else if (totalResi < b1 && b1 > 0) {
+                    trendText = '📉 Turun ' + Math.round(((b1 - totalResi) / b1) * 100) + '%';
+                    trendClass = 'trend-down';
                 }
             }
             
-            // Nama bulan depan
-            const bulanDepan = new Date();
-            bulanDepan.setMonth(bulanDepan.getMonth() + 1);
-            const namaBulanDepan = bulanDepan.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
-            
-            document.getElementById('prediksiNilai').textContent = 'Rp ' + prediksiGaji.toLocaleString('id-ID');
-            document.getElementById('prediksiResi').textContent = rataResi.toLocaleString('id-ID');
-            document.getElementById('prediksiTrend').textContent = trend;
-            document.getElementById('prediksiTrend').className = trendClass;
-            document.getElementById('prediksiBulan').textContent = namaBulanDepan;
+            document.getElementById('targetTrend').textContent = `📈 Trend: ${trendText}`;
+            document.getElementById('targetTrend').className = trendClass;
+            document.getElementById('targetRataHari').textContent = `📅 Rata-rata/hari: ${rataHari} resi`;
+            document.getElementById('targetEstimasiBulan').textContent = `📆 Estimasi akhir: ${estimasiAkhir} resi`;
         }
 
         function loadPilihBulan() {
@@ -1169,7 +1388,7 @@
                 }
             });
             localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
-            updatePrediksi();
+            updateTargetPrediksi();
 
             document.getElementById('inputResiBulan').value = '';
             document.getElementById('pilihBulan').value = '';
@@ -1238,7 +1457,7 @@
                 });
                 localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
                 tampilLogBulanan();
-                updatePrediksi();
+                updateTargetPrediksi();
             }
         }
 
@@ -1249,7 +1468,7 @@
                 dataTahunan = dataTahunan.filter(d => d.key !== key);
                 localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
                 tampilLogBulanan();
-                updatePrediksi();
+                updateTargetPrediksi();
             }
         }
 
@@ -1260,7 +1479,7 @@
             localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
             localStorage.setItem('dataBulananManual', JSON.stringify(dataBulananManual));
             tampilLogBulanan();
-            updatePrediksi();
+            updateTargetPrediksi();
         }
     </script>
 </body>
