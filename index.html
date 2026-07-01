@@ -25,7 +25,8 @@
         .btn-dark,.btn-install{background:var(--bg);border:1px solid var(--border);width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:18px}
         .btn-install{display:none}
         .btn-install.show{display:flex;align-items:center;justify-content:center}
-        .badge-reminder{position:absolute;top:-5px;right:50px;background:#f00;color:#fff;font-size:8px;padding:2px 5px;border-radius:8px;font-weight:bold}
+        .badge-reminder{position:absolute;top:-5px;right:50px;background:#f00;color:#fff;font-size:8px;padding:2px 5px;border-radius:8px;font-weight:bold;animation:pulse-badge 2s infinite}
+        @keyframes pulse-badge{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
         .rekor-banner{background:#FFD700;color:#8B4513;padding:6px 10px;border-radius:8px;text-align:center;font-size:11px;font-weight:bold;margin-bottom:12px}
         .rekor-banner.kosong{display:none}
         h2{color:var(--primary);margin:0 0 12px 0;text-align:center;font-size:15px;font-weight:800}
@@ -43,7 +44,9 @@
         .input-row{display:flex;gap:6px}
         .input-tanggal input[type="text"],.input-tanggal input[type="number"],.input-tanggal select{width:100%;padding:10px 6px;border:1px solid var(--border);border-radius:8px;font-size:12px;outline:none;background:var(--bg);color:var(--text);font-weight:700}
         .input-tanggal input[type="number"]{font-weight:900;text-align:center}
-        .btn-simpan{background:var(--primary);color:#fff;border:none;padding:12px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:900;width:100%;text-transform:uppercase}
+        .btn-simpan{background:var(--primary);color:#fff;border:none;padding:12px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:900;width:100%;text-transform:uppercase;transition:.2s}
+        .btn-simpan:hover{transform:scale(1.01);box-shadow:0 4px 16px rgba(237,28,36,0.3)}
+        .btn-simpan:active{transform:scale(0.97)}
         .log-harian{font-size:11px}
         .log-harian h5{margin:0 0 8px 0;font-size:12px;text-align:center;color:var(--text2);font-weight:700;text-transform:uppercase}
         .log-item{display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--box);margin-bottom:5px;border-radius:8px}
@@ -52,9 +55,10 @@
         .log-tgl{font-weight:800;color:var(--primary);font-size:11px}
         .log-resi{font-size:10px;color:var(--text2);margin-top:2px;font-weight:600}
         .log-btn{display:flex;gap:4px}
-        .btn-edit,.btn-hapus-log{border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:10px;color:#fff;font-weight:700}
+        .btn-edit,.btn-hapus-log{border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:10px;color:#fff;font-weight:700;transition:.2s}
         .btn-edit{background:#1976d2}
         .btn-hapus-log{background:#e53935}
+        .btn-edit:hover,.btn-hapus-log:hover{transform:scale(1.05)}
         .btn-load-more{background:var(--box);color:var(--primary);border:1px solid var(--primary);padding:10px;border-radius:8px;cursor:pointer;font-size:11px;font-weight:800;width:100%;text-align:center;margin-top:5px;text-transform:uppercase;transition:.2s}
         .btn-load-more:hover{background:var(--primary);color:#fff}
         .grafik-container{background:var(--bg);padding:10px;border-radius:12px;margin-top:14px;border:1px solid var(--primary)}
@@ -67,7 +71,8 @@
         .setting-label{font-size:11px;font-weight:700}
         .setting-control{display:flex;gap:6px;align-items:center}
         .color-input{width:45px;height:32px;border:1px solid var(--border);border-radius:6px;cursor:pointer}
-        .btn-setting{padding:7px 12px;border:none;border-radius:6px;cursor:pointer;font-size:10px;font-weight:800;color:#fff}
+        .btn-setting{padding:7px 12px;border:none;border-radius:6px;cursor:pointer;font-size:10px;font-weight:800;color:#fff;transition:.2s}
+        .btn-setting:hover{transform:scale(1.05)}
         .btn-upload{background:#1976d2}
         .btn-reset{background:#ff9800}
         .switch{position:relative;width:46px;height:24px}
@@ -79,7 +84,8 @@
         .backup-container{background:var(--box);padding:12px;border-radius:12px;margin-bottom:12px;border:1px solid #4caf50}
         .backup-container h5{margin:0 0 8px 0;text-align:center;color:#4caf50;font-size:12px;font-weight:800;text-transform:uppercase}
         .backup-btn-group{display:flex;gap:6px;margin-bottom:6px}
-        .btn-backup{flex:1;padding:10px;border:none;border-radius:8px;cursor:pointer;font-size:10px;font-weight:800;color:#fff;text-transform:uppercase}
+        .btn-backup{flex:1;padding:10px;border:none;border-radius:8px;cursor:pointer;font-size:10px;font-weight:800;color:#fff;text-transform:uppercase;transition:.2s}
+        .btn-backup:hover{transform:scale(1.02)}
         .btn-export{background:#4caf50}
         .btn-import{background:#ff9800}
         .backup-info{font-size:9px;color:var(--text2);text-align:center;line-height:1.4;font-weight:600}
@@ -93,13 +99,14 @@
         .stat-label{color:var(--text2);font-size:8px;text-transform:uppercase;font-weight:700}
         .stat-angka{font-weight:900;color:var(--text);margin-top:2px;font-size:12px}
         .riwayat-footer{margin-top:6px;text-align:right}
-        .hapus-riwayat{background:#e53935;color:#fff;border:none;padding:5px 12px;border-radius:6px;cursor:pointer;font-size:9px;font-weight:700}
+        .hapus-riwayat{background:#e53935;color:#fff;border:none;padding:5px 12px;border-radius:6px;cursor:pointer;font-size:9px;font-weight:700;transition:.2s}
+        .hapus-riwayat:hover{transform:scale(1.05)}
         .total-bulanan{background:#4caf50;padding:14px;border-radius:12px;margin:12px 0;text-align:center;color:#fff}
         .total-bulanan .label{font-size:10px;opacity:.9;text-transform:uppercase}
         .total-bulanan .angka{font-size:22px;font-weight:900;margin-top:4px}
         .total-bulanan .sub{font-size:12px;margin-top:3px;opacity:.95;font-weight:700}
         .tab-menu{position:fixed;bottom:0;left:0;right:0;max-width:430px;margin:0 auto;display:flex;background:var(--bg);border-top:1px solid var(--border);padding:6px 3px;gap:2px;z-index:100;align-items:flex-end}
-        .tab-btn{flex:1;padding:8px 2px;border:none;background:transparent;border-radius:10px;cursor:pointer;font-size:8px;font-weight:800;color:var(--text2);display:flex;flex-direction:column;align-items:center;gap:3px}
+        .tab-btn{flex:1;padding:8px 2px;border:none;background:transparent;border-radius:10px;cursor:pointer;font-size:8px;font-weight:800;color:var(--text2);display:flex;flex-direction:column;align-items:center;gap:3px;transition:.2s}
         .tab-btn.active{color:var(--primary);background:var(--box)}
         .tab-icon{font-size:18px}
         .tab-btn-center{position:relative;margin-top:-22px}
@@ -108,201 +115,62 @@
         .tab-btn-center span:last-child{margin-top:3px;font-size:8px;font-weight:800}
         .tab-content{display:none}
         .tab-content.active{display:block}
-        .popup-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:999;display:none;align-items:center;justify-content:center}
+        
+        /* POPUP CANTIK */
+        .popup-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:999;display:none;align-items:center;justify-content:center;animation:fadeIn .3s ease}
         .popup-overlay.show{display:flex}
-        .popup-box{background:var(--primary);padding:28px 20px;border-radius:20px;text-align:center;max-width:260px}
-        .popup-emot{font-size:70px;line-height:1;margin-bottom:12px}
-        .popup-text{color:#fff;font-size:16px;font-weight:900;text-transform:uppercase;line-height:1.3}
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+        .popup-box{background:linear-gradient(145deg,var(--primary),var(--primary-dark));padding:32px 28px;border-radius:28px;text-align:center;max-width:300px;width:90%;animation:popupIn 0.5s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 20px 60px rgba(0,0,0,0.4)}
+        @keyframes popupIn{from{transform:scale(0.6) rotate(-5deg);opacity:0}to{transform:scale(1) rotate(0deg);opacity:1}}
+        .popup-box .popup-icon{font-size:80px;line-height:1;margin-bottom:8px;animation:popupIcon 0.8s ease infinite alternate}
+        @keyframes popupIcon{from{transform:scale(1) rotate(0deg)}to{transform:scale(1.1) rotate(5deg)}}
+        .popup-box .popup-title{color:rgba(255,255,255,0.85);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px}
+        .popup-box .popup-text{color:#fff;font-size:20px;font-weight:900;line-height:1.3;text-shadow:0 2px 8px rgba(0,0,0,0.2)}
+        .popup-box .popup-sub{color:rgba(255,255,255,0.8);font-size:13px;font-weight:600;margin-top:6px}
+        .popup-box .popup-badge{display:inline-block;background:rgba(255,255,255,0.2);padding:4px 16px;border-radius:20px;font-size:11px;font-weight:700;color:#fff;margin-top:10px}
+        .popup-box .popup-close{background:rgba(255,255,255,0.15);border:none;color:#fff;padding:8px 24px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer;margin-top:14px;transition:.2s}
+        .popup-box .popup-close:hover{background:rgba(255,255,255,0.3);transform:scale(1.05)}
         
         /* EXPANDABLE LOG BULANAN */
-        .bulan-accordion {
-            background: var(--box);
-            border-radius: 12px;
-            margin-bottom: 6px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        .bulan-accordion-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 14px;
-            cursor: pointer;
-            transition: .2s;
-            background: var(--box);
-            border-bottom: 1px solid transparent;
-        }
-        .bulan-accordion-header:hover {
-            background: var(--bg);
-        }
-        .bulan-accordion-header.active {
-            border-bottom-color: var(--border);
-        }
-        .bulan-accordion-header .bulan-nama {
-            font-weight: 800;
-            font-size: 13px;
-            color: var(--text);
-        }
-        .bulan-accordion-header .bulan-total {
-            font-weight: 900;
-            font-size: 13px;
-            color: var(--primary);
-        }
-        .bulan-accordion-header .bulan-arrow {
-            font-size: 12px;
-            transition: .3s;
-            color: var(--text2);
-            margin-left: 8px;
-        }
-        .bulan-accordion-header.active .bulan-arrow {
-            transform: rotate(180deg);
-        }
-        .bulan-accordion-body {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 0 14px;
-        }
-        .bulan-accordion-body.open {
-            max-height: 2000px;
-            padding: 10px 14px 14px 14px;
-        }
-        .bulan-accordion-body .log-item {
-            margin-bottom: 4px;
-            padding: 6px 8px;
-        }
-        .bulan-accordion-body .log-item:last-child {
-            margin-bottom: 0;
-        }
+        .bulan-accordion{background:var(--box);border-radius:12px;margin-bottom:6px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+        .bulan-accordion-header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;transition:.2s;background:var(--box);border-bottom:1px solid transparent}
+        .bulan-accordion-header:hover{background:var(--bg)}
+        .bulan-accordion-header.active{border-bottom-color:var(--border)}
+        .bulan-accordion-header .bulan-nama{font-weight:800;font-size:13px;color:var(--text)}
+        .bulan-accordion-header .bulan-total{font-weight:900;font-size:13px;color:var(--primary)}
+        .bulan-accordion-header .bulan-arrow{font-size:12px;transition:.3s;color:var(--text2);margin-left:8px}
+        .bulan-accordion-header.active .bulan-arrow{transform:rotate(180deg)}
+        .bulan-accordion-body{max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1);padding:0 14px}
+        .bulan-accordion-body.open{max-height:2000px;padding:10px 14px 14px 14px}
+        .bulan-accordion-body .log-item{margin-bottom:4px;padding:6px 8px}
+        .bulan-accordion-body .log-item:last-child{margin-bottom:0}
 
         /* PREDIKSI TARGET OTOMATIS */
-        .prediksi-target-box {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            border-radius: 12px;
-            padding: 14px;
-            margin: 14px 0 4px 0;
-            color: #fff;
-            position: relative;
-            overflow: hidden;
-            transition: background 0.3s ease;
-        }
-        .prediksi-target-box::before {
-            content: '🎯';
-            position: absolute;
-            right: 10px;
-            top: -5px;
-            font-size: 45px;
-            opacity: 0.15;
-        }
-        .prediksi-target-box .label {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.85;
-            font-weight: 700;
-            margin-bottom: 4px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .prediksi-target-box .target-besar {
-            font-size: 28px;
-            font-weight: 900;
-            margin: 2px 0 4px 0;
-        }
-        .prediksi-target-box .target-besar small {
-            font-size: 14px;
-            font-weight: 700;
-            opacity: 0.8;
-        }
-        .prediksi-target-box .progress-section {
-            margin: 6px 0 4px 0;
-        }
-        .prediksi-target-box .progress-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
-            font-weight: 700;
-            opacity: 0.9;
-        }
-        .prediksi-target-box .progress-track {
-            width: 100%;
-            height: 12px;
-            background: rgba(255,255,255,0.25);
-            border-radius: 6px;
-            overflow: hidden;
-            margin-top: 4px;
-        }
-        .prediksi-target-box .progress-bar {
-            height: 100%;
-            border-radius: 6px;
-            background: linear-gradient(90deg, #FFD700, #FF6F00);
-            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            width: 0%;
-        }
-        .prediksi-target-box .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 4px;
-            margin-top: 8px;
-            padding-top: 8px;
-            border-top: 1px solid rgba(255,255,255,0.15);
-        }
-        .prediksi-target-box .info-item {
-            text-align: center;
-            background: rgba(255,255,255,0.08);
-            padding: 4px 6px;
-            border-radius: 6px;
-        }
-        .prediksi-target-box .info-item .info-label {
-            font-size: 7px;
-            text-transform: uppercase;
-            opacity: 0.7;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-        .prediksi-target-box .info-item .info-value {
-            font-size: 13px;
-            font-weight: 900;
-            margin-top: 1px;
-        }
-        .prediksi-target-box .info-item .info-value.success { color: #69f0ae; }
-        .prediksi-target-box .info-item .info-value.warning { color: #ffd54f; }
-        .prediksi-target-box .info-item .info-value.danger { color: #ff8a80; }
-
-        .prediksi-target-kosong {
-            background: var(--box);
-            border-radius: 12px;
-            padding: 16px;
-            margin: 14px 0 4px 0;
-            text-align: center;
-            color: var(--text2);
-            font-size: 12px;
-            font-weight: 600;
-            border: 1px solid var(--border);
-        }
-        .prediksi-target-kosong .icon-big {
-            font-size: 32px;
-            display: block;
-            margin-bottom: 6px;
-        }
-        .prediksi-target-box .trend-up { color: #69f0ae; }
-        .prediksi-target-box .trend-down { color: #ff8a80; }
-        .prediksi-target-box .trend-stable { color: #ffd54f; }
-        .prediksi-target-box .info-bawah {
-            display: flex;
-            justify-content: space-between;
-            font-size: 10px;
-            opacity: 0.8;
-            margin-top: 6px;
-            flex-wrap: wrap;
-            gap: 4px;
-        }
-        .prediksi-target-box .info-bawah span {
-            background: rgba(255,255,255,0.1);
-            padding: 2px 10px;
-            border-radius: 12px;
-        }
+        .prediksi-target-box{background:linear-gradient(135deg,var(--primary),var(--primary-dark));border-radius:12px;padding:14px;margin:14px 0 4px 0;color:#fff;position:relative;overflow:hidden;transition:background 0.3s ease}
+        .prediksi-target-box::before{content:'🔮';position:absolute;right:10px;top:-5px;font-size:45px;opacity:0.15}
+        .prediksi-target-box .label{font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:0.85;font-weight:700;margin-bottom:2px;display:flex;justify-content:space-between;align-items:center}
+        .prediksi-target-box .label-sub{font-size:8px;opacity:0.6;font-weight:600}
+        .prediksi-target-box .target-judul{font-size:14px;font-weight:800;margin:2px 0 1px 0}
+        .prediksi-target-box .target-besar{font-size:28px;font-weight:900;margin:0 0 2px 0}
+        .prediksi-target-box .target-besar small{font-size:14px;font-weight:700;opacity:0.8}
+        .prediksi-target-box .progress-section{margin:6px 0 4px 0}
+        .prediksi-target-box .progress-header{display:flex;justify-content:space-between;font-size:11px;font-weight:700;opacity:0.9}
+        .prediksi-target-box .progress-track{width:100%;height:12px;background:rgba(255,255,255,0.25);border-radius:6px;overflow:hidden;margin-top:4px}
+        .prediksi-target-box .progress-bar{height:100%;border-radius:6px;background:linear-gradient(90deg,#FFD700,#FF6F00);transition:width 0.8s cubic-bezier(0.4,0,0.2,1);width:0%}
+        .prediksi-target-box .info-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.15)}
+        .prediksi-target-box .info-item{text-align:center;background:rgba(255,255,255,0.08);padding:4px 6px;border-radius:6px}
+        .prediksi-target-box .info-item .info-label{font-size:7px;text-transform:uppercase;opacity:0.7;font-weight:700;letter-spacing:0.5px}
+        .prediksi-target-box .info-item .info-value{font-size:13px;font-weight:900;margin-top:1px}
+        .prediksi-target-box .info-item .info-value.success{color:#69f0ae}
+        .prediksi-target-box .info-item .info-value.warning{color:#ffd54f}
+        .prediksi-target-box .info-item .info-value.danger{color:#ff8a80}
+        .prediksi-target-box .info-bawah{display:flex;justify-content:space-between;font-size:10px;opacity:0.8;margin-top:6px;flex-wrap:wrap;gap:4px}
+        .prediksi-target-box .info-bawah span{background:rgba(255,255,255,0.1);padding:2px 10px;border-radius:12px}
+        .prediksi-target-box .trend-up{color:#69f0ae}
+        .prediksi-target-box .trend-down{color:#ff8a80}
+        .prediksi-target-box .trend-stable{color:#ffd54f}
+        .prediksi-target-kosong{background:var(--box);border-radius:12px;padding:16px;margin:14px 0 4px 0;text-align:center;color:var(--text2);font-size:12px;font-weight:600;border:1px solid var(--border)}
+        .prediksi-target-kosong .icon-big{font-size:32px;display:block;margin-bottom:6px}
     </style>
 </head>
 <body>
@@ -341,9 +209,11 @@
             <div id="prediksiTargetContainer">
                 <div class="prediksi-target-box" id="prediksiTargetBox">
                     <div class="label">
-                        <span>🎯 TARGET BULAN DEPAN (OTOMATIS)</span>
-                        <span style="font-size:8px;opacity:0.6;">berdasarkan 3 bulan terakhir</span>
+                        <span>🔮 PREDIKSI TARGET &amp; GAJI BULAN DEPAN</span>
+                        <span class="label-sub">berdasarkan 3 bulan terakhir</span>
                     </div>
+                    
+                    <div class="target-judul">🎯 Target Gaji Bulan Depan</div>
                     <div class="target-besar">
                         Rp <span id="targetNominal">0</span>
                         <small>| <span id="targetResi">0</span> resi</small>
@@ -380,7 +250,7 @@
                     <div class="info-bawah">
                         <span id="targetTrend">📈 Trend: -</span>
                         <span id="targetRata">📊 Rata-rata 3 bulan: 0 resi</span>
-                        <span id="targetBulan">📅 Bulan: -</span>
+                        <span id="targetBulan">📅 Target: -</span>
                     </div>
                 </div>
                 
@@ -452,7 +322,7 @@
             <div class="grafik-container">
                 <h5>📈 GRAFIK RESI BULAN INI</h5>
                 <canvas id="chartResi" height="180" style="max-height:180px;width:100%"></canvas>
-                <button onclick="updateGrafik()" style="margin-top:8px;width:100%;padding:8px;background:var(--primary);color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:bold">🔄 RENDER ULANG GRAFIK</button>
+                <button onclick="updateGrafik()" style="margin-top:8px;width:100%;padding:8px;background:var(--primary);color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:bold;cursor:pointer;transition:.2s;">🔄 RENDER ULANG GRAFIK</button>
             </div>
         </div>
 
@@ -497,10 +367,15 @@
         <button class="tab-btn" data-tab="setting"><span class="tab-icon">⚙️</span><span>Setting</span></button>
     </div>
 
-    <div class="popup-overlay" id="popupSemangat">
-        <div class="popup-box">
-            <div class="popup-emot" id="popupEmot">🔥</div>
+    <!-- POPUP CANTIK -->
+    <div class="popup-overlay" id="popupSemangat" onclick="if(event.target===this)closePopup()">
+        <div class="popup-box" id="popupBox">
+            <div class="popup-icon" id="popupIcon">🔥</div>
+            <div class="popup-title">💪 SEMANGAT KERJA!</div>
             <div class="popup-text" id="popupText">GAS TERUS BOS!</div>
+            <div class="popup-sub" id="popupSub">💸 Cuan terus ngalir!</div>
+            <div class="popup-badge" id="popupBadge">🏆 KURIR HEBAT</div>
+            <button class="popup-close" onclick="closePopup()">✕ TUTUP</button>
         </div>
     </div>
 
@@ -521,6 +396,29 @@
         let deferredPrompt;
         let logLimit = 10;
 
+        // POPUP FUNCTION
+        function showPopup(icon, text, sub, badge) {
+            document.getElementById('popupIcon').textContent = icon || '🔥';
+            document.getElementById('popupText').textContent = text || 'GAS TERUS BOS!';
+            document.getElementById('popupSub').textContent = sub || '💸 Cuan terus ngalir!';
+            document.getElementById('popupBadge').textContent = badge || '🏆 KURIR HEBAT';
+            document.getElementById('popupSemangat').classList.add('show');
+        }
+
+        function closePopup() {
+            document.getElementById('popupSemangat').classList.remove('show');
+        }
+
+        // Auto close popup after 3 seconds
+        let popupTimer;
+        function showPopupAuto(icon, text, sub, badge) {
+            showPopup(icon, text, sub, badge);
+            clearTimeout(popupTimer);
+            popupTimer = setTimeout(() => {
+                closePopup();
+            }, 3000);
+        }
+
         window.addEventListener('beforeinstallprompt', e => {
             e.preventDefault();
             deferredPrompt = e;
@@ -533,7 +431,7 @@
             deferredPrompt.userChoice.then(r => {
                 if (r.outcome === 'accepted') {
                     document.getElementById('btnInstall').classList.remove('show');
-                    alert('App berhasil diinstall ke layar utama! 🎉');
+                    showPopupAuto('🎉', 'APP BERHASIL DIINSTALL!', 'Sekarang bisa diakses dari layar utama', '📱 PWA ACTIVE');
                 }
                 deferredPrompt = null;
             });
@@ -655,7 +553,11 @@
                 dataRekor = { resi: e, tanggal: t };
                 localStorage.setItem('gajiSicepatRekor', JSON.stringify(dataRekor));
                 tampilRekor();
-                if (e > 0 && n > 0) setTimeout(() => alert(`🔥 PECAH REKOR BOS! ${e} resi hari ini! Gacor kang! 🔥`), 500);
+                if (e > 0 && n > 0) {
+                    setTimeout(() => {
+                        showPopupAuto('🔥', `PECAH REKOR BOS! ${e} RESI!`, 'Gacor kang! 🚀', '🏆 REKOR BARU');
+                    }, 500);
+                }
             }
         }
 
@@ -701,12 +603,20 @@
             cekAkhirBulanDanUpdateTahunan();
             
             if (navigator.vibrate) navigator.vibrate(50);
-            const quotes = ['🔥 Gas terus bos!', '💪 Lu paling gacor!', '🚀 Resi meledak!', '⚡ Petir! Mantap!', '💯 Kerja keras = Cuan keras!', '🏆 Juara sehari!', '💎 Sultan resi!', '🎯 On target!', '✨ Nggak ada obat!', '🌟 Bintang lapangan!', '👑 King of kurir!', '🦾 Tangan besi!', '😎 Cool abis bos!', '🔱 Dewa resi!', '💥 Boom! Keren!', '🚨 Gacor parah!', '🤑 Cuan ngalir!', '🎊 Pesta resi!', '💸 Dompet tebel!', '⚔️ Gaspol terus!'];
+            const quotes = [
+                { icon: '🔥', text: 'GAS TERUS BOS!', sub: '💪 Resi meledak!', badge: '⚡ GACOR' },
+                { icon: '💪', text: 'LU PALING GACOR!', sub: '🚀 Teruskan!', badge: '🏆 JUARA' },
+                { icon: '🚀', text: 'RESI MELEDAK!', sub: '💸 Cuan banyak!', badge: '💎 SULTAN' },
+                { icon: '⚡', text: 'PETIR! MANTAP!', sub: '✨ Keren abis!', badge: '🌟 BINTANG' },
+                { icon: '💯', text: 'KERJA KERAS = CUAN KERAS!', sub: '💰 Terus semangat!', badge: '👑 KING' },
+                { icon: '🏆', text: 'JUARA SEHARI!', sub: '🎯 On target!', badge: '🎯 AKURAT' },
+                { icon: '💎', text: 'SULTAN RESI!', sub: '🦾 Tangan besi!', badge: '💪 HEBAT' },
+                { icon: '😎', text: 'COOL ABIS BOS!', sub: '🔱 Dewa resi!', badge: '⭐ LEGEND' },
+                { icon: '💥', text: 'BOOM! KEREN!', sub: '🚨 Gacor parah!', badge: '🤑 CUAN' },
+                { icon: '🤑', text: 'CUAN NGALIR!', sub: '🎊 Pesta resi!', badge: '💸 KAYA' }
+            ];
             const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-            document.getElementById('popupEmot').textContent = randomQuote.split(' ')[0];
-            document.getElementById('popupText').textContent = randomQuote.substring(randomQuote.indexOf(' ') + 1);
-            document.getElementById('popupSemangat').classList.add('show');
-            setTimeout(() => { document.getElementById('popupSemangat').classList.remove('show') }, 800);
+            showPopupAuto(randomQuote.icon, randomQuote.text, randomQuote.sub, randomQuote.badge);
         }
 
         function editTanggal(e) {
@@ -1027,7 +937,7 @@
                 bgCustom = event.target.result;
                 localStorage.setItem('bgCustom', bgCustom);
                 terapkanBackground();
-                alert('Background berhasil diganti bos! Atur transparansi biar teks tetep kebaca 🎨')
+                showPopupAuto('🖼️', 'BACKGROUND BERHASIL!', 'Atur transparansi biar teks kebaca', '🎨 CUSTOM')
             };
             reader.readAsDataURL(file);
             e.target.value = ''
@@ -1067,7 +977,12 @@
         function toggleReminder() {
             reminderAktif = document.getElementById('checkReminder').checked;
             localStorage.setItem('reminderAktif', reminderAktif);
-            if (reminderAktif) { mintaIzinNotifikasi(); alert('Reminder aktif! Notif jam 21:00 kalo belum input') } else alert('Reminder dimatiin bos')
+            if (reminderAktif) { 
+                mintaIzinNotifikasi(); 
+                showPopupAuto('🔔', 'REMINDER AKTIF!', 'Notif jam 21:00 kalo belum input', '⏰ ON')
+            } else {
+                showPopupAuto('🔕', 'REMINDER DIMATIKAN', 'Gak bakal dapet notif lagi', '⏰ OFF')
+            }
         }
 
         function mintaIzinNotifikasi() { if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission() }
@@ -1094,7 +1009,9 @@
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
                 localStorage.setItem(keyBackup, 'true');
-                setTimeout(() => { alert(`✅ BACKUP OTOMATIS BERHASIL!\n\nFile: AUTO-backup-gaji-${getTanggalHariIni()}.json\nUdah masuk folder Download HP lu bos.`) }, 500);
+                setTimeout(() => { 
+                    showPopupAuto('✅', 'BACKUP OTOMATIS BERHASIL!', 'File masuk folder Download HP', '💾 AUTO SAVE')
+                }, 500);
             }
         }
 
@@ -1104,14 +1021,14 @@
             o.download = `backup-gaji-sicepat-${getTanggalHariIni()}.json`;
             o.click();
             URL.revokeObjectURL(n);
-            alert('Backup berhasil didownload bos! Simpen di Google Drive biar aman ☁️')
+            showPopupAuto('📥', 'BACKUP DIDOWNLOAD!', 'Simpen di Google Drive biar aman', '☁️ AMAN')
         }
 
         function showBackupFallback() {
             const fallbackData = { dataHarian, dataBulanan, dataRekor, dataTahunan, dataBulananManual };
             const textToCopy = JSON.stringify(fallbackData, null, 2);
             navigator.clipboard.writeText(textToCopy).then(() => {
-                alert('Teks backup berhasil disalin ke papan klip! 📋');
+                showPopupAuto('📋', 'TEKS BACKUP DISALIN!', 'Sudah di papan klip', '✅ OK')
             }).catch(() => {
                 alert('Gagal menyalin teks secara otomatis. Silakan gunakan tombol download.');
             });
@@ -1135,8 +1052,8 @@
                         localStorage.setItem('gajiSicepatRekor', JSON.stringify(dataRekor));
                         localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
                         localStorage.setItem('dataBulananManual', JSON.stringify(dataBulananManual));
-                        alert('Restore berhasil bos! Halaman bakal reload 🔄');
-                        location.reload()
+                        showPopupAuto('🔄', 'RESTORE BERHASIL!', 'Halaman bakal reload', '✅ DONE');
+                        setTimeout(() => location.reload(), 1500);
                     }
                 } catch (e) { alert('File backup rusak bos! Pastiin file.json yang bener') }
             };
@@ -1331,12 +1248,13 @@
             tampilLogBulanan();
             if (navigator.vibrate) navigator.vibrate(50);
 
-            const quotes = ['🔥 Mantap bos!', '💪 Gacor!', '🚀 Bulan ini cuan!', '⚡ Petir!', '💯 Keren!'];
+            const quotes = [
+                { icon: '🔥', text: 'MANTAP BOS!', sub: 'Data bulan tersimpan', badge: '✅ DONE' },
+                { icon: '💪', text: 'GACOR!', sub: 'Bulan ini cuan!', badge: '🚀 GAS' },
+                { icon: '🚀', text: 'BULAN INI CUAN!', sub: 'Semangat terus!', badge: '💸 CUAN' }
+            ];
             const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-            document.getElementById('popupEmot').textContent = randomQuote.split(' ')[0];
-            document.getElementById('popupText').textContent = randomQuote.substring(randomQuote.indexOf(' ') + 1);
-            document.getElementById('popupSemangat').classList.add('show');
-            setTimeout(() => { document.getElementById('popupSemangat').classList.remove('show') }, 800);
+            showPopupAuto(randomQuote.icon, randomQuote.text, randomQuote.sub, randomQuote.badge);
         }
 
         function tampilLogBulanan() {
@@ -1394,6 +1312,7 @@
                 localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
                 tampilLogBulanan();
                 updatePrediksiTarget();
+                showPopupAuto('✏️', 'DATA BULAN DIUPDATE!', 'Perubahan tersimpan', '✅ OK');
             }
         }
 
@@ -1405,6 +1324,7 @@
                 localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
                 tampilLogBulanan();
                 updatePrediksiTarget();
+                showPopupAuto('🗑️', 'DATA BULAN DIHAPUS!', 'Sudah terhapus permanen', '⚠️ DONE');
             }
         }
 
@@ -1416,6 +1336,7 @@
             localStorage.setItem('dataBulananManual', JSON.stringify(dataBulananManual));
             tampilLogBulanan();
             updatePrediksiTarget();
+            showPopupAuto('⚠️', 'DATA TAHUNAN DIHAPUS!', 'Semua data tahunan hilang', '💀 GONE');
         }
     </script>
 </body>
