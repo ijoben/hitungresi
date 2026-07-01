@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
+<!-- saved from url=(0235)https://scontent.xx.fbcdn.net/m1/v/t6/An8GFNxGzx2Vx6CMe6Z6SiqFLtsWT5DmkH-P2-HmmdBpVv2SaR6YleukAwvD1B5K5u6iyZpYsgD_vwMEl7CBI_-9xLXFZ_Hmv8gv6w7BuIC3?ccb=10-5&oh=00_AQAvulD7Ri5P2uq-g4Sdh7YcZAX00ci2ruy6S8NBMMnFFw&oe=6A46D03C&_nc_sid=4ee932 -->
+<html lang="id" style="--bg-opacity: 0.4; --primary: #ED1C24;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
     <title>Gaji Kurir SiCepat</title>
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="https://scontent.xx.fbcdn.net/m1/v/t6/manifest.json">
     <meta name="theme-color" content="#ED1C24">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="icon-192.png">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js">
+    <link rel="apple-touch-icon" href="https://scontent.xx.fbcdn.net/m1/v/t6/icon-192.png">
+    <script src="./indexupdate_files/chart.js.download">
         // Auto isi tab tahunan dari data harian saat akhir bulan
         function cekAkhirBulanDanUpdateTahunan() {
             const today = new Date();
@@ -186,15 +186,15 @@
     <div class="container">
         <div class="top-bar">
             <div class="logo-sicepat">
-                <span class="badge-reminder" id="badgeReminder">BELUM INPUT!</span>
-                <svg viewBox="0 0 240 50" xmlns="http://www.w3.org/2000/svg"><path d="M18 5 L10 28 L22 28 L15 48 L32 22 L20 22 L28 5 Z" fill="#FFD700"/><text x="50" y="32" font-family="Arial Black, Arial" font-size="26" font-weight="900" fill="#ED1C24">SiCepat</text><text x="50" y="44" font-family="Arial" font-size="10" fill="#ED1C24">EKSPRES</text></svg>
+                <span class="badge-reminder" id="badgeReminder" style="display: block;">BELUM INPUT!</span>
+                <svg viewBox="0 0 240 50" xmlns="http://www.w3.org/2000/svg"><path d="M18 5 L10 28 L22 28 L15 48 L32 22 L20 22 L28 5 Z" fill="#FFD700"></path><text x="50" y="32" font-family="Arial Black, Arial" font-size="26" font-weight="900" fill="#ED1C24">SiCepat</text><text x="50" y="44" font-family="Arial" font-size="10" fill="#ED1C24">EKSPRES</text></svg>
             </div>
             <div class="top-btn-group">
                 <button class="btn-install" id="btnInstall" onclick="installPWA()">📲</button>
                 <button class="btn-dark" onclick="toggleDarkMode()" id="btnDark">🌙</button>
             </div>
         </div>
-        <h2>GAJI KURIR <span id="bulanIni"></span></h2>
+        <h2>GAJI KURIR <span id="bulanIni">JULI 2026</span></h2>
         <div class="rekor-banner kosong" id="rekorBanner"></div>
 
         <div id="tab-input" class="tab-content active">
@@ -215,11 +215,11 @@
             </div>
         </div>
 
-        <div id="tab-log" class="tab-content"><div class="log-harian" id="logHarian"></div></div>
+        <div id="tab-log" class="tab-content"><div class="log-harian" id="logHarian"><h5>LOG INPUT BULAN INI</h5><div class="log-item kosong"><div class="log-info"><div class="log-tgl">Rab, 01 Jul</div><div class="log-resi">0 resi = Rp 0</div></div><div class="log-btn"><button class="btn-edit" onclick="editTanggal(&#39;2026-07-01&#39;)">Edit</button></div></div></div></div>
 
         <div id="tab-setting" class="tab-content">
             <div class="setting-box">
-                <h5>🎨 TEMA & TAMPILAN</h5>
+                <h5>🎨 TEMA &amp; TAMPILAN</h5>
                 <div class="setting-row">
                     <span class="setting-label">Warna Utama</span>
                     <div class="setting-control">
@@ -230,7 +230,7 @@
                 <div class="setting-row">
                     <span class="setting-label">Background Custom</span>
                     <div class="setting-control">
-                        <button class="btn-setting btn-upload" onclick="document.getElementById('inputFileBg').click()">Upload</button>
+                        <button class="btn-setting btn-upload" onclick="document.getElementById(&#39;inputFileBg&#39;).click()">Upload</button>
                         <button class="btn-setting btn-reset" onclick="hapusBackground()">Hapus</button>
                     </div>
                 </div>
@@ -256,23 +256,23 @@
             </div>
 
             <div class="backup-container">
-                <h5>☁️ BACKUP & RESTORE</h5>
+                <h5>☁️ BACKUP &amp; RESTORE</h5>
                 <div class="backup-btn-group">
                     <button class="btn-backup btn-export" onclick="exportBackup()">📥 Download</button><button class="btn-backup" style="background:#2196F3" onclick="showBackupFallback(JSON.stringify({dataHarian,dataBulanan,dataRekor,dataTahunan,dataBulananManual},null,2), `backup-manual-${getTanggalHariIni()}.json`)">📋 Salin</button>
-                    <button class="btn-backup btn-import" onclick="document.getElementById('inputFileBackup').click()">📤 Upload</button>
+                    <button class="btn-backup btn-import" onclick="document.getElementById(&#39;inputFileBackup&#39;).click()">📤 Upload</button>
                 </div>
                 <input type="file" id="inputFileBackup" accept=".json" onchange="importBackup(event)">
-                <div class="backup-info">✅ Auto backup tiap tgl 15 & 30!</div>
+                <div class="backup-info">✅ Auto backup tiap tgl 15 &amp; 30!</div>
             </div>
         </div>
 
         <div id="tab-statistik" class="tab-content">
-            <div id="listRiwayat"></div>
+            <div id="listRiwayat"><div style="text-align:center;color:#999;padding:20px;">Belum ada riwayat</div></div>
             <div class="grafik-container"><h5>📈 GRAFIK RESI BULAN INI</h5><canvas id="chartResi"></canvas></div>
         </div>
 
         <div id="tab-tahunan" class="tab-content">
-            <h2>REKAP BULANAN <span id="tahunBulanan"></span></h2>
+            <h2>REKAP BULANAN <span id="tahunBulanan">2026</span></h2>
 
             <div class="input-tanggal">
                 <label>📅 INPUT RESI PER BULAN</label>
@@ -666,24 +666,6 @@ function hapusDataTahunan(){if(!confirm('Hapus SEMUA data tahunan? Data gak bisa
         }
 
     </script>
-<script>
-// Revised: log tab loads only last 10 days
-if(typeof loadLogs === 'function'){
-    const originalLoadLogs = loadLogs;
-    loadLogs = function(){
-        const tenDaysAgo = new Date();
-        tenDaysAgo.setDate(tenDaysAgo.getDate() - 10);
-        // filter logs
-        const allLogs = originalLoadLogs.apply(this, arguments);
-        if(Array.isArray(allLogs)){
-            return allLogs.filter(log => {
-                const logDate = new Date(log.date || log.timestamp || 0);
-                return logDate >= tenDaysAgo;
-            });
-        }
-        return allLogs;
-    };
-}
-</script>
-</body>
-</html>
+
+
+</body></html>
