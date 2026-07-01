@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
     <title>Gaji Kurir SiCepat</title>
-        <meta name="theme-color" content="#ED1C24">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ED1C24">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link class="apple-touch-icon" href="icon-192.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
         :root{--primary:#ED1C24;--bg:white;--text:#333;--text2:#666;--border:#eee;--box:#f8f9fa;--bg-opacity:.6}
         body.dark{--bg:#2a2a2a;--text:#e0e0e0;--text2:#b0b0b0;--border:#404040;--box:#333}
@@ -201,7 +203,7 @@
 
         <div id="tab-statistik" class="tab-content">
             <div id="listRiwayat"></div>
-            <div class="grafik-container"><h5>📈 GRAFIK RESI BULAN INI</h5><canvas id="chartResi"></canvas></div>
+            <div class="grafik-container"><h5>📈 GRAFIK RESI BULAN INI</h5><canvas id="chartResi" height="180" style="max-height:180px"></canvas></div>
         </div>
 
         <div id="tab-tahunan" class="tab-content">
@@ -267,15 +269,6 @@
         let chartInstance = null;
         let bulanLalu = getBulanTahun();
         let deferredPrompt;
-            // Force re-render chart when tab statistik dibuka
-            const statistikTab = document.getElementById('tab-statistik');
-            const observer = new MutationObserver(() => {
-                if (statistikTab.classList.contains('active')) {
-                    setTimeout(updateGrafik, 50);
-                }
-            });
-            observer.observe(statistikTab, { attributes: true, attributeFilter: ['class'] });
-
         
         // Limit untuk pagination tab log harian
         let logLimit = 10;
@@ -330,7 +323,11 @@
                         logLimit = 10; // Reset limit tiap kali buka tab log
                         tampilLogHarian();
                     }
-                    if (tabName === 'statistik') { setTimeout(updateGrafik, 50); }
+                    if (tabName === 'statistik') {
+                        requestAnimationFrame(() => {
+                            setTimeout(updateGrafik, 50);
+                        });
+                    }
                     if (tabName === 'tahunan') {
                         loadPilihBulan();
                         tampilLogBulanan();
@@ -345,6 +342,10 @@
             hitungTotal();
             tampilLogHarian();
             cekBadgeReminder();
+            if (document.querySelector('.tab-btn[data-tab="statistik"]').classList.contains('active')) {
+                setTimeout(updateGrafik, 100);
+            }
+            setTimeout(updateGrafik, 200);
             tampilRekor();
             cekBackupReminder();
             if (reminderAktif) mintaIzinNotifikasi();
@@ -404,6 +405,10 @@
             hitungTotal();
             tampilLogHarian();
             cekBadgeReminder();
+            if (document.querySelector('.tab-btn[data-tab="statistik"]').classList.contains('active')) {
+                setTimeout(updateGrafik, 100);
+            }
+            setTimeout(updateGrafik, 200);
             updateGrafik();
             cekAkhirBulanDanUpdateTahunan(); // Cek otomatisasi setiap kali simpan data
             
@@ -425,6 +430,10 @@
                 hitungTotal();
                 tampilLogHarian();
                 cekBadgeReminder();
+            if (document.querySelector('.tab-btn[data-tab="statistik"]').classList.contains('active')) {
+                setTimeout(updateGrafik, 100);
+            }
+            setTimeout(updateGrafik, 200);
                 updateGrafik();
                 cekAkhirBulanDanUpdateTahunan();
             }
@@ -437,6 +446,10 @@
                 hitungTotal();
                 tampilLogHarian();
                 cekBadgeReminder();
+            if (document.querySelector('.tab-btn[data-tab="statistik"]').classList.contains('active')) {
+                setTimeout(updateGrafik, 100);
+            }
+            setTimeout(updateGrafik, 200);
                 updateGrafik();
                 cekAkhirBulanDanUpdateTahunan();
             }
@@ -513,32 +526,68 @@
         }
 
         function updateGrafik() {
-            const e = [], t = [], n = new Date, o = n.getDate(), r = n.getFullYear(), a = n.getMonth() + 1;
-            for (let n = 1; n <= o; n++) {
-                const o = `${r}-${String(a).padStart(2, '0')}-${String(n).padStart(2, '0')}`;
-                e.push(n);
-                t.push(dataHarian[o] || 0)
+            const canvas = document.getElementById('chartResi');
+            if (!canvas) {
+                console.log('[Chart] Canvas tidak ditemukan');
+                return;
             }
-            const i = document.getElementById('chartResi');
-            if (!i) return;
-            const l = i.getContext('2d'), s = darkMode ? '#e0e0e0' : '#666', c = darkMode ? '#404040' : '#e0e0e0';
-            if (chartInstance) chartInstance.destroy();
-            chartInstance = new Chart(l, {
+            if (canvas.offsetParent === null) {
+                console.log('[Chart] Canvas masih hidden, skip render');
+                return;
+            }
+            
+            const labels = [], data = [], now = new Date, tgl = now.getDate(), thn = now.getFullYear(), bln = now.getMonth() + 1;
+            for (let i = 1; i <= tgl; i++) {
+                const key = `${thn}-${String(bln).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                labels.push(i);
+                data.push(dataHarian[key] || 0);
+            }
+            
+            console.log('[Chart] Render data:', data);
+            
+            const ctx = canvas.getContext('2d'), textColor = darkMode ? '#e0e0e0' : '#666', gridColor = darkMode ? '#404040' : '#e0e0e0';
+            
+            if (chartInstance) {
+                chartInstance.destroy();
+                chartInstance = null;
+            }
+            
+            chartInstance = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: e,
-                    datasets: [{ label: 'Resi Harian', data: t, borderColor: warnaCustom, backgroundColor: warnaCustom + '1A', tension: .3, fill: true, pointBackgroundColor: warnaCustom, pointRadius: 4, pointHoverRadius: 6, borderWidth: 3 }]
+                    labels: labels,
+                    datasets: [{
+                        label: 'Resi Harian',
+                        data: data,
+                        borderColor: warnaCustom,
+                        backgroundColor: warnaCustom + '33',
+                        tension: 0.3,
+                        fill: true,
+                        pointRadius: 3,
+                        pointHoverRadius: 5
+                    }]
                 },
-                options: {
-                    responsive: true,
+                options: { 
+                    responsive: true, 
                     maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: e => `${e.parsed.y} resi = Rp ${(e.parsed.y * tarif).toLocaleString('id-ID')}` } } },
-                    scales: {
-                        y: { beginAtZero: true, ticks: { font: { size: 10, weight: '600' }, color: s }, grid: { color: c } },
-                        x: { ticks: { font: { size: 9, weight: '600' }, color: s }, grid: { color: c } }
-                    }
+                    animation: { duration: 300 },
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: { enabled: true }
+                    }, 
+                    scales: { 
+                        y: { 
+                            beginAtZero: true, 
+                            ticks: { color: textColor, stepSize: 1 }, 
+                            grid: { color: gridColor } 
+                        }, 
+                        x: { 
+                            ticks: { color: textColor }, 
+                            grid: { display: false } 
+                        } 
+                    } 
                 }
-            })
+            });
         }
 
         function loadRiwayat() {
