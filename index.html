@@ -41,12 +41,31 @@
         .input-tanggal{background:var(--box);padding:12px;border-radius:12px;margin:14px 0;border:1px solid var(--primary)}
         .input-tanggal label{font-size:11px;color:var(--primary);font-weight:900;display:block;margin-bottom:10px;text-align:center;text-transform:uppercase}
         .input-group{display:flex;flex-direction:column;gap:8px}
-        .input-row{display:flex;gap:6px}
+        .input-row{display:flex;gap:6px;align-items:center}
         .input-tanggal input[type="text"],.input-tanggal input[type="number"],.input-tanggal select{width:100%;padding:10px 6px;border:1px solid var(--border);border-radius:8px;font-size:12px;outline:none;background:var(--bg);color:var(--text);font-weight:700}
-        .input-tanggal input[type="number"]{font-weight:900;text-align:center}
+        .input-tanggal input[type="number"]{font-weight:900;text-align:center; width: 120px;}
+        
+        /* VOICE BUTTON KECIL */
+        .btn-voice-small{background:var(--box);border:2px solid var(--border);width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:20px;transition:.2s;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text2)}
+        .btn-voice-small:hover{transform:scale(1.05);border-color:var(--primary)}
+        .btn-voice-small.recording{background:var(--primary);border-color:var(--primary);color:#fff;animation:pulse-mic-small 0.8s infinite}
+        @keyframes pulse-mic-small{0%,100%{box-shadow:0 0 0 0 rgba(237,28,36,0.4)}50%{box-shadow:0 0 0 12px rgba(237,28,36,0)}}
+        .btn-voice-small.listening{background:#4CAF50;border-color:#4CAF50;color:#fff}
+        .btn-voice-small .voice-dot{width:8px;height:8px;border-radius:50%;background:#4CAF50;display:none}
+        .btn-voice-small.recording .voice-dot{display:block;background:#fff}
+        
         .btn-simpan{background:var(--primary);color:#fff;border:none;padding:12px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:900;width:100%;text-transform:uppercase;transition:.2s}
         .btn-simpan:hover{transform:scale(1.01);box-shadow:0 4px 16px rgba(237,28,36,0.3)}
         .btn-simpan:active{transform:scale(0.97)}
+        
+        /* VOICE STATUS POPUP KECIL */
+        .voice-status-popup{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.85);color:#fff;padding:10px 24px;border-radius:16px;font-size:13px;font-weight:700;z-index:200;display:none;align-items:center;gap:12px;backdrop-filter:blur(10px);max-width:90%}
+        .voice-status-popup.show{display:flex}
+        .voice-status-popup .spinner{width:20px;height:20px;border:3px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .voice-status-popup .close-voice-status{background:rgba(255,255,255,0.15);border:none;color:#fff;padding:2px 10px;border-radius:8px;cursor:pointer;font-size:14px}
+        .voice-status-popup .close-voice-status:hover{background:rgba(255,255,255,0.3)}
+        
         .log-harian{font-size:11px}
         .log-harian h5{margin:0 0 8px 0;font-size:12px;text-align:center;color:var(--text2);font-weight:700;text-transform:uppercase}
         .log-item{display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--box);margin-bottom:5px;border-radius:8px}
@@ -90,17 +109,32 @@
         .btn-import{background:#ff9800}
         .backup-info{font-size:9px;color:var(--text2);text-align:center;line-height:1.4;font-weight:600}
         #inputFileBackup,#inputFileBg{display:none}
-        .riwayat-item{background:var(--box);padding:10px;border-radius:12px;margin-bottom:8px;border-left:3px solid var(--primary)}
-        .riwayat-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:6px}
+        
+        /* RIWAYAT STATS - EXPANDABLE */
+        .riwayat-item{background:var(--box);padding:10px;border-radius:12px;margin-bottom:8px;border-left:3px solid var(--primary);box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+        .riwayat-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:6px;cursor:pointer}
+        .riwayat-header:hover{opacity:0.8}
         .riwayat-bulan{font-weight:900;font-size:13px;flex:1}
         .riwayat-total{color:#ff5252;font-weight:900;font-size:14px;white-space:nowrap}
+        .riwayat-arrow{font-size:12px;transition:.3s;color:var(--text2);margin-left:4px}
+        .riwayat-header.active .riwayat-arrow{transform:rotate(180deg)}
+        .riwayat-body{max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1)}
+        .riwayat-body.open{max-height:300px;padding-top:6px}
         .riwayat-stats{display:grid;grid-template-columns:1fr 1fr;gap:5px;font-size:9px;color:var(--text2)}
         .stat-box{background:var(--bg);padding:6px;border-radius:6px;text-align:center}
         .stat-label{color:var(--text2);font-size:8px;text-transform:uppercase;font-weight:700}
         .stat-angka{font-weight:900;color:var(--text);margin-top:2px;font-size:12px}
+        .periode-detail{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px}
+        .periode-detail .periode-item{background:var(--bg);padding:4px 6px;border-radius:4px;text-align:center;font-size:9px}
+        .periode-detail .periode-item .label{font-size:7px;text-transform:uppercase;color:var(--text2);font-weight:700}
+        .periode-detail .periode-item .value{font-weight:900;color:var(--primary);font-size:11px;margin-top:1px}
         .riwayat-footer{margin-top:6px;text-align:right}
-        .hapus-riwayat{background:#e53935;color:#fff;border:none;padding:5px 12px;border-radius:6px;cursor:pointer;font-size:9px;font-weight:700;transition:.2s}
+        .hapus-riwayat{background:#e53935;color:#fff;border:none;padding:4px 12px;border-radius:6px;cursor:pointer;font-size:9px;font-weight:700;transition:.2s}
         .hapus-riwayat:hover{transform:scale(1.05)}
+        .riwayat-item:first-child .riwayat-body{max-height:300px;padding-top:6px}
+        .riwayat-item:first-child .riwayat-header .riwayat-arrow{transform:rotate(180deg)}
+        .riwayat-item:first-child .riwayat-header.active .riwayat-arrow{transform:rotate(180deg)}
+        
         .total-bulanan{background:#4caf50;padding:14px;border-radius:12px;margin:12px 0;text-align:center;color:#fff}
         .total-bulanan .label{font-size:10px;opacity:.9;text-transform:uppercase}
         .total-bulanan .angka{font-size:22px;font-weight:900;margin-top:4px}
@@ -131,7 +165,6 @@
         .popup-box .popup-close{background:rgba(255,255,255,0.15);border:none;color:#fff;padding:8px 24px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer;margin-top:14px;transition:.2s}
         .popup-box .popup-close:hover{background:rgba(255,255,255,0.3);transform:scale(1.05)}
         
-        /* POPUP INPUT MANUAL */
         .popup-input-manual{max-width:340px;width:92%;padding:28px 24px}
         .popup-input-manual .input-group-popup{display:flex;flex-direction:column;gap:10px;margin-top:12px}
         .popup-input-manual select,.popup-input-manual input{width:100%;padding:12px;border:none;border-radius:10px;font-size:14px;font-weight:700;text-align:center;background:rgba(255,255,255,0.2);color:#fff;outline:none}
@@ -143,7 +176,6 @@
         .popup-input-manual .btn-popup-batal{background:rgba(255,255,255,0.08);border:none;color:rgba(255,255,255,0.6);padding:8px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;transition:.2s;margin-top:4px}
         .popup-input-manual .btn-popup-batal:hover{background:rgba(255,255,255,0.15)}
         
-        /* EXPANDABLE LOG BULANAN */
         .bulan-accordion{background:var(--box);border-radius:12px;margin-bottom:6px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
         .bulan-accordion-header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;transition:.2s;background:var(--box);border-bottom:1px solid transparent}
         .bulan-accordion-header:hover{background:var(--bg)}
@@ -157,7 +189,6 @@
         .bulan-accordion-body .log-item{margin-bottom:4px;padding:6px 8px}
         .bulan-accordion-body .log-item:last-child{margin-bottom:0}
 
-        /* PREDIKSI TARGET OTOMATIS */
         .prediksi-target-box{background:linear-gradient(135deg,var(--primary),var(--primary-dark));border-radius:12px;padding:14px;margin:14px 0 4px 0;color:#fff;position:relative;overflow:hidden;transition:background 0.3s ease}
         .prediksi-target-box::before{content:'🔮';position:absolute;right:10px;top:-5px;font-size:45px;opacity:0.15}
         .prediksi-target-box .label{font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:0.85;font-weight:700;margin-bottom:2px;display:flex;justify-content:space-between;align-items:center}
@@ -184,7 +215,6 @@
         .prediksi-target-kosong{background:var(--box);border-radius:12px;padding:16px;margin:14px 0 4px 0;text-align:center;color:var(--text2);font-size:12px;font-weight:600;border:1px solid var(--border)}
         .prediksi-target-kosong .icon-big{font-size:32px;display:block;margin-bottom:6px}
 
-        /* BADGE AUTO */
         .badge-auto{background:#4CAF50;color:#fff;padding:2px 10px;border-radius:12px;font-size:9px;font-weight:700;display:inline-block}
         .btn-manual-kecil{background:var(--box);border:1px solid var(--primary);color:var(--primary);padding:6px 14px;border-radius:8px;font-size:10px;font-weight:800;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:4px}
         .btn-manual-kecil:hover{background:var(--primary);color:#fff}
@@ -218,26 +248,37 @@
                 <div class="input-group">
                     <div class="input-row">
                         <input type="text" id="inputTanggal" placeholder="2026-10-05" maxlength="10">
-                        <input type="number" id="inputResi" min="1" placeholder="0 Resi" inputmode="numeric">
+                        <input type="number" id="inputResi" min="1" placeholder="0 Resi" inputmode="numeric" style="flex:1;">
+                        <button class="btn-voice-small" id="btnVoice" onclick="startVoiceInput()" title="Input pakai suara">
+                            <span id="voiceIcon">🎤</span>
+                            <span class="voice-dot"></span>
+                        </button>
                     </div>
                     <button class="btn-simpan" onclick="simpanResi()"><span>💾</span> SIMPAN RESI</button>
                 </div>
+            </div>
+
+            <!-- VOICE STATUS POPUP -->
+            <div class="voice-status-popup" id="voiceStatusPopup">
+                <div class="spinner"></div>
+                <span id="voiceStatusText">Mendengarkan...</span>
+                <button class="close-voice-status" onclick="stopVoiceInput()">✕</button>
             </div>
 
             <!-- PREDIKSI TARGET OTOMATIS -->
             <div id="prediksiTargetContainer">
                 <div class="prediksi-target-box" id="prediksiTargetBox">
                     <div class="label">
+                        <span>🔮 PREDIKSI TARGET &amp; GAJI BULAN DEPAN</span>
                         <span class="label-sub">berdasarkan 3 bulan terakhir</span>
                     </div>
                     
-                    <div class="target-judul">🎯 PREDIKSI GAJI BULAN DEPAN</div>
+                    <div class="target-judul">🎯 Target Gaji Bulan Depan</div>
                     <div class="target-besar">
                         Rp <span id="targetNominal">0</span>
                         <small>| <span id="targetResi">0</span> resi</small>
                     </div>
                     
-                    <!-- Progress -->
                     <div class="progress-section">
                         <div class="progress-header">
                             <span id="progressLabel">0 / 0 resi</span>
@@ -248,7 +289,6 @@
                         </div>
                     </div>
                     
-                    <!-- Info Grid -->
                     <div class="info-grid">
                         <div class="info-item">
                             <div class="info-label">✅ Capaian Bulan Ini</div>
@@ -264,7 +304,6 @@
                         </div>
                     </div>
                     
-                    <!-- Info bawah -->
                     <div class="info-bawah">
                         <span id="targetTrend">📈 Trend: -</span>
                         <span id="targetRata">📊 Rata-rata 3 bulan: 0 resi</span>
@@ -345,12 +384,17 @@
         </div>
 
         <div id="tab-tahunan" class="tab-content">
-            <!-- HEADER DENGAN TOMBOL MANUAL KECIL -->
             <div class="header-tahunan">
                 <h2>📅 REKAP TAHUNAN <span id="tahunBulanan"></span>
-                    <span class="badge-auto">🤖 AUTO UPDATE</span>
+                    <span class="badge-auto">🤖 AUTO</span>
                 </h2>
                 <button class="btn-manual-kecil" onclick="openPopupManual()">📝 + Manual</button>
+            </div>
+
+            <div style="background:var(--box);border-radius:12px;padding:10px 14px;margin-bottom:12px;border:1px solid #4CAF50;font-size:11px;text-align:center;color:var(--text2);">
+                <span style="font-weight:700;color:#4CAF50;">✅ Auto Update!</span> 
+                Data bulanan otomatis tersimpan di <span style="font-weight:700;">akhir bulan</span> dari resi harian.
+                <span style="display:block;font-size:9px;margin-top:2px;opacity:0.7;">Tanggal 1 setiap bulan, data bulan sebelumnya otomatis direkap</span>
             </div>
 
             <div class="total-bulanan">
@@ -368,7 +412,6 @@
                 </div>
             </div>
             
-            <!-- TOMBOL REKAP MANUAL (CADANGAN) -->
             <div class="setting-box" style="border-color:#FF9800;margin-top:8px">
                 <div class="setting-row">
                     <div class="setting-label" style="color:#FF9800;font-size:10px;">🔄 Rekap Manual (Jika auto gagal)</div>
@@ -433,6 +476,203 @@
         let bulanLalu = getBulanTahun();
         let deferredPrompt;
         let logLimit = 10;
+        let recognition = null;
+        let isRecognizing = false;
+
+        // ==================== VOICE INPUT ====================
+        function startVoiceInput() {
+            const btn = document.getElementById('btnVoice');
+            const icon = document.getElementById('voiceIcon');
+            const statusPopup = document.getElementById('voiceStatusPopup');
+            const statusText = document.getElementById('voiceStatusText');
+            
+            if (isRecognizing) {
+                stopVoiceInput();
+                return;
+            }
+            
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                alert('Browser lu gak support voice input bos! Pake Chrome/Edge di HP.');
+                return;
+            }
+            
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.lang = 'id-ID';
+            recognition.continuous = false;
+            recognition.interimResults = true;
+            recognition.maxAlternatives = 1;
+            
+            isRecognizing = true;
+            
+            btn.classList.add('recording');
+            icon.textContent = '⏹';
+            statusPopup.classList.add('show');
+            statusText.textContent = '🎤 Mendengarkan...';
+            
+            let finalText = '';
+            let hasResult = false;
+            
+            recognition.onresult = function(event) {
+                let interim = '';
+                let final = '';
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    if (event.results[i].isFinal) {
+                        final += transcript;
+                        hasResult = true;
+                    } else {
+                        interim += transcript;
+                    }
+                }
+                
+                finalText += final;
+                const displayText = finalText + interim;
+                const angka = extractNumber(displayText);
+                
+                if (angka > 0) {
+                    statusText.textContent = '🔊 ' + angka + ' resi (auto save...)';
+                    document.getElementById('inputResi').value = angka;
+                    document.getElementById('inputResi').style.background = '#4CAF5044';
+                    setTimeout(() => {
+                        document.getElementById('inputResi').style.background = '';
+                    }, 1000);
+                    
+                    // AUTO SAVE setelah dengar angka
+                    if (final) {
+                        setTimeout(() => {
+                            autoSaveVoice(angka);
+                        }, 300);
+                    }
+                } else {
+                    statusText.textContent = '🎤 ' + (displayText || 'Mendengarkan...');
+                }
+            };
+            
+            recognition.onerror = function(event) {
+                console.error('Voice error:', event.error);
+                if (event.error === 'not-allowed') {
+                    statusText.textContent = '❌ Izin mic ditolak!';
+                } else if (event.error === 'no-speech') {
+                    statusText.textContent = '🔇 Gak ada suara, coba lagi';
+                } else if (event.error === 'aborted') {
+                    // Dihentikan user
+                } else {
+                    statusText.textContent = '❌ Error: ' + event.error;
+                }
+                setTimeout(() => {
+                    stopVoiceInput();
+                }, 1500);
+            };
+            
+            recognition.onend = function() {
+                // Jika ada hasil, auto save sudah jalan
+                if (!hasResult) {
+                    stopVoiceInput();
+                } else {
+                    // Auto save triggered
+                }
+            };
+            
+            try {
+                recognition.start();
+            } catch(e) {
+                isRecognizing = false;
+                btn.classList.remove('recording');
+                icon.textContent = '🎤';
+                statusPopup.classList.remove('show');
+                console.error(e);
+            }
+        }
+        
+        function stopVoiceInput() {
+            if (recognition) {
+                try { recognition.abort(); } catch(e) {}
+                try { recognition.stop(); } catch(e) {}
+            }
+            isRecognizing = false;
+            const btn = document.getElementById('btnVoice');
+            const icon = document.getElementById('voiceIcon');
+            const statusPopup = document.getElementById('voiceStatusPopup');
+            btn.classList.remove('recording');
+            icon.textContent = '🎤';
+            statusPopup.classList.remove('show');
+        }
+        
+        function autoSaveVoice(angka) {
+            if (angka <= 0) return;
+            
+            const tanggal = document.getElementById('inputTanggal').value;
+            if (!tanggal.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                alert('Format tanggal salah bos! Pake 2026-10-05');
+                return;
+            }
+            
+            dataHarian[tanggal] = angka;
+            localStorage.setItem('gajiSicepatHarian', JSON.stringify(dataHarian));
+            cekRekor(angka, tanggal);
+            document.getElementById('inputResi').value = '';
+            
+            hitungTotal();
+            tampilLogHarian();
+            cekBadgeReminder();
+            updatePrediksiTarget();
+            cekAkhirBulanDanUpdateTahunan();
+            
+            setTimeout(() => {
+                if (document.getElementById('tab-statistik').classList.contains('active')) {
+                    updateGrafik();
+                }
+            }, 1000);
+            
+            if (document.querySelector('.tab-btn[data-tab="statistik"]').classList.contains('active')) {
+                setTimeout(updateGrafik, 100);
+            }
+            setTimeout(updateGrafik, 200);
+            updateGrafik();
+            
+            if (navigator.vibrate) navigator.vibrate(50);
+            
+            const voiceQuotes = [
+                { icon: '🎤', text: 'VOICE INPUT BERHASIL!', sub: `${angka} resi tersimpan`, badge: '✅ AUTO SAVE' },
+                { icon: '🔥', text: 'GAS PAKE SUARA!', sub: `${angka} resi masuk`, badge: '🎤 GACOR' },
+                { icon: '⚡', text: 'CEPET BANGET BOS!', sub: `${angka} resi auto save`, badge: '🚀 FAST' }
+            ];
+            const randomQuote = voiceQuotes[Math.floor(Math.random() * voiceQuotes.length)];
+            showPopupAuto(randomQuote.icon, randomQuote.text, randomQuote.sub, randomQuote.badge);
+            
+            // Tutup voice status
+            setTimeout(() => {
+                stopVoiceInput();
+            }, 500);
+        }
+        
+        function extractNumber(text) {
+            // Cari angka dalam teks
+            const matches = text.match(/\d+/g);
+            if (matches) {
+                const angka = parseInt(matches[matches.length - 1]);
+                if (angka > 0 && angka < 10000) return angka;
+            }
+            // Cari kata seperti "lima", "sepuluh", "dua puluh"
+            const wordMap = {
+                'nol': 0, 'satu': 1, 'dua': 2, 'tiga': 3, 'empat': 4, 'lima': 5,
+                'enam': 6, 'tujuh': 7, 'delapan': 8, 'sembilan': 9, 'sepuluh': 10,
+                'sebelas': 11, 'dua belas': 12, 'tiga belas': 13, 'empat belas': 14,
+                'lima belas': 15, 'enam belas': 16, 'tujuh belas': 17, 'delapan belas': 18,
+                'sembilan belas': 19, 'dua puluh': 20, 'tiga puluh': 30, 'empat puluh': 40,
+                'lima puluh': 50, 'enam puluh': 60, 'tujuh puluh': 70, 'delapan puluh': 80,
+                'sembilan puluh': 90, 'seratus': 100, 'seribu': 1000
+            };
+            
+            const lowerText = text.toLowerCase();
+            for (let word in wordMap) {
+                if (lowerText.includes(word)) {
+                    return wordMap[word];
+                }
+            }
+            return 0;
+        }
 
         // ==================== POPUP ====================
         function showPopup(icon, text, sub, badge) {
@@ -575,15 +815,12 @@
                 });
             });
 
-            // CEK AUTO REKAP AKHIR BULAN
             cekAkhirBulanDanUpdateTahunan();
             autoIsiNol();
             loadRiwayat();
             hitungTotal();
             tampilLogHarian();
             cekBadgeReminder();
-            
-            // PREDIKSI TARGET OTOMATIS
             updatePrediksiTarget();
             
             setTimeout(() => {
@@ -683,8 +920,6 @@
             tampilLogHarian();
             cekBadgeReminder();
             updatePrediksiTarget();
-            
-            // CEK AUTO REKAP
             cekAkhirBulanDanUpdateTahunan();
             
             setTimeout(() => {
@@ -828,7 +1063,6 @@
                 n += '<div style="text-align:center;color:#999;padding:20px;">Belum ada input bulan ini</div>';
             }
             
-            // TAMPILKAN LOG BULAN SEBELUMNYA (EXPANDABLE)
             n += '<div style="margin-top:16px;border-top:1px solid var(--border);padding-top:12px;">';
             n += '<h5>📆 BULAN SEBELUMNYA</h5>';
             
@@ -960,17 +1194,96 @@
             });
         }
 
-        // ==================== RIWAYAT ====================
+        // ==================== RIWAYAT STATS - EXPANDABLE ====================
         function loadRiwayat() {
             const e = document.getElementById('listRiwayat');
             e.innerHTML = '';
             const t = Object.keys(dataBulanan).sort().reverse();
+            
             if (t.length > 0) {
-                t.forEach(t => {
-                    const n = dataBulanan[t], o = new Date(t + '-01').toLocaleDateString('id-ID', { month: 'long', year: 'numeric' }), r = hitungStatistik(t), a = n.totalResi || (n.resi1 + n.resi2);
-                    e.innerHTML += `<div class="riwayat-item"><div class="riwayat-header"><div class="riwayat-bulan">${o}</div><div class="riwayat-total">Rp ${n.totalGaji.toLocaleString('id-ID')}</div></div><div class="riwayat-stats"><div class="stat-box"><div class="stat-label">Total Resi</div><div class="stat-angka">${a.toLocaleString('id-ID')}</div></div><div class="stat-box"><div class="stat-label">Hari Kerja</div><div class="stat-angka">${r.hariKerja} hari</div></div><div class="stat-box"><div class="stat-label">Rata-rata</div><div class="stat-angka">${r.rata2} resi/hari</div></div><div class="stat-box"><div class="stat-label">Tertinggi</div><div class="stat-angka">${r.tertinggi} resi</div></div></div><div class="riwayat-footer"><button class="hapus-riwayat" onclick="hapusRiwayat('${t}')">Hapus Bulan</button></div></div>`
-                })
-            } else e.innerHTML = '<div style="text-align:center;color:#999;padding:20px;">Belum ada riwayat</div>'
+                t.forEach((bulan, index) => {
+                    const n = dataBulanan[bulan];
+                    const o = new Date(bulan + '-01').toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+                    const r = hitungStatistik(bulan);
+                    const a = n.totalResi || (n.resi1 + n.resi2);
+                    const totalGaji = n.totalGaji || ((n.resi1 + n.resi2) * tarif);
+                    
+                    const gajiPeriode1 = (n.resi1 || 0) * tarif * 0.5;
+                    const gajiPeriode2 = ((n.resi2 || 0) * tarif) + ((n.resi1 || 0) * tarif * 0.5);
+                    
+                    const isOpen = index === 0 ? 'open' : '';
+                    const isActive = index === 0 ? 'active' : '';
+                    
+                    e.innerHTML += `
+                        <div class="riwayat-item">
+                            <div class="riwayat-header ${isActive}" onclick="toggleRiwayat(this)">
+                                <div class="riwayat-bulan">${o}</div>
+                                <div class="riwayat-total">Rp ${totalGaji.toLocaleString('id-ID')}</div>
+                                <span class="riwayat-arrow">▼</span>
+                            </div>
+                            <div class="riwayat-body ${isOpen}">
+                                <div class="riwayat-stats">
+                                    <div class="stat-box">
+                                        <div class="stat-label">Total Resi</div>
+                                        <div class="stat-angka">${a.toLocaleString('id-ID')}</div>
+                                    </div>
+                                    <div class="stat-box">
+                                        <div class="stat-label">Hari Kerja</div>
+                                        <div class="stat-angka">${r.hariKerja} hari</div>
+                                    </div>
+                                    <div class="stat-box">
+                                        <div class="stat-label">Rata-rata</div>
+                                        <div class="stat-angka">${r.rata2} resi/hari</div>
+                                    </div>
+                                    <div class="stat-box">
+                                        <div class="stat-label">Tertinggi</div>
+                                        <div class="stat-angka">${r.tertinggi} resi</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="periode-detail">
+                                    <div class="periode-item">
+                                        <div class="label">📆 Tgl 1-15</div>
+                                        <div class="value">Rp ${gajiPeriode1.toLocaleString('id-ID')}</div>
+                                        <div style="font-size:7px;color:var(--text2);">${n.resi1 || 0} resi</div>
+                                    </div>
+                                    <div class="periode-item">
+                                        <div class="label">📆 Tgl 16-Akhir</div>
+                                        <div class="value">Rp ${gajiPeriode2.toLocaleString('id-ID')}</div>
+                                        <div style="font-size:7px;color:var(--text2);">${n.resi2 || 0} resi</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="riwayat-footer">
+                                    <button class="hapus-riwayat" onclick="hapusRiwayat('${bulan}')">Hapus Bulan</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                e.innerHTML = '<div style="text-align:center;color:#999;padding:20px;">Belum ada riwayat</div>';
+            }
+        }
+
+        function toggleRiwayat(header) {
+            const body = header.nextElementSibling;
+            const isOpen = body.classList.contains('open');
+            
+            document.querySelectorAll('.riwayat-body').forEach(b => {
+                if (b !== body) {
+                    b.classList.remove('open');
+                    b.previousElementSibling.classList.remove('active');
+                }
+            });
+            
+            if (isOpen) {
+                body.classList.remove('open');
+                header.classList.remove('active');
+            } else {
+                body.classList.add('open');
+                header.classList.add('active');
+            }
         }
 
         function hapusRiwayat(e) {
@@ -1169,21 +1482,18 @@
             e.target.value = ''
         }
 
-        // ==================== AUTO REKAP BULANAN (OTOMATIS) ====================
+        // ==================== AUTO REKAP BULANAN ====================
         function cekAkhirBulanDanUpdateTahunan() {
             const today = new Date();
             const tomorrow = new Date(today);
             tomorrow.setDate(today.getDate() + 1);
             
-            // CEK APAKAH BESOK TANGGAL 1 (BERARTI HARI INI AKHIR BULAN)
             if (tomorrow.getDate() === 1) {
                 const bulanIni = today.getMonth();
                 const tahunIni = today.getFullYear();
                 const keyBulanan = `${tahunIni}-${String(bulanIni + 1).padStart(2, '0')}`;
                 
-                // Cek apakah data bulan ini sudah direkap
                 if (!dataBulananManual[keyBulanan] || dataBulananManual[keyBulanan] === 0) {
-                    // Hitung total resi bulan ini dari data harian
                     let totalResiBulan = 0;
                     for (let tgl = 1; tgl <= today.getDate(); tgl++) {
                         const keyHarian = `${tahunIni}-${String(bulanIni + 1).padStart(2, '0')}-${String(tgl).padStart(2, '0')}`;
@@ -1194,7 +1504,6 @@
                         dataBulananManual[keyBulanan] = totalResiBulan;
                         localStorage.setItem('dataBulananManual', JSON.stringify(dataBulananManual));
                         
-                        // Update dataTahunan
                         const namaBulanList = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
                         dataTahunan = [];
                         Object.keys(dataBulananManual).forEach(key => {
@@ -1212,11 +1521,9 @@
                         });
                         localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
                         
-                        // Popup notifikasi auto rekap
                         const namaBulan = namaBulanList[bulanIni];
                         showPopupAuto('📅', `AUTO REKAP ${namaBulan}!`, `${totalResiBulan} resi = Rp ${(totalResiBulan * tarif).toLocaleString('id-ID')}`, '✅ OTOMATIS');
                         
-                        // Refresh tampilan
                         if (document.getElementById('tab-tahunan').classList.contains('active')) {
                             tampilLogBulanan();
                         }
@@ -1226,7 +1533,7 @@
             }
         }
 
-        // ==================== REKAP MANUAL (CADANGAN) ====================
+        // ==================== REKAP MANUAL ====================
         function rekapManualBulanLalu() {
             const today = new Date();
             const bulanLalu = new Date(today);
@@ -1236,7 +1543,6 @@
             const bulan = bulanLalu.getMonth() + 1;
             const keyBulanan = `${tahun}-${String(bulan).padStart(2, '0')}`;
             
-            // Hitung total hari di bulan itu
             const hariBulan = new Date(tahun, bulan, 0).getDate();
             let totalResiBulan = 0;
             for (let tgl = 1; tgl <= hariBulan; tgl++) {
@@ -1275,18 +1581,16 @@
             }
         }
 
-        // ==================== PREDIKSI TARGET OTOMATIS ====================
+        // ==================== PREDIKSI TARGET ====================
         function updatePrediksiTarget() {
             const bulanIni = getBulanTahun();
             const totalResiBulanIni = getTotalResiBulan(bulanIni);
             const gajiBulanIni = totalResiBulanIni * tarif;
             
-            // Ambil data bulan2 sebelumnya dari dataBulananManual
             const bulanKeys = Object.keys(dataBulananManual)
                 .filter(k => k < bulanIni)
                 .sort();
             
-            // Ambil 3 bulan terakhir
             const last3 = bulanKeys.slice(-3);
             
             const box = document.getElementById('prediksiTargetBox');
@@ -1301,7 +1605,6 @@
             box.style.display = 'block';
             kosong.style.display = 'none';
             
-            // Hitung rata-rata target dari 3 bulan terakhir
             let totalResi = 0;
             let count = 0;
             last3.forEach(key => {
@@ -1320,12 +1623,9 @@
             
             const rataResi = Math.round(totalResi / count);
             const targetGaji = rataResi * tarif;
-            
-            // Progress berdasarkan capaian bulan ini terhadap target
             const persen = Math.min(100, Math.round((totalResiBulanIni / rataResi) * 100));
             const selisihGaji = targetGaji - gajiBulanIni;
             
-            // Update tampilan
             document.getElementById('targetNominal').textContent = targetGaji.toLocaleString('id-ID');
             document.getElementById('targetResi').textContent = rataResi.toLocaleString('id-ID');
             
@@ -1340,7 +1640,6 @@
             document.getElementById('selisihTarget').textContent = selisihText;
             document.getElementById('selisihTarget').className = `info-value ${selisihGaji >= 0 ? 'success' : 'danger'}`;
             
-            // Trend
             let trendText = '➖ Stabil';
             let trendClass = 'trend-stable';
             if (last3.length >= 2) {
@@ -1355,7 +1654,6 @@
                 }
             }
             
-            // Nama bulan depan
             const bulanDepan = new Date();
             bulanDepan.setMonth(bulanDepan.getMonth() + 1);
             const namaBulanDepan = bulanDepan.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
