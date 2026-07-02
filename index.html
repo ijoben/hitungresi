@@ -41,30 +41,12 @@
         .input-tanggal{background:var(--box);padding:12px;border-radius:12px;margin:14px 0;border:1px solid var(--primary)}
         .input-tanggal label{font-size:11px;color:var(--primary);font-weight:900;display:block;margin-bottom:10px;text-align:center;text-transform:uppercase}
         .input-group{display:flex;flex-direction:column;gap:8px}
-        .input-row{display:flex;gap:6px;align-items:center}
+        .input-row{display:flex;gap:6px}
         .input-tanggal input[type="text"],.input-tanggal input[type="number"],.input-tanggal select{width:100%;padding:10px 6px;border:1px solid var(--border);border-radius:8px;font-size:12px;outline:none;background:var(--bg);color:var(--text);font-weight:700}
-        .input-tanggal input[type="number"]{font-weight:900;text-align:center; width: 120px;}
-        
-        /* VOICE BUTTON KECIL */
-        .btn-voice-small{background:var(--box);border:2px solid var(--border);width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:20px;transition:.2s;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text2)}
-        .btn-voice-small:hover{transform:scale(1.05);border-color:var(--primary)}
-        .btn-voice-small.recording{background:var(--primary);border-color:var(--primary);color:#fff;animation:pulse-mic-small 0.8s infinite}
-        @keyframes pulse-mic-small{0%,100%{box-shadow:0 0 0 0 rgba(237,28,36,0.4)}50%{box-shadow:0 0 0 12px rgba(237,28,36,0)}}
-        .btn-voice-small.listening{background:#4CAF50;border-color:#4CAF50;color:#fff}
-        .btn-voice-small .voice-dot{width:8px;height:8px;border-radius:50%;background:#4CAF50;display:none}
-        .btn-voice-small.recording .voice-dot{display:block;background:#fff}
-        
+        .input-tanggal input[type="number"]{font-weight:900;text-align:center}
         .btn-simpan{background:var(--primary);color:#fff;border:none;padding:12px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:900;width:100%;text-transform:uppercase;transition:.2s}
         .btn-simpan:hover{transform:scale(1.01);box-shadow:0 4px 16px rgba(237,28,36,0.3)}
         .btn-simpan:active{transform:scale(0.97)}
-        
-        /* VOICE STATUS POPUP KECIL */
-        .voice-status-popup{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.85);color:#fff;padding:10px 24px;border-radius:16px;font-size:13px;font-weight:700;z-index:200;display:none;align-items:center;gap:12px;backdrop-filter:blur(10px);max-width:90%}
-        .voice-status-popup.show{display:flex}
-        .voice-status-popup .spinner{width:20px;height:20px;border:3px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0}
-        @keyframes spin{to{transform:rotate(360deg)}}
-        .voice-status-popup .close-voice-status{background:rgba(255,255,255,0.15);border:none;color:#fff;padding:2px 10px;border-radius:8px;cursor:pointer;font-size:14px}
-        .voice-status-popup .close-voice-status:hover{background:rgba(255,255,255,0.3)}
         
         .log-harian{font-size:11px}
         .log-harian h5{margin:0 0 8px 0;font-size:12px;text-align:center;color:var(--text2);font-weight:700;text-transform:uppercase}
@@ -165,6 +147,7 @@
         .popup-box .popup-close{background:rgba(255,255,255,0.15);border:none;color:#fff;padding:8px 24px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer;margin-top:14px;transition:.2s}
         .popup-box .popup-close:hover{background:rgba(255,255,255,0.3);transform:scale(1.05)}
         
+        /* POPUP INPUT MANUAL */
         .popup-input-manual{max-width:340px;width:92%;padding:28px 24px}
         .popup-input-manual .input-group-popup{display:flex;flex-direction:column;gap:10px;margin-top:12px}
         .popup-input-manual select,.popup-input-manual input{width:100%;padding:12px;border:none;border-radius:10px;font-size:14px;font-weight:700;text-align:center;background:rgba(255,255,255,0.2);color:#fff;outline:none}
@@ -176,6 +159,7 @@
         .popup-input-manual .btn-popup-batal{background:rgba(255,255,255,0.08);border:none;color:rgba(255,255,255,0.6);padding:8px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;transition:.2s;margin-top:4px}
         .popup-input-manual .btn-popup-batal:hover{background:rgba(255,255,255,0.15)}
         
+        /* EXPANDABLE LOG BULANAN */
         .bulan-accordion{background:var(--box);border-radius:12px;margin-bottom:6px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
         .bulan-accordion-header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;transition:.2s;background:var(--box);border-bottom:1px solid transparent}
         .bulan-accordion-header:hover{background:var(--bg)}
@@ -189,6 +173,7 @@
         .bulan-accordion-body .log-item{margin-bottom:4px;padding:6px 8px}
         .bulan-accordion-body .log-item:last-child{margin-bottom:0}
 
+        /* PREDIKSI TARGET OTOMATIS */
         .prediksi-target-box{background:linear-gradient(135deg,var(--primary),var(--primary-dark));border-radius:12px;padding:14px;margin:14px 0 4px 0;color:#fff;position:relative;overflow:hidden;transition:background 0.3s ease}
         .prediksi-target-box::before{content:'🔮';position:absolute;right:10px;top:-5px;font-size:45px;opacity:0.15}
         .prediksi-target-box .label{font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:0.85;font-weight:700;margin-bottom:2px;display:flex;justify-content:space-between;align-items:center}
@@ -248,21 +233,10 @@
                 <div class="input-group">
                     <div class="input-row">
                         <input type="text" id="inputTanggal" placeholder="2026-10-05" maxlength="10">
-                        <input type="number" id="inputResi" min="1" placeholder="0 Resi" inputmode="numeric" style="flex:1;">
-                        <button class="btn-voice-small" id="btnVoice" onclick="startVoiceInput()" title="Input pakai suara">
-                            <span id="voiceIcon">🎤</span>
-                            <span class="voice-dot"></span>
-                        </button>
+                        <input type="number" id="inputResi" min="1" placeholder="0 Resi" inputmode="numeric">
                     </div>
                     <button class="btn-simpan" onclick="simpanResi()"><span>💾</span> SIMPAN RESI</button>
                 </div>
-            </div>
-
-            <!-- VOICE STATUS POPUP -->
-            <div class="voice-status-popup" id="voiceStatusPopup">
-                <div class="spinner"></div>
-                <span id="voiceStatusText">Mendengarkan...</span>
-                <button class="close-voice-status" onclick="stopVoiceInput()">✕</button>
             </div>
 
             <!-- PREDIKSI TARGET OTOMATIS -->
@@ -279,6 +253,7 @@
                         <small>| <span id="targetResi">0</span> resi</small>
                     </div>
                     
+                    <!-- Progress -->
                     <div class="progress-section">
                         <div class="progress-header">
                             <span id="progressLabel">0 / 0 resi</span>
@@ -289,6 +264,7 @@
                         </div>
                     </div>
                     
+                    <!-- Info Grid -->
                     <div class="info-grid">
                         <div class="info-item">
                             <div class="info-label">✅ Capaian Bulan Ini</div>
@@ -304,6 +280,7 @@
                         </div>
                     </div>
                     
+                    <!-- Info bawah -->
                     <div class="info-bawah">
                         <span id="targetTrend">📈 Trend: -</span>
                         <span id="targetRata">📊 Rata-rata 3 bulan: 0 resi</span>
@@ -476,203 +453,6 @@
         let bulanLalu = getBulanTahun();
         let deferredPrompt;
         let logLimit = 10;
-        let recognition = null;
-        let isRecognizing = false;
-
-        // ==================== VOICE INPUT ====================
-        function startVoiceInput() {
-            const btn = document.getElementById('btnVoice');
-            const icon = document.getElementById('voiceIcon');
-            const statusPopup = document.getElementById('voiceStatusPopup');
-            const statusText = document.getElementById('voiceStatusText');
-            
-            if (isRecognizing) {
-                stopVoiceInput();
-                return;
-            }
-            
-            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-                alert('Browser lu gak support voice input bos! Pake Chrome/Edge di HP.');
-                return;
-            }
-            
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            recognition = new SpeechRecognition();
-            recognition.lang = 'id-ID';
-            recognition.continuous = false;
-            recognition.interimResults = true;
-            recognition.maxAlternatives = 1;
-            
-            isRecognizing = true;
-            
-            btn.classList.add('recording');
-            icon.textContent = '⏹';
-            statusPopup.classList.add('show');
-            statusText.textContent = '🎤 Mendengarkan...';
-            
-            let finalText = '';
-            let hasResult = false;
-            
-            recognition.onresult = function(event) {
-                let interim = '';
-                let final = '';
-                for (let i = event.resultIndex; i < event.results.length; i++) {
-                    const transcript = event.results[i][0].transcript;
-                    if (event.results[i].isFinal) {
-                        final += transcript;
-                        hasResult = true;
-                    } else {
-                        interim += transcript;
-                    }
-                }
-                
-                finalText += final;
-                const displayText = finalText + interim;
-                const angka = extractNumber(displayText);
-                
-                if (angka > 0) {
-                    statusText.textContent = '🔊 ' + angka + ' resi (auto save...)';
-                    document.getElementById('inputResi').value = angka;
-                    document.getElementById('inputResi').style.background = '#4CAF5044';
-                    setTimeout(() => {
-                        document.getElementById('inputResi').style.background = '';
-                    }, 1000);
-                    
-                    // AUTO SAVE setelah dengar angka
-                    if (final) {
-                        setTimeout(() => {
-                            autoSaveVoice(angka);
-                        }, 300);
-                    }
-                } else {
-                    statusText.textContent = '🎤 ' + (displayText || 'Mendengarkan...');
-                }
-            };
-            
-            recognition.onerror = function(event) {
-                console.error('Voice error:', event.error);
-                if (event.error === 'not-allowed') {
-                    statusText.textContent = '❌ Izin mic ditolak!';
-                } else if (event.error === 'no-speech') {
-                    statusText.textContent = '🔇 Gak ada suara, coba lagi';
-                } else if (event.error === 'aborted') {
-                    // Dihentikan user
-                } else {
-                    statusText.textContent = '❌ Error: ' + event.error;
-                }
-                setTimeout(() => {
-                    stopVoiceInput();
-                }, 1500);
-            };
-            
-            recognition.onend = function() {
-                // Jika ada hasil, auto save sudah jalan
-                if (!hasResult) {
-                    stopVoiceInput();
-                } else {
-                    // Auto save triggered
-                }
-            };
-            
-            try {
-                recognition.start();
-            } catch(e) {
-                isRecognizing = false;
-                btn.classList.remove('recording');
-                icon.textContent = '🎤';
-                statusPopup.classList.remove('show');
-                console.error(e);
-            }
-        }
-        
-        function stopVoiceInput() {
-            if (recognition) {
-                try { recognition.abort(); } catch(e) {}
-                try { recognition.stop(); } catch(e) {}
-            }
-            isRecognizing = false;
-            const btn = document.getElementById('btnVoice');
-            const icon = document.getElementById('voiceIcon');
-            const statusPopup = document.getElementById('voiceStatusPopup');
-            btn.classList.remove('recording');
-            icon.textContent = '🎤';
-            statusPopup.classList.remove('show');
-        }
-        
-        function autoSaveVoice(angka) {
-            if (angka <= 0) return;
-            
-            const tanggal = document.getElementById('inputTanggal').value;
-            if (!tanggal.match(/^\d{4}-\d{2}-\d{2}$/)) {
-                alert('Format tanggal salah bos! Pake 2026-10-05');
-                return;
-            }
-            
-            dataHarian[tanggal] = angka;
-            localStorage.setItem('gajiSicepatHarian', JSON.stringify(dataHarian));
-            cekRekor(angka, tanggal);
-            document.getElementById('inputResi').value = '';
-            
-            hitungTotal();
-            tampilLogHarian();
-            cekBadgeReminder();
-            updatePrediksiTarget();
-            cekAkhirBulanDanUpdateTahunan();
-            
-            setTimeout(() => {
-                if (document.getElementById('tab-statistik').classList.contains('active')) {
-                    updateGrafik();
-                }
-            }, 1000);
-            
-            if (document.querySelector('.tab-btn[data-tab="statistik"]').classList.contains('active')) {
-                setTimeout(updateGrafik, 100);
-            }
-            setTimeout(updateGrafik, 200);
-            updateGrafik();
-            
-            if (navigator.vibrate) navigator.vibrate(50);
-            
-            const voiceQuotes = [
-                { icon: '🎤', text: 'VOICE INPUT BERHASIL!', sub: `${angka} resi tersimpan`, badge: '✅ AUTO SAVE' },
-                { icon: '🔥', text: 'GAS PAKE SUARA!', sub: `${angka} resi masuk`, badge: '🎤 GACOR' },
-                { icon: '⚡', text: 'CEPET BANGET BOS!', sub: `${angka} resi auto save`, badge: '🚀 FAST' }
-            ];
-            const randomQuote = voiceQuotes[Math.floor(Math.random() * voiceQuotes.length)];
-            showPopupAuto(randomQuote.icon, randomQuote.text, randomQuote.sub, randomQuote.badge);
-            
-            // Tutup voice status
-            setTimeout(() => {
-                stopVoiceInput();
-            }, 500);
-        }
-        
-        function extractNumber(text) {
-            // Cari angka dalam teks
-            const matches = text.match(/\d+/g);
-            if (matches) {
-                const angka = parseInt(matches[matches.length - 1]);
-                if (angka > 0 && angka < 10000) return angka;
-            }
-            // Cari kata seperti "lima", "sepuluh", "dua puluh"
-            const wordMap = {
-                'nol': 0, 'satu': 1, 'dua': 2, 'tiga': 3, 'empat': 4, 'lima': 5,
-                'enam': 6, 'tujuh': 7, 'delapan': 8, 'sembilan': 9, 'sepuluh': 10,
-                'sebelas': 11, 'dua belas': 12, 'tiga belas': 13, 'empat belas': 14,
-                'lima belas': 15, 'enam belas': 16, 'tujuh belas': 17, 'delapan belas': 18,
-                'sembilan belas': 19, 'dua puluh': 20, 'tiga puluh': 30, 'empat puluh': 40,
-                'lima puluh': 50, 'enam puluh': 60, 'tujuh puluh': 70, 'delapan puluh': 80,
-                'sembilan puluh': 90, 'seratus': 100, 'seribu': 1000
-            };
-            
-            const lowerText = text.toLowerCase();
-            for (let word in wordMap) {
-                if (lowerText.includes(word)) {
-                    return wordMap[word];
-                }
-            }
-            return 0;
-        }
 
         // ==================== POPUP ====================
         function showPopup(icon, text, sub, badge) {
@@ -815,12 +595,15 @@
                 });
             });
 
+            // CEK AUTO REKAP AKHIR BULAN
             cekAkhirBulanDanUpdateTahunan();
             autoIsiNol();
             loadRiwayat();
             hitungTotal();
             tampilLogHarian();
             cekBadgeReminder();
+            
+            // PREDIKSI TARGET OTOMATIS
             updatePrediksiTarget();
             
             setTimeout(() => {
@@ -920,6 +703,8 @@
             tampilLogHarian();
             cekBadgeReminder();
             updatePrediksiTarget();
+            
+            // CEK AUTO REKAP
             cekAkhirBulanDanUpdateTahunan();
             
             setTimeout(() => {
@@ -1063,6 +848,7 @@
                 n += '<div style="text-align:center;color:#999;padding:20px;">Belum ada input bulan ini</div>';
             }
             
+            // TAMPILKAN LOG BULAN SEBELUMNYA (EXPANDABLE)
             n += '<div style="margin-top:16px;border-top:1px solid var(--border);padding-top:12px;">';
             n += '<h5>📆 BULAN SEBELUMNYA</h5>';
             
@@ -1241,6 +1027,7 @@
                                     </div>
                                 </div>
                                 
+                                <!-- DETAIL GAJI PERIODE 1 & 2 -->
                                 <div class="periode-detail">
                                     <div class="periode-item">
                                         <div class="label">📆 Tgl 1-15</div>
