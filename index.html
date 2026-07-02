@@ -131,6 +131,18 @@
         .popup-box .popup-close{background:rgba(255,255,255,0.15);border:none;color:#fff;padding:8px 24px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer;margin-top:14px;transition:.2s}
         .popup-box .popup-close:hover{background:rgba(255,255,255,0.3);transform:scale(1.05)}
         
+        /* POPUP INPUT MANUAL */
+        .popup-input-manual{max-width:340px;width:92%;padding:28px 24px}
+        .popup-input-manual .input-group-popup{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+        .popup-input-manual select,.popup-input-manual input{width:100%;padding:12px;border:none;border-radius:10px;font-size:14px;font-weight:700;text-align:center;background:rgba(255,255,255,0.2);color:#fff;outline:none}
+        .popup-input-manual select option{background:#333;color:#fff}
+        .popup-input-manual select::placeholder,.popup-input-manual input::placeholder{color:rgba(255,255,255,0.6)}
+        .popup-input-manual select:focus,.popup-input-manual input:focus{background:rgba(255,255,255,0.3)}
+        .popup-input-manual .btn-popup-simpan{background:rgba(255,255,255,0.25);border:none;color:#fff;padding:12px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;transition:.2s;margin-top:4px}
+        .popup-input-manual .btn-popup-simpan:hover{background:rgba(255,255,255,0.4)}
+        .popup-input-manual .btn-popup-batal{background:rgba(255,255,255,0.08);border:none;color:rgba(255,255,255,0.6);padding:8px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;transition:.2s;margin-top:4px}
+        .popup-input-manual .btn-popup-batal:hover{background:rgba(255,255,255,0.15)}
+        
         /* EXPANDABLE LOG BULANAN */
         .bulan-accordion{background:var(--box);border-radius:12px;margin-bottom:6px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
         .bulan-accordion-header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer;transition:.2s;background:var(--box);border-bottom:1px solid transparent}
@@ -172,9 +184,12 @@
         .prediksi-target-kosong{background:var(--box);border-radius:12px;padding:16px;margin:14px 0 4px 0;text-align:center;color:var(--text2);font-size:12px;font-weight:600;border:1px solid var(--border)}
         .prediksi-target-kosong .icon-big{font-size:32px;display:block;margin-bottom:6px}
 
-        /* AUTO UPDATE BADGE */
+        /* BADGE AUTO */
         .badge-auto{background:#4CAF50;color:#fff;padding:2px 10px;border-radius:12px;font-size:9px;font-weight:700;display:inline-block}
-        .badge-auto.off{background:#ff9800}
+        .btn-manual-kecil{background:var(--box);border:1px solid var(--primary);color:var(--primary);padding:6px 14px;border-radius:8px;font-size:10px;font-weight:800;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:4px}
+        .btn-manual-kecil:hover{background:var(--primary);color:#fff}
+        .header-tahunan{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+        .header-tahunan h2{display:flex;align-items:center;gap:8px;margin:0}
     </style>
 </head>
 <body>
@@ -213,11 +228,10 @@
             <div id="prediksiTargetContainer">
                 <div class="prediksi-target-box" id="prediksiTargetBox">
                     <div class="label">
-                        <span>🔮 PREDIKSI TARGET &amp; GAJI BULAN DEPAN</span>
                         <span class="label-sub">berdasarkan 3 bulan terakhir</span>
                     </div>
                     
-                    <div class="target-judul">🎯 Target Gaji Bulan Depan</div>
+                    <div class="target-judul">🎯 PREDIKSI TARGET &amp; GAJI BULAN DEPAN</div>
                     <div class="target-besar">
                         Rp <span id="targetNominal">0</span>
                         <small>| <span id="targetResi">0</span> resi</small>
@@ -331,15 +345,12 @@
         </div>
 
         <div id="tab-tahunan" class="tab-content">
-            <h2>📅 REKAP TAHUNAN <span id="tahunBulanan"></span>
-                <span class="badge-auto" id="badgeAuto">🤖 AUTO</span>
-            </h2>
-
-            <!-- INFO AUTO UPDATE -->
-            <div style="background:var(--box);border-radius:12px;padding:10px 14px;margin-bottom:12px;border:1px solid #4CAF50;font-size:11px;text-align:center;color:var(--text2);">
-                <span style="font-weight:700;color:#4CAF50;">✅ Auto Update!</span> 
-                Data bulanan otomatis tersimpan di <span style="font-weight:700;">akhir bulan</span> dari resi harian.
-                <span style="display:block;font-size:9px;margin-top:2px;opacity:0.7;">Tanggal 1 setiap bulan, data bulan sebelumnya otomatis direkap</span>
+            <!-- HEADER DENGAN TOMBOL MANUAL KECIL -->
+            <div class="header-tahunan">
+                <h2>📅 REKAP TAHUNAN <span id="tahunBulanan"></span>
+                    <span class="badge-auto">🤖 AUTO UPDATE</span>
+                </h2>
+                <button class="btn-manual-kecil" onclick="openPopupManual()">📝 + Manual</button>
             </div>
 
             <div class="total-bulanan">
@@ -387,6 +398,25 @@
         </div>
     </div>
 
+    <!-- POPUP INPUT MANUAL BULANAN -->
+    <div class="popup-overlay" id="popupManual" onclick="if(event.target===this)closePopupManual()">
+        <div class="popup-box popup-input-manual">
+            <div class="popup-icon" style="font-size:50px;">📝</div>
+            <div class="popup-title" style="font-size:14px;">INPUT MANUAL BULANAN</div>
+            <div class="popup-text" style="font-size:16px;">Masukkan resi per bulan</div>
+            
+            <div class="input-group-popup">
+                <select id="pilihBulanPopup">
+                    <option value="">Pilih Bulan</option>
+                </select>
+                <input type="number" id="inputResiBulanPopup" min="0" placeholder="Jumlah Resi" inputmode="numeric">
+                
+                <button class="btn-popup-simpan" onclick="simpanResiBulanPopup()">💾 SIMPAN</button>
+                <button class="btn-popup-batal" onclick="closePopupManual()">Batal</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const tarif = 2500;
         let dataBulanan = JSON.parse(localStorage.getItem('gajiSicepat') || '{}');
@@ -422,6 +452,64 @@
             showPopup(icon, text, sub, badge);
             clearTimeout(popupTimer);
             popupTimer = setTimeout(() => { closePopup(); }, 3000);
+        }
+
+        // ==================== POPUP MANUAL ====================
+        function openPopupManual() {
+            loadPilihBulanPopup();
+            document.getElementById('popupManual').classList.add('show');
+            document.getElementById('inputResiBulanPopup').value = '';
+        }
+
+        function closePopupManual() {
+            document.getElementById('popupManual').classList.remove('show');
+        }
+
+        function loadPilihBulanPopup() {
+            const tahun = new Date().getFullYear();
+            const namaBulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            const select = document.getElementById('pilihBulanPopup');
+            select.innerHTML = '<option value="">Pilih Bulan</option>';
+            namaBulan.forEach((bulan, idx) => {
+                const key = `${tahun}-${String(idx + 1).padStart(2, '0')}`;
+                select.innerHTML += `<option value="${key}">${bulan} ${tahun}</option>`;
+            });
+        }
+
+        function simpanResiBulanPopup() {
+            const bulan = document.getElementById('pilihBulanPopup').value;
+            const resi = parseInt(document.getElementById('inputResiBulanPopup').value) || 0;
+            
+            if (!bulan) {
+                alert('Pilih bulan dulu bos!');
+                return;
+            }
+            if (resi < 0) {
+                alert('Resi gak boleh minus bos!');
+                return;
+            }
+
+            dataBulananManual[bulan] = resi;
+            localStorage.setItem('dataBulananManual', JSON.stringify(dataBulananManual));
+
+            const tahun = new Date().getFullYear();
+            const namaBulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            dataTahunan = [];
+            Object.keys(dataBulananManual).forEach(key => {
+                const bulanIdx = parseInt(key.split('-')[1]) - 1;
+                const resi = dataBulananManual[key];
+                if (resi > 0) {
+                    dataTahunan.push({ bulan: namaBulan[bulanIdx], tahun: parseInt(key.split('-')[0]), gaji: resi * tarif, resi: resi, key: key });
+                }
+            });
+            localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
+            
+            closePopupManual();
+            tampilLogBulanan();
+            updatePrediksiTarget();
+            
+            if (navigator.vibrate) navigator.vibrate(50);
+            showPopupAuto('📝', 'DATA BULAN TERSIMPAN!', `${resi} resi = Rp ${(resi * tarif).toLocaleString('id-ID')}`, '✅ DONE');
         }
 
         // ==================== INSTALL PWA ====================
