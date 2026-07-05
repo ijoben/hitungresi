@@ -210,7 +210,7 @@
         .bd-compact-row{display:flex;gap:6px;margin:10px 0}
         .bd-box{background:var(--box);padding:8px 6px;border-radius:10px;flex:1;text-align:center;border:1px solid var(--border)}
         .bd-box .bd-label{font-size:8px;color:var(--text2);text-transform:uppercase;font-weight:700}
-        .bd-box .bd-value{font-size:14px;font-weight:900;margin:2px 0}
+        .bd-box .bd-value{font-size:10px;font-weight:300;margin:2px 0}
         .bd-box .bd-value.green{color:#4caf50}
         .bd-box .bd-value.red{color:#e53935}
         .bd-box .bd-edit-btn{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:1px 8px;font-size:8px;font-weight:700;color:var(--text2);cursor:pointer;transition:.2s;margin-top:2px}
@@ -236,11 +236,24 @@
         <div class="rekor-banner kosong" id="rekorBanner"></div>
 
         <div id="tab-input" class="tab-content active">
+            <div class="total-resi"><div class="label">TOTAL BULAN INI</div><div class="angka"><span id="totalResi">0</span> Resi = Rp <span id="totalGaji">0</span></div></div>
+
             <div class="gaji-2kolom">
                 <div class="periode-box"><h4>TGL 1-15 DIBAYAR</h4><div class="angka">Rp <span id="gaji1">0</span></div><div class="sub"><span id="resi1">0</span> resi | 50%</div></div>
                 <div class="periode-box"><h4>TGL 16-AKHIR DIBAYAR</h4><div class="angka">Rp <span id="gaji2">0</span></div><div class="sub"><span id="resi2">0</span> resi | 50%</div></div>
             </div>
             
+            <div class="input-tanggal">
+                <label>📦 INPUT RESI HARIAN</label>
+                <div class="input-group">
+                    <div class="input-row">
+                        <input type="text" id="inputTanggal" placeholder="2026-10-05" maxlength="10">
+                        <input type="number" id="inputResi" min="1" placeholder="0 Resi" inputmode="numeric">
+                    </div>
+                    <button class="btn-simpan" onclick="simpanResi()"><span>💾</span> SIMPAN RESI</button>
+                </div>
+            </div>
+
             <!-- BONUS & DENDA COMPACT kayak kolom pertama -->
             <div class="bd-compact-row" id="bdCompactRow">
                 <div class="bd-box">
@@ -256,20 +269,6 @@
                 <div class="bd-box" style="flex:0.7;padding:8px 4px;">
                     <div class="bd-label">📅 Bulan</div>
                     <select id="bdBulanSelect" onchange="updateBonusDendaDisplay(); hitungTotal(); tampilLogHarian(); loadRiwayat();"></select>
-                </div>
-            </div>
-            <div class="bd-total-kecil">💰 Gaji Bersih = Gaji + <span style="color:#4caf50;">Bonus</span> - <span style="color:#e53935;">Denda</span></div>
-
-            <div class="total-resi"><div class="label">TOTAL BULAN INI</div><div class="angka"><span id="totalResi">0</span> Resi <br> Rp <span id="totalGaji">0</span></div></div>
-
-            <div class="input-tanggal">
-                <label>📦 INPUT RESI HARIAN</label>
-                <div class="input-group">
-                    <div class="input-row">
-                        <input type="text" id="inputTanggal" placeholder="2026-10-05" maxlength="10">
-                        <input type="number" id="inputResi" min="1" placeholder="0 Resi" inputmode="numeric">
-                    </div>
-                    <button class="btn-simpan" onclick="simpanResi()"><span>💾</span> SIMPAN RESI</button>
                 </div>
             </div>
 
@@ -398,13 +397,7 @@
                 </h2>
                 <button class="btn-manual-kecil" onclick="openPopupManual()">📝 + Manual</button>
             </div>
-
-            <div style="background:var(--box);border-radius:12px;padding:10px 14px;margin-bottom:12px;border:1px solid #4CAF50;font-size:11px;text-align:center;color:var(--text2);">
-                <span style="font-weight:700;color:#4CAF50;">✅ Auto Update!</span> 
-                Data bulanan otomatis tersimpan di <span style="font-weight:700;">akhir bulan</span> dari resi harian.
-                <span style="display:block;font-size:9px;margin-top:2px;opacity:0.7;">Tanggal 1 setiap bulan, data bulan sebelumnya otomatis direkap</span>
-            </div>
-
+            
             <div class="total-bulanan">
                 <div class="label">📊 TOTAL SETAHUN</div>
                 <div class="angka">Rp <span id="totalGajiBulanan">0</span></div>
@@ -958,6 +951,8 @@
             const bulanTampil = document.getElementById('bdBulanSelect').value || bulanIni;
             const bonus = getBonus(bulanTampil);
             const denda = getDenda(bulanTampil);
+            
+            // Gaji bersih = gaji + bonus - denda
             const gajiBersih = totalGajiBulan + bonus - denda;
 
             document.getElementById('resi1').textContent = resi1.toLocaleString('id-ID');
@@ -967,22 +962,20 @@
             document.getElementById('totalResi').textContent = totalResi.toLocaleString('id-ID');
             document.getElementById('totalGaji').textContent = gajiBersih.toLocaleString('id-ID');
 
-            // Simpan data bulanan dengan bonus & denda
-            if (totalResi > 0) {
-                dataBulanan[bulanIni] = { 
-                    resi1, resi2, 
-                    dibayarPeriode1, dibayarTanggal5, sisaPeriode1, 
-                    totalGaji: gajiBersih, 
-                    totalResi, 
-                    bonus: bonus, 
-                    denda: denda 
-                };
-            } else {
-                // tetap simpan bonus/denda walau resi 0
-                if (dataBulanan[bulanIni]) {
-                    dataBulanan[bulanIni].bonus = bonus;
-                    dataBulanan[bulanIni].denda = denda;
+            // Simpan data bulanan dengan bonus & denda - ini penting untuk riwayat
+            if (totalResi > 0 || dataBulanan[bulanIni]) {
+                if (!dataBulanan[bulanIni]) {
+                    dataBulanan[bulanIni] = { resi1: 0, resi2: 0, dibayarPeriode1: 0, dibayarTanggal5: 0, sisaPeriode1: 0, totalGaji: 0, totalResi: 0 };
                 }
+                dataBulanan[bulanIni].resi1 = resi1;
+                dataBulanan[bulanIni].resi2 = resi2;
+                dataBulanan[bulanIni].dibayarPeriode1 = dibayarPeriode1;
+                dataBulanan[bulanIni].dibayarTanggal5 = dibayarTanggal5;
+                dataBulanan[bulanIni].sisaPeriode1 = sisaPeriode1;
+                dataBulanan[bulanIni].totalResi = totalResi;
+                dataBulanan[bulanIni].totalGaji = gajiBersih;
+                dataBulanan[bulanIni].bonus = bonus;
+                dataBulanan[bulanIni].denda = denda;
             }
             localStorage.setItem('gajiSicepat', JSON.stringify(dataBulanan));
             loadRiwayat();
@@ -1186,6 +1179,7 @@
                     const o = new Date(bulan + '-01').toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
                     const r = hitungStatistik(bulan);
                     const a = n.totalResi || (n.resi1 + n.resi2);
+                    // totalGaji sudah termasuk bonus & denda
                     const totalGaji = n.totalGaji || ((n.resi1 + n.resi2) * tarif);
                     const bonus = n.bonus || getBonus(bulan);
                     const denda = n.denda || getDenda(bulan);
