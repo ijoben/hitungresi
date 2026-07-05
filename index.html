@@ -210,7 +210,7 @@
         .bd-compact-row{display:flex;gap:6px;margin:10px 0}
         .bd-box{background:var(--box);padding:8px 6px;border-radius:10px;flex:1;text-align:center;border:1px solid var(--border)}
         .bd-box .bd-label{font-size:8px;color:var(--text2);text-transform:uppercase;font-weight:700}
-        .bd-box .bd-value{font-size:10px;font-weight:900;margin:2px 0}
+        .bd-box .bd-value{font-size:14px;font-weight:900;margin:2px 0}
         .bd-box .bd-value.green{color:#4caf50}
         .bd-box .bd-value.red{color:#e53935}
         .bd-box .bd-edit-btn{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:1px 8px;font-size:8px;font-weight:700;color:var(--text2);cursor:pointer;transition:.2s;margin-top:2px}
@@ -277,10 +277,11 @@
             <div id="prediksiTargetContainer">
                 <div class="prediksi-target-box" id="prediksiTargetBox">
                     <div class="label">
+                        <span>🔮 PREDIKSI TARGET &amp; GAJI BULAN DEPAN</span>
                         <span class="label-sub">berdasarkan 3 bulan terakhir</span>
                     </div>
                     
-                    <div class="target-judul">🎯 Prediksi Gaji Bulan Depan</div>
+                    <div class="target-judul">🎯 Target Gaji Bulan Depan</div>
                     <div class="target-besar">
                         Rp <span id="targetNominal">0</span>
                         <small>| <span id="targetResi">0</span> resi</small>
@@ -300,6 +301,10 @@
                         <div class="info-item">
                             <div class="info-label">✅ Capaian Bulan Ini</div>
                             <div class="info-value" id="capaianBulanIni">Rp 0</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">🎯 Target Bulan Depan</div>
+                            <div class="info-value" id="targetBulanDepan">Rp 0</div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">📊 Selisih</div>
@@ -394,6 +399,11 @@
                 <button class="btn-manual-kecil" onclick="openPopupManual()">📝 + Manual</button>
             </div>
 
+            <div style="background:var(--box);border-radius:12px;padding:10px 14px;margin-bottom:12px;border:1px solid #4CAF50;font-size:11px;text-align:center;color:var(--text2);">
+                <span style="font-weight:700;color:#4CAF50;">✅ Auto Update!</span> 
+                Data bulanan otomatis tersimpan di <span style="font-weight:700;">akhir bulan</span> dari resi harian.
+                <span style="display:block;font-size:9px;margin-top:2px;opacity:0.7;">Tanggal 1 setiap bulan, data bulan sebelumnya otomatis direkap</span>
+            </div>
 
             <div class="total-bulanan">
                 <div class="label">📊 TOTAL SETAHUN</div>
@@ -944,6 +954,7 @@
             const totalResi = resi1 + resi2;
             const totalGajiBulan = gajiPeriode1 + gajiPeriode2;
 
+            // Ambil bonus/denda dari bulan yang dipilih di dropdown
             const bulanTampil = document.getElementById('bdBulanSelect').value || bulanIni;
             const bonus = getBonus(bulanTampil);
             const denda = getDenda(bulanTampil);
@@ -956,9 +967,23 @@
             document.getElementById('totalResi').textContent = totalResi.toLocaleString('id-ID');
             document.getElementById('totalGaji').textContent = gajiBersih.toLocaleString('id-ID');
 
+            // Simpan data bulanan dengan bonus & denda
             if (totalResi > 0) {
-                dataBulanan[bulanIni] = { resi1, resi2, dibayarPeriode1, dibayarTanggal5, sisaPeriode1, totalGaji: gajiBersih, totalResi, bonus, denda }
-            } else delete dataBulanan[bulanIni];
+                dataBulanan[bulanIni] = { 
+                    resi1, resi2, 
+                    dibayarPeriode1, dibayarTanggal5, sisaPeriode1, 
+                    totalGaji: gajiBersih, 
+                    totalResi, 
+                    bonus: bonus, 
+                    denda: denda 
+                };
+            } else {
+                // tetap simpan bonus/denda walau resi 0
+                if (dataBulanan[bulanIni]) {
+                    dataBulanan[bulanIni].bonus = bonus;
+                    dataBulanan[bulanIni].denda = denda;
+                }
+            }
             localStorage.setItem('gajiSicepat', JSON.stringify(dataBulanan));
             loadRiwayat();
         }
