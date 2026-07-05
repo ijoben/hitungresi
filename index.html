@@ -64,7 +64,7 @@
         .btn-load-more:hover{background:var(--primary);color:#fff}
         .grafik-container{background:var(--bg);padding:10px;border-radius:12px;margin-top:14px;border:1px solid var(--primary)}
         .grafik-container h5{margin:0 0 8px 0;text-align:center;color:var(--primary);font-size:12px;font-weight:800;text-transform:uppercase}
-        #chartResi{max-height:180px}
+        #chartResi{max-height:180px;width:100% !important}
         .setting-box{background:var(--box);padding:12px;border-radius:12px;margin-bottom:10px;border:1px solid var(--primary)}
         .setting-box h5{margin:0 0 10px 0;text-align:center;color:var(--primary);font-size:12px;font-weight:800;text-transform:uppercase}
         .setting-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)}
@@ -101,7 +101,7 @@
         .riwayat-arrow{font-size:12px;transition:.3s;color:var(--text2);margin-left:4px}
         .riwayat-header.active .riwayat-arrow{transform:rotate(180deg)}
         .riwayat-body{max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1)}
-        .riwayat-body.open{max-height:300px;padding-top:6px}
+        .riwayat-body.open{max-height:500px;padding-top:6px}
         .riwayat-stats{display:grid;grid-template-columns:1fr 1fr;gap:5px;font-size:9px;color:var(--text2)}
         .stat-box{background:var(--bg);padding:6px;border-radius:6px;text-align:center}
         .stat-label{color:var(--text2);font-size:8px;text-transform:uppercase;font-weight:700}
@@ -113,7 +113,7 @@
         .riwayat-footer{margin-top:6px;text-align:right}
         .hapus-riwayat{background:#e53935;color:#fff;border:none;padding:4px 12px;border-radius:6px;cursor:pointer;font-size:9px;font-weight:700;transition:.2s}
         .hapus-riwayat:hover{transform:scale(1.05)}
-        .riwayat-item:first-child .riwayat-body{max-height:300px;padding-top:6px}
+        .riwayat-item:first-child .riwayat-body{max-height:500px;padding-top:6px}
         .riwayat-item:first-child .riwayat-header .riwayat-arrow{transform:rotate(180deg)}
         .riwayat-item:first-child .riwayat-header.active .riwayat-arrow{transform:rotate(180deg)}
         
@@ -205,6 +205,19 @@
         .btn-manual-kecil:hover{background:var(--primary);color:#fff}
         .header-tahunan{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px}
         .header-tahunan h2{display:flex;align-items:center;gap:8px;margin:0}
+
+        /* BONUS & DENDA - COMPACT KAYAK KOLOM PERTAMA */
+        .bd-compact-row{display:flex;gap:6px;margin:10px 0}
+        .bd-box{background:var(--box);padding:8px 6px;border-radius:10px;flex:1;text-align:center;border:1px solid var(--border)}
+        .bd-box .bd-label{font-size:8px;color:var(--text2);text-transform:uppercase;font-weight:700}
+        .bd-box .bd-value{font-size:10px;font-weight:900;margin:2px 0}
+        .bd-box .bd-value.green{color:#4caf50}
+        .bd-box .bd-value.red{color:#e53935}
+        .bd-box .bd-edit-btn{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:1px 8px;font-size:8px;font-weight:700;color:var(--text2);cursor:pointer;transition:.2s;margin-top:2px}
+        .bd-box .bd-edit-btn:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+        .bd-box select{font-size:8px;padding:2px 4px;border-radius:4px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-weight:700;width:100%;margin-top:2px}
+        .bd-total-kecil{font-size:9px;font-weight:700;color:var(--text2);text-align:center;margin-top:4px}
+        .bd-total-kecil span{color:var(--primary)}
     </style>
 </head>
 <body>
@@ -227,7 +240,28 @@
                 <div class="periode-box"><h4>TGL 1-15 DIBAYAR</h4><div class="angka">Rp <span id="gaji1">0</span></div><div class="sub"><span id="resi1">0</span> resi | 50%</div></div>
                 <div class="periode-box"><h4>TGL 16-AKHIR DIBAYAR</h4><div class="angka">Rp <span id="gaji2">0</span></div><div class="sub"><span id="resi2">0</span> resi | 50%</div></div>
             </div>
+            
+            <!-- BONUS & DENDA COMPACT kayak kolom pertama -->
+            <div class="bd-compact-row" id="bdCompactRow">
+                <div class="bd-box">
+                    <div class="bd-label">🎉 Bonus</div>
+                    <div class="bd-value green" id="bonusDisplay">Rp 0</div>
+                    <button class="bd-edit-btn" onclick="editBonusDenda('bonus')">✏️ Edit</button>
+                </div>
+                <div class="bd-box">
+                    <div class="bd-label">⚠️ Denda</div>
+                    <div class="bd-value red" id="dendaDisplay">Rp 0</div>
+                    <button class="bd-edit-btn" onclick="editBonusDenda('denda')">✏️ Edit</button>
+                </div>
+                <div class="bd-box" style="flex:0.7;padding:8px 4px;">
+                    <div class="bd-label">📅 Bulan</div>
+                    <select id="bdBulanSelect" onchange="updateBonusDendaDisplay(); hitungTotal(); tampilLogHarian(); loadRiwayat();"></select>
+                </div>
+            </div>
+            <div class="bd-total-kecil">💰 Gaji Bersih = Gaji + <span style="color:#4caf50;">Bonus</span> - <span style="color:#e53935;">Denda</span></div>
+
             <div class="total-resi"><div class="label">TOTAL BULAN INI</div><div class="angka"><span id="totalResi">0</span> Resi <br> Rp <span id="totalGaji">0</span></div></div>
+
             <div class="input-tanggal">
                 <label>📦 INPUT RESI HARIAN</label>
                 <div class="input-group">
@@ -243,17 +277,15 @@
             <div id="prediksiTargetContainer">
                 <div class="prediksi-target-box" id="prediksiTargetBox">
                     <div class="label">
-                        <span>🔮 PREDIKSI TARGET &amp; GAJI BULAN DEPAN</span>
                         <span class="label-sub">berdasarkan 3 bulan terakhir</span>
                     </div>
                     
-                    <div class="target-judul">🎯 Target Gaji Bulan Depan</div>
+                    <div class="target-judul">🎯 Prediksi Gaji Bulan Depan</div>
                     <div class="target-besar">
                         Rp <span id="targetNominal">0</span>
                         <small>| <span id="targetResi">0</span> resi</small>
                     </div>
                     
-                    <!-- Progress -->
                     <div class="progress-section">
                         <div class="progress-header">
                             <span id="progressLabel">0 / 0 resi</span>
@@ -264,15 +296,10 @@
                         </div>
                     </div>
                     
-                    <!-- Info Grid -->
                     <div class="info-grid">
                         <div class="info-item">
                             <div class="info-label">✅ Capaian Bulan Ini</div>
                             <div class="info-value" id="capaianBulanIni">Rp 0</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">🎯 Target Bulan Depan</div>
-                            <div class="info-value" id="targetBulanDepan">Rp 0</div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">📊 Selisih</div>
@@ -280,7 +307,6 @@
                         </div>
                     </div>
                     
-                    <!-- Info bawah -->
                     <div class="info-bawah">
                         <span id="targetTrend">📈 Trend: -</span>
                         <span id="targetRata">📊 Rata-rata 3 bulan: 0 resi</span>
@@ -355,7 +381,7 @@
             
             <div class="grafik-container">
                 <h5>📈 GRAFIK RESI BULAN INI</h5>
-                <canvas id="chartResi" height="180" style="max-height:180px;width:100%"></canvas>
+                <canvas id="chartResi" height="180" style="max-height:180px;width:100% !important;height:auto !important;"></canvas>
                 <button onclick="updateGrafik()" style="margin-top:8px;width:100%;padding:8px;background:var(--primary);color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:bold;cursor:pointer;transition:.2s;">🔄 RENDER ULANG GRAFIK</button>
             </div>
         </div>
@@ -368,11 +394,6 @@
                 <button class="btn-manual-kecil" onclick="openPopupManual()">📝 + Manual</button>
             </div>
 
-            <div style="background:var(--box);border-radius:12px;padding:10px 14px;margin-bottom:12px;border:1px solid #4CAF50;font-size:11px;text-align:center;color:var(--text2);">
-                <span style="font-weight:700;color:#4CAF50;">✅ Auto Update!</span> 
-                Data bulanan otomatis tersimpan di <span style="font-weight:700;">akhir bulan</span> dari resi harian.
-                <span style="display:block;font-size:9px;margin-top:2px;opacity:0.7;">Tanggal 1 setiap bulan, data bulan sebelumnya otomatis direkap</span>
-            </div>
 
             <div class="total-bulanan">
                 <div class="label">📊 TOTAL SETAHUN</div>
@@ -437,6 +458,22 @@
         </div>
     </div>
 
+    <!-- POPUP EDIT BONUS/DENDA -->
+    <div class="popup-overlay" id="popupBonusDenda" onclick="if(event.target===this)closePopupBonusDenda()">
+        <div class="popup-box popup-input-manual">
+            <div class="popup-icon" style="font-size:50px;">💰</div>
+            <div class="popup-title" style="font-size:14px;" id="bdPopupTitle">EDIT BONUS</div>
+            <div class="popup-text" style="font-size:16px;" id="bdPopupDesc">Masukkan nominal</div>
+            
+            <div class="input-group-popup">
+                <input type="number" id="inputBonusDendaPopup" min="0" placeholder="Nominal" inputmode="numeric">
+                
+                <button class="btn-popup-simpan" onclick="simpanBonusDendaPopup()">💾 SIMPAN</button>
+                <button class="btn-popup-batal" onclick="closePopupBonusDenda()">Batal</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const tarif = 2500;
         let dataBulanan = JSON.parse(localStorage.getItem('gajiSicepat') || '{}');
@@ -453,6 +490,9 @@
         let bulanLalu = getBulanTahun();
         let deferredPrompt;
         let logLimit = 10;
+
+        // BONUS & DENDA per bulan
+        let dataBonusDenda = JSON.parse(localStorage.getItem('dataBonusDenda') || '{}');
 
         // ==================== POPUP ====================
         function showPopup(icon, text, sub, badge) {
@@ -532,6 +572,101 @@
             showPopupAuto('📝', 'DATA BULAN TERSIMPAN!', `${resi} resi = Rp ${(resi * tarif).toLocaleString('id-ID')}`, '✅ DONE');
         }
 
+        // ==================== BONUS & DENDA ====================
+        function getBonusDenda(bulan) {
+            if (!dataBonusDenda[bulan]) {
+                dataBonusDenda[bulan] = { bonus: 0, denda: 0 };
+            }
+            return dataBonusDenda[bulan];
+        }
+
+        function getBonus(bulan) {
+            return getBonusDenda(bulan).bonus || 0;
+        }
+
+        function getDenda(bulan) {
+            return getBonusDenda(bulan).denda || 0;
+        }
+
+        function getAllBulanKeys() {
+            const allKeys = new Set();
+            Object.keys(dataHarian).forEach(k => allKeys.add(k.substring(0, 7)));
+            Object.keys(dataBulananManual).forEach(k => allKeys.add(k));
+            Object.keys(dataBonusDenda).forEach(k => allKeys.add(k));
+            return Array.from(allKeys).sort();
+        }
+
+        function populateBulanSelect() {
+            const select = document.getElementById('bdBulanSelect');
+            const current = select.value || getBulanTahun();
+            select.innerHTML = '';
+            const keys = getAllBulanKeys();
+            if (keys.length === 0) {
+                const now = getBulanTahun();
+                keys.push(now);
+            }
+            keys.forEach(key => {
+                const opt = document.createElement('option');
+                opt.value = key;
+                const date = new Date(key + '-01');
+                opt.textContent = date.toLocaleDateString('id-ID', { month: 'short', year: 'numeric' });
+                select.appendChild(opt);
+            });
+            if (keys.includes(current)) select.value = current;
+            else select.value = keys[keys.length - 1] || getBulanTahun();
+        }
+
+        function updateBonusDendaDisplay() {
+            const bulan = document.getElementById('bdBulanSelect').value || getBulanTahun();
+            const data = getBonusDenda(bulan);
+            document.getElementById('bonusDisplay').textContent = `Rp ${data.bonus.toLocaleString('id-ID')}`;
+            document.getElementById('dendaDisplay').textContent = `Rp ${data.denda.toLocaleString('id-ID')}`;
+        }
+
+        function editBonusDenda(type) {
+            const bulan = document.getElementById('bdBulanSelect').value || getBulanTahun();
+            const data = getBonusDenda(bulan);
+            const value = type === 'bonus' ? data.bonus : data.denda;
+            const title = type === 'bonus' ? 'EDIT BONUS' : 'EDIT DENDA';
+            const desc = type === 'bonus' ? `Masukkan bonus untuk ${bulan}` : `Masukkan denda untuk ${bulan}`;
+            
+            document.getElementById('bdPopupTitle').textContent = title;
+            document.getElementById('bdPopupDesc').textContent = desc;
+            document.getElementById('inputBonusDendaPopup').value = value || '';
+            document.getElementById('inputBonusDendaPopup').dataset.type = type;
+            document.getElementById('inputBonusDendaPopup').dataset.bulan = bulan;
+            document.getElementById('popupBonusDenda').classList.add('show');
+        }
+
+        function closePopupBonusDenda() {
+            document.getElementById('popupBonusDenda').classList.remove('show');
+        }
+
+        function simpanBonusDendaPopup() {
+            const type = document.getElementById('inputBonusDendaPopup').dataset.type;
+            const bulan = document.getElementById('inputBonusDendaPopup').dataset.bulan || getBulanTahun();
+            const value = parseInt(document.getElementById('inputBonusDendaPopup').value) || 0;
+            
+            if (value < 0) {
+                alert('Nominal gak boleh minus bos!');
+                return;
+            }
+            
+            if (!dataBonusDenda[bulan]) {
+                dataBonusDenda[bulan] = { bonus: 0, denda: 0 };
+            }
+            dataBonusDenda[bulan][type] = value;
+            localStorage.setItem('dataBonusDenda', JSON.stringify(dataBonusDenda));
+            
+            closePopupBonusDenda();
+            populateBulanSelect();
+            updateBonusDendaDisplay();
+            hitungTotal();
+            tampilLogHarian();
+            loadRiwayat();
+            showPopupAuto('✅', `${type === 'bonus' ? 'BONUS' : 'DENDA'} TERSIMPAN!`, `Rp ${value.toLocaleString('id-ID')} untuk ${bulan}`, '💾 DONE');
+        }
+
         // ==================== INSTALL PWA ====================
         window.addEventListener('beforeinstallprompt', e => {
             e.preventDefault();
@@ -595,15 +730,14 @@
                 });
             });
 
-            // CEK AUTO REKAP AKHIR BULAN
+            populateBulanSelect();
             cekAkhirBulanDanUpdateTahunan();
             autoIsiNol();
             loadRiwayat();
             hitungTotal();
             tampilLogHarian();
             cekBadgeReminder();
-            
-            // PREDIKSI TARGET OTOMATIS
+            updateBonusDendaDisplay();
             updatePrediksiTarget();
             
             setTimeout(() => {
@@ -703,8 +837,9 @@
             tampilLogHarian();
             cekBadgeReminder();
             updatePrediksiTarget();
+            populateBulanSelect();
+            updateBonusDendaDisplay();
             
-            // CEK AUTO REKAP
             cekAkhirBulanDanUpdateTahunan();
             
             setTimeout(() => {
@@ -747,6 +882,8 @@
                 tampilLogHarian();
                 cekBadgeReminder();
                 updatePrediksiTarget();
+                populateBulanSelect();
+                updateBonusDendaDisplay();
                 cekAkhirBulanDanUpdateTahunan();
                 setTimeout(() => {
                     if (document.getElementById('tab-statistik').classList.contains('active')) {
@@ -770,6 +907,8 @@
                 tampilLogHarian();
                 cekBadgeReminder();
                 updatePrediksiTarget();
+                populateBulanSelect();
+                updateBonusDendaDisplay();
                 cekAkhirBulanDanUpdateTahunan();
                 setTimeout(() => {
                     if (document.getElementById('tab-statistik').classList.contains('active')) {
@@ -805,15 +944,20 @@
             const totalResi = resi1 + resi2;
             const totalGajiBulan = gajiPeriode1 + gajiPeriode2;
 
+            const bulanTampil = document.getElementById('bdBulanSelect').value || bulanIni;
+            const bonus = getBonus(bulanTampil);
+            const denda = getDenda(bulanTampil);
+            const gajiBersih = totalGajiBulan + bonus - denda;
+
             document.getElementById('resi1').textContent = resi1.toLocaleString('id-ID');
             document.getElementById('resi2').textContent = resi2.toLocaleString('id-ID');
             document.getElementById('gaji1').textContent = dibayarPeriode1.toLocaleString('id-ID');
             document.getElementById('gaji2').textContent = dibayarTanggal5.toLocaleString('id-ID');
             document.getElementById('totalResi').textContent = totalResi.toLocaleString('id-ID');
-            document.getElementById('totalGaji').textContent = totalGajiBulan.toLocaleString('id-ID');
+            document.getElementById('totalGaji').textContent = gajiBersih.toLocaleString('id-ID');
 
             if (totalResi > 0) {
-                dataBulanan[bulanIni] = { resi1, resi2, dibayarPeriode1, dibayarTanggal5, sisaPeriode1, totalGaji: totalGajiBulan, totalResi }
+                dataBulanan[bulanIni] = { resi1, resi2, dibayarPeriode1, dibayarTanggal5, sisaPeriode1, totalGaji: gajiBersih, totalResi, bonus, denda }
             } else delete dataBulanan[bulanIni];
             localStorage.setItem('gajiSicepat', JSON.stringify(dataBulanan));
             loadRiwayat();
@@ -830,7 +974,7 @@
         function tampilLogHarian() {
             autoIsiNol();
             const e = document.getElementById('logHarian'), t = getBulanTahun();
-            let n = '<h5>LOG INPUT BULAN INI</h5>';
+            let n = '<h5>📋 LOG INPUT BULAN INI</h5>';
             const o = Object.keys(dataHarian).filter(e => e.startsWith(t)).sort().reverse();
             
             if (o.length > 0) {
@@ -848,7 +992,21 @@
                 n += '<div style="text-align:center;color:#999;padding:20px;">Belum ada input bulan ini</div>';
             }
             
-            // TAMPILKAN LOG BULAN SEBELUMNYA (EXPANDABLE)
+            // BONUS & DENDA di LOG - dengan tombol edit langsung
+            const bulanSelect = document.getElementById('bdBulanSelect').value || t;
+            const bdData = getBonusDenda(bulanSelect);
+            n += `<div style="margin-top:10px;padding:8px;background:var(--box);border-radius:8px;border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;font-size:10px;">
+                <div style="display:flex;align-items:center;gap:6px;">
+                    <span>🎉 Bonus: <strong style="color:#4caf50;">Rp ${bdData.bonus.toLocaleString('id-ID')}</strong></span>
+                    <button class="bd-edit-btn" style="padding:1px 6px;font-size:8px;" onclick="editBonusDenda('bonus')">✏️</button>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;">
+                    <span>⚠️ Denda: <strong style="color:#e53935;">Rp ${bdData.denda.toLocaleString('id-ID')}</strong></span>
+                    <button class="bd-edit-btn" style="padding:1px 6px;font-size:8px;" onclick="editBonusDenda('denda')">✏️</button>
+                </div>
+                <span style="font-weight:700;color:var(--primary);font-size:9px;">📅 ${bulanSelect}</span>
+            </div>`;
+            
             n += '<div style="margin-top:16px;border-top:1px solid var(--border);padding-top:12px;">';
             n += '<h5>📆 BULAN SEBELUMNYA</h5>';
             
@@ -863,12 +1021,14 @@
                     const tgls = Object.keys(dataHarian).filter(k => k.startsWith(bulan)).sort();
                     const totalResiBulan = tgls.reduce((sum, tgl) => sum + (parseInt(dataHarian[tgl]) || 0), 0);
                     const namaBulan = new Date(bulan + '-01').toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+                    const bd = getBonusDenda(bulan);
                     
                     n += `<div class="bulan-accordion">
                         <div class="bulan-accordion-header" onclick="toggleBulanLog(this)">
                             <span class="bulan-nama">📅 ${namaBulan}</span>
                             <span style="display:flex;align-items:center;gap:8px;">
                                 <span class="bulan-total">${totalResiBulan} resi</span>
+                                <span style="font-size:9px;color:var(--text2);">🎉${bd.bonus} ⚠️${bd.denda}</span>
                                 <span class="bulan-arrow">▼</span>
                             </span>
                         </div>
@@ -953,8 +1113,11 @@
                         backgroundColor: warnaCustom + '33',
                         tension: 0.3,
                         fill: true,
-                        pointRadius: 3,
-                        pointHoverRadius: 5
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: data.map(v => v > 0 ? warnaCustom : '#ccc'),
+                        pointBorderColor: data.map(v => v > 0 ? warnaCustom : '#999'),
+                        borderWidth: 2
                     }]
                 },
                 options: { 
@@ -963,7 +1126,13 @@
                     animation: { duration: 300 },
                     plugins: { 
                         legend: { display: false },
-                        tooltip: { enabled: true }
+                        tooltip: { 
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y + ' resi';
+                                }
+                            }
+                        }
                     }, 
                     scales: { 
                         y: { 
@@ -972,7 +1141,7 @@
                             grid: { color: gridColor } 
                         }, 
                         x: { 
-                            ticks: { color: textColor }, 
+                            ticks: { color: textColor, maxRotation: 45, font: { size: 9 } }, 
                             grid: { display: false } 
                         } 
                     } 
@@ -993,6 +1162,8 @@
                     const r = hitungStatistik(bulan);
                     const a = n.totalResi || (n.resi1 + n.resi2);
                     const totalGaji = n.totalGaji || ((n.resi1 + n.resi2) * tarif);
+                    const bonus = n.bonus || getBonus(bulan);
+                    const denda = n.denda || getDenda(bulan);
                     
                     const gajiPeriode1 = (n.resi1 || 0) * tarif * 0.5;
                     const gajiPeriode2 = ((n.resi2 || 0) * tarif) + ((n.resi1 || 0) * tarif * 0.5);
@@ -1027,7 +1198,6 @@
                                     </div>
                                 </div>
                                 
-                                <!-- DETAIL GAJI PERIODE 1 & 2 -->
                                 <div class="periode-detail">
                                     <div class="periode-item">
                                         <div class="label">📆 Tgl 1-15</div>
@@ -1039,6 +1209,11 @@
                                         <div class="value">Rp ${gajiPeriode2.toLocaleString('id-ID')}</div>
                                         <div style="font-size:7px;color:var(--text2);">${n.resi2 || 0} resi</div>
                                     </div>
+                                </div>
+                                
+                                <div style="display:flex;gap:6px;margin-top:6px;font-size:9px;font-weight:700;flex-wrap:wrap;">
+                                    <span style="background:#4caf50;color:#fff;padding:2px 8px;border-radius:4px;">🎉 Bonus: Rp ${bonus.toLocaleString('id-ID')}</span>
+                                    <span style="background:#e53935;color:#fff;padding:2px 8px;border-radius:4px;">⚠️ Denda: Rp ${denda.toLocaleString('id-ID')}</span>
                                 </div>
                                 
                                 <div class="riwayat-footer">
@@ -1077,14 +1252,18 @@
             if (confirm(`Hapus semua data bulan ${e}?`)) {
                 Object.keys(dataHarian).forEach(t => { if (t.startsWith(e)) delete dataHarian[t] });
                 delete dataBulanan[e];
+                delete dataBonusDenda[e];
                 localStorage.setItem('gajiSicepatHarian', JSON.stringify(dataHarian));
                 localStorage.setItem('gajiSicepat', JSON.stringify(dataBulanan));
+                localStorage.setItem('dataBonusDenda', JSON.stringify(dataBonusDenda));
                 hitungTotal();
                 tampilLogHarian();
                 loadRiwayat();
                 updateGrafik();
                 cekBadgeReminder();
                 updatePrediksiTarget();
+                populateBulanSelect();
+                updateBonusDendaDisplay();
                 cekAkhirBulanDanUpdateTahunan();
             }
         }
@@ -1207,7 +1386,7 @@
         function cekBackupReminder() {
             const e = new Date, t = e.getDate(), bulanIni = getBulanTahun(), keyBackup = `autoBackup_${bulanIni}_${t}`;
             if ((t === 15 || t === 30) && !localStorage.getItem(keyBackup)) {
-                const data = { dataHarian, dataBulanan, dataRekor, dataTahunan, dataBulananManual, tanggalBackup: new Date().toISOString(), versi: '4.0' };
+                const data = { dataHarian, dataBulanan, dataRekor, dataTahunan, dataBulananManual, dataBonusDenda, tanggalBackup: new Date().toISOString(), versi: '4.1' };
                 const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }), url = URL.createObjectURL(blob), a = document.createElement('a');
                 a.href = url;
                 a.download = `AUTO-backup-gaji-${getTanggalHariIni()}.json`;
@@ -1224,7 +1403,7 @@
         }
 
         function exportBackup() {
-            const e = { dataHarian, dataBulanan, dataRekor, dataTahunan, dataBulananManual, tanggalBackup: new Date().toISOString(), versi: '4.0' }, t = new Blob([JSON.stringify(e, null, 2)], { type: 'application/json' }), n = URL.createObjectURL(t), o = document.createElement('a');
+            const e = { dataHarian, dataBulanan, dataRekor, dataTahunan, dataBulananManual, dataBonusDenda, tanggalBackup: new Date().toISOString(), versi: '4.1' }, t = new Blob([JSON.stringify(e, null, 2)], { type: 'application/json' }), n = URL.createObjectURL(t), o = document.createElement('a');
             o.href = n;
             o.download = `backup-gaji-sicepat-${getTanggalHariIni()}.json`;
             o.click();
@@ -1233,7 +1412,7 @@
         }
 
         function showBackupFallback() {
-            const fallbackData = { dataHarian, dataBulanan, dataRekor, dataTahunan, dataBulananManual };
+            const fallbackData = { dataHarian, dataBulanan, dataRekor, dataTahunan, dataBulananManual, dataBonusDenda };
             const textToCopy = JSON.stringify(fallbackData, null, 2);
             navigator.clipboard.writeText(textToCopy).then(() => {
                 showPopupAuto('📋', 'TEKS BACKUP DISALIN!', 'Sudah di papan klip', '✅ OK')
@@ -1255,11 +1434,13 @@
                         dataRekor = t.dataRekor || { resi: 0, tanggal: '' };
                         dataTahunan = t.dataTahunan || [];
                         dataBulananManual = t.dataBulananManual || {};
+                        dataBonusDenda = t.dataBonusDenda || {};
                         localStorage.setItem('gajiSicepatHarian', JSON.stringify(dataHarian));
                         localStorage.setItem('gajiSicepat', JSON.stringify(dataBulanan));
                         localStorage.setItem('gajiSicepatRekor', JSON.stringify(dataRekor));
                         localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
                         localStorage.setItem('dataBulananManual', JSON.stringify(dataBulananManual));
+                        localStorage.setItem('dataBonusDenda', JSON.stringify(dataBonusDenda));
                         showPopupAuto('🔄', 'RESTORE BERHASIL!', 'Halaman bakal reload', '✅ DONE');
                         setTimeout(() => location.reload(), 1500);
                     }
@@ -1315,6 +1496,8 @@
                             tampilLogBulanan();
                         }
                         updatePrediksiTarget();
+                        populateBulanSelect();
+                        updateBonusDendaDisplay();
                     }
                 }
             }
@@ -1364,6 +1547,8 @@
                 
                 tampilLogBulanan();
                 updatePrediksiTarget();
+                populateBulanSelect();
+                updateBonusDendaDisplay();
                 showPopupAuto('📅', 'REKAP MANUAL BERHASIL!', `${totalResiBulan} resi direkap`, '✅ DONE');
             }
         }
@@ -1468,12 +1653,13 @@
                     const bulanIdx = parseInt(key.split('-')[1]) - 1;
                     const namaBln = namaBulan[bulanIdx];
                     const gaji = resi * tarif;
+                    const bd = getBonusDenda(key);
                     totalResi += resi;
                     totalGaji += gaji;
                     html += `<div class="log-item">
                     <div class="log-info">
                     <div class="log-tgl">${namaBln}</div>
-                    <div class="log-resi">${resi} resi = Rp ${gaji.toLocaleString('id-ID')}</div>
+                    <div class="log-resi">${resi} resi = Rp ${gaji.toLocaleString('id-ID')} | 🎉${bd.bonus} ⚠️${bd.denda}</div>
                     </div>
                     <div class="log-btn">
                     <button class="btn-edit" onclick="editBulan('${key}')">Edit</button>
@@ -1511,6 +1697,8 @@
                 localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
                 tampilLogBulanan();
                 updatePrediksiTarget();
+                populateBulanSelect();
+                updateBonusDendaDisplay();
                 showPopupAuto('✏️', 'DATA BULAN DIUPDATE!', 'Perubahan tersimpan', '✅ OK');
             }
         }
@@ -1523,6 +1711,8 @@
                 localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
                 tampilLogBulanan();
                 updatePrediksiTarget();
+                populateBulanSelect();
+                updateBonusDendaDisplay();
                 showPopupAuto('🗑️', 'DATA BULAN DIHAPUS!', 'Sudah terhapus permanen', '⚠️ DONE');
             }
         }
@@ -1535,6 +1725,8 @@
             localStorage.setItem('dataBulananManual', JSON.stringify(dataBulananManual));
             tampilLogBulanan();
             updatePrediksiTarget();
+            populateBulanSelect();
+            updateBonusDendaDisplay();
             showPopupAuto('⚠️', 'DATA TAHUNAN DIHAPUS!', 'Semua data tahunan hilang', '💀 GONE');
         }
     </script>
