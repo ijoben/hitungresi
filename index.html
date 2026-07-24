@@ -177,7 +177,7 @@
             text-transform: uppercase;
         }
 
-        /* ===== TOTAL RESI CARD BARU ===== */
+        /* ===== TOTAL RESI CARD ===== */
         .total-resi {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             padding: 18px 16px 14px;
@@ -244,7 +244,7 @@
         }
 
         .total-number {
-            font-size: 26px; /* dikurangi dari 32px biar muat */
+            font-size: 28px;
             font-weight: 900;
             line-height: 1.2;
             letter-spacing: -0.5px;
@@ -266,7 +266,7 @@
 
         .total-footer {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             font-size: 11px;
             font-weight: 700;
             padding-top: 10px;
@@ -734,27 +734,164 @@
         .bulan-accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1); padding: 0 14px; }
         .bulan-accordion-body.open { max-height: 2000px; padding: 10px 14px 14px 14px; }
 
-        /* Prediksi Target Box */
-        .prediksi-target-box { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 20px; padding: 16px; margin: 16px 0 4px 0; color: #fff; position: relative; overflow: hidden; box-shadow: 0 10px 25px rgba(237, 28, 36, 0.3); }
-        .prediksi-target-box::before { content: '🎯'; position: absolute; right: -10px; top: -10px; font-size: 80px; opacity: 0.12; }
-        .prediksi-target-box .label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.85; font-weight: 800; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
-        .prediksi-target-box .label-sub { font-size: 9px; opacity: 0.7; font-weight: 600; }
-        .prediksi-target-box .target-judul { font-size: 14px; font-weight: 800; margin: 2px 0 2px 0; }
-        .prediksi-target-box .target-besar { font-size: 26px; font-weight: 900; margin: 0 0 4px 0; }
-        .prediksi-target-box .target-besar small { font-size: 13px; font-weight: 700; opacity: 0.85; }
-        .prediksi-target-box .progress-section { margin: 10px 0 6px 0; }
-        .prediksi-target-box .progress-header { display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; opacity: 0.9; }
-        .prediksi-target-box .progress-track { width: 100%; height: 10px; background: rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden; margin-top: 6px; }
-        .prediksi-target-box .progress-bar { height: 100%; border-radius: 10px; background: linear-gradient(90deg, #FFD700, #FFA500); transition: width 0.8s ease; width: 0%; }
-        .prediksi-target-box .info-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.15); }
-        .prediksi-target-box .info-item { text-align: center; background: rgba(255,255,255,0.1); padding: 6px 4px; border-radius: 10px; }
-        .prediksi-target-box .info-item .info-label { font-size: 7px; text-transform: uppercase; opacity: 0.8; font-weight: 800; letter-spacing: 0.3px; }
-        .prediksi-target-box .info-item .info-value { font-size: 12px; font-weight: 900; margin-top: 2px; }
+        /* ===== PREDIKSI TARGET ===== */
+        .prediksi-target-box {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 20px;
+            padding: 16px;
+            margin: 16px 0 4px 0;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(237, 28, 36, 0.3);
+        }
+
+        .prediksi-target-box::before {
+            content: '🎯';
+            position: absolute;
+            right: -10px;
+            top: -10px;
+            font-size: 80px;
+            opacity: 0.12;
+        }
+
+        .prediksi-target-box .label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.85;
+            font-weight: 800;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .prediksi-target-box .label-sub {
+            font-size: 9px;
+            opacity: 0.7;
+            font-weight: 600;
+        }
+
+        .prediksi-target-box .target-judul {
+            font-size: 14px;
+            font-weight: 800;
+            margin: 2px 0 2px 0;
+        }
+
+        .prediksi-target-box .target-besar {
+            font-size: 26px;
+            font-weight: 900;
+            margin: 0 0 4px 0;
+        }
+
+        .prediksi-target-box .target-besar small {
+            font-size: 13px;
+            font-weight: 700;
+            opacity: 0.85;
+        }
+
+        .prediksi-target-box .progress-section {
+            margin: 10px 0 6px 0;
+        }
+
+        .prediksi-target-box .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            font-weight: 800;
+            opacity: 0.9;
+        }
+
+        .prediksi-target-box .progress-track {
+            width: 100%;
+            height: 10px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 6px;
+        }
+
+        .prediksi-target-box .progress-bar {
+            height: 100%;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            transition: width 0.8s ease;
+            width: 0%;
+        }
+
+        .prediksi-target-box .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 6px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .prediksi-target-box .info-item {
+            text-align: center;
+            background: rgba(255,255,255,0.1);
+            padding: 6px 4px;
+            border-radius: 10px;
+        }
+
+        .prediksi-target-box .info-item .info-label {
+            font-size: 7px;
+            text-transform: uppercase;
+            opacity: 0.8;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+        }
+
+        .prediksi-target-box .info-item .info-value {
+            font-size: 12px;
+            font-weight: 900;
+            margin-top: 2px;
+        }
+
         .prediksi-target-box .info-item .info-value.success { color: #4ADE80; }
         .prediksi-target-box .info-item .info-value.danger { color: #F87171; }
-        .prediksi-target-box .info-bawah { display: flex; justify-content: space-between; font-size: 10px; opacity: 0.9; margin-top: 10px; flex-wrap: wrap; gap: 4px; font-weight: 700; }
-        .prediksi-target-box .info-bawah span { background: rgba(255,255,255,0.12); padding: 4px 10px; border-radius: 12px; }
-        .prediksi-target-kosong { background: var(--surface); border-radius: 16px; padding: 20px; margin: 16px 0 4px 0; text-align: center; color: var(--text2); font-size: 12px; font-weight: 600; border: 1px solid var(--border); box-shadow: var(--shadow); }
+
+        .prediksi-target-box .info-bawah {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            opacity: 0.9;
+            margin-top: 10px;
+            flex-wrap: wrap;
+            gap: 4px;
+            font-weight: 700;
+        }
+
+        .prediksi-target-box .info-bawah span {
+            background: rgba(255,255,255,0.12);
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+
+        .prediksi-target-kosong {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 16px 0 4px 0;
+            text-align: center;
+            color: var(--text2);
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .prediksi-target-kosong .icon-big {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .prediksi-target-kosong .sub-info {
+            font-size: 10px;
+            opacity: 0.7;
+        }
 
         .badge-auto { background: #10B981; color: #fff; padding: 3px 10px; border-radius: 20px; font-size: 9px; font-weight: 800; display: inline-block; }
         .btn-manual-kecil { background: var(--surface); border: 1.5px solid var(--primary); color: var(--primary); padding: 6px 12px; border-radius: 10px; font-size: 11px; font-weight: 800; cursor: pointer; transition: .2s; }
@@ -788,7 +925,7 @@
         <div class="rekor-banner kosong" id="rekorBanner"></div>
 
         <div id="tab-input" class="tab-content active">
-            <!-- ===== CARD TOTAL BULAN INI (BARU) ===== -->
+            <!-- ===== TOTAL BULAN INI (TANPA TARGET) ===== -->
             <div class="total-resi">
                 <div class="total-header">
                     <span class="total-icon">📦</span>
@@ -807,7 +944,6 @@
                 </div>
                 <div class="total-footer">
                     <span>📈 Rata-rata: <span id="rataHarian">0</span> resi/hari</span>
-                    <span>🎯 Target: <span id="targetBulanIni">0</span> resi</span>
                 </div>
             </div>
 
@@ -891,9 +1027,9 @@
                 </div>
                 
                 <div id="prediksiTargetKosong" class="prediksi-target-kosong" style="display:none;">
-                    <span class="icon-big" style="font-size:32px;display:block;margin-bottom:6px;">📊</span>
+                    <span class="icon-big">📊</span>
                     Belum cukup data untuk prediksi<br>
-                    <span style="font-size:10px;">Butuh minimal 2 bulan data di rekap tahunan</span>
+                    <span class="sub-info">Butuh minimal 2 bulan data di rekap tahunan</span>
                 </div>
             </div>
         </div>
@@ -1526,7 +1662,7 @@
             }
         }
 
-        // ==================== HITUNG TOTAL (DIPERBARUI) ====================
+        // ==================== HITUNG TOTAL (tanpa update target di footer) ====================
         function hitungTotal() {
             let resi1 = 0, resi2 = 0;
             const bulanIni = getBulanTahun();
@@ -1563,18 +1699,9 @@
             document.getElementById('totalResi').textContent = totalResi.toLocaleString('id-ID');
             document.getElementById('totalGaji').textContent = gajiBersih.toLocaleString('id-ID');
 
-            // ==== TAMBAHAN: Rata-rata harian dan target ====
+            // ==== Rata-rata harian ====
             const rataHarian = hariKerja > 0 ? Math.round(totalResi / hariKerja) : 0;
             document.getElementById('rataHarian').textContent = rataHarian;
-
-            // Ambil target resi dari prediksi (jika ada)
-            const targetResiEl = document.getElementById('targetResi');
-            let targetResi = 0;
-            if (targetResiEl) {
-                const raw = targetResiEl.textContent.replace(/\./g, '');
-                targetResi = parseInt(raw) || 0;
-            }
-            document.getElementById('targetBulanIni').textContent = targetResi;
 
             // Simpan data bulanan dengan bonus & denda
             if (totalResi > 0 || dataBulanan[bulanIni]) {
