@@ -180,7 +180,7 @@
         /* ===== TOTAL RESI CARD BARU ===== */
         .total-resi {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            padding: 20px 16px 16px;
+            padding: 18px 16px 14px;
             border-radius: 24px;
             color: #fff;
             box-shadow: 0 12px 30px rgba(237, 28, 36, 0.35);
@@ -210,16 +210,16 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .total-icon {
-            font-size: 28px;
+            font-size: 26px;
             line-height: 1;
         }
 
         .total-label {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 800;
             letter-spacing: 1px;
             text-transform: uppercase;
@@ -230,21 +230,21 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 12px;
-            margin: 8px 0 12px;
+            gap: 10px;
+            margin: 4px 0 10px;
         }
 
         .total-item {
             display: flex;
             align-items: baseline;
-            gap: 4px;
+            gap: 3px;
             flex-wrap: wrap;
             justify-content: center;
             flex: 1;
         }
 
         .total-number {
-            font-size: 32px;
+            font-size: 28px; /* dikurangi dari 32px biar muat */
             font-weight: 900;
             line-height: 1.2;
             letter-spacing: -0.5px;
@@ -253,24 +253,31 @@
         .total-unit {
             font-size: 14px;
             font-weight: 700;
-            opacity: 0.85;
+            opacity: 0.9;
         }
 
         .total-divider {
             width: 2px;
-            height: 40px;
+            height: 36px;
             background: rgba(255,255,255,0.25);
             border-radius: 2px;
+            flex-shrink: 0;
         }
 
         .total-footer {
             display: flex;
             justify-content: space-between;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
-            padding-top: 12px;
+            padding-top: 10px;
             border-top: 1px solid rgba(255,255,255,0.15);
             opacity: 0.9;
+        }
+
+        .total-footer span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         /* Gaji Cards */
