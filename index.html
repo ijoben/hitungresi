@@ -22,26 +22,23 @@
             --primary-dark: #c9181f;
             --primary-light: rgba(237, 28, 36, 0.08);
             --bg: #F8F9FA;
-            --surface: rgba(255, 255, 255, 0.85); /* DIBUAT TRANSPARAN */
-            --surface-solid: #FFFFFF; /* Untuk elemen yang butuh solid */
+            --surface: #FFFFFF;
             --text: #1E293B;
             --text2: #64748B;
-            --border: rgba(226, 232, 240, 0.6);
-            --box: rgba(255, 255, 255, 0.85);
-            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+            --border: #E2E8F0;
+            --box: #FFFFFF;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
             --bg-opacity: .6;
-            --backdrop-blur: blur(12px);
         }
 
         body.dark {
             --bg: #0F172A;
-            --surface: rgba(30, 41, 59, 0.85);
-            --surface-solid: #1E293B;
+            --surface: #1E293B;
             --text: #F8FAFC;
             --text2: #94A3B8;
-            --border: rgba(51, 65, 85, 0.6);
-            --box: rgba(30, 41, 59, 0.85);
-            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+            --border: #334155;
+            --box: #1E293B;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
         }
 
         * {
@@ -85,7 +82,7 @@
             pointer-events: none;
         }
 
-        /* Top Bar - biar transparan juga */
+        /* Top Bar */
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -93,21 +90,19 @@
             margin-bottom: 16px;
             padding: 10px 16px;
             background: var(--surface);
-            backdrop-filter: var(--backdrop-blur);
-            -webkit-backdrop-filter: var(--backdrop-blur);
             border-radius: 16px;
             box-shadow: var(--shadow);
             border: 1px solid var(--border);
         }
 
         .logo-sicepat {
-            flex: 1;
-            text-align: center;
-            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .logo-sicepat svg {
-            height: 32px;
+            height: 28px;
         }
 
         .top-btn-group {
@@ -137,18 +132,16 @@
         .btn-install.show { display: flex; }
 
         .badge-reminder {
-            position: absolute;
-            top: -8px;
-            right: 40px;
             background: linear-gradient(135deg, #FF3B30, #ED1C24);
             color: #fff;
-            font-size: 9px;
-            padding: 3px 8px;
+            font-size: 8px;
+            padding: 2px 6px;
             border-radius: 20px;
             font-weight: 800;
             letter-spacing: 0.5px;
             box-shadow: 0 4px 10px rgba(237, 28, 36, 0.4);
             animation: pulse-badge 2s infinite;
+            margin-left: 4px;
         }
 
         @keyframes pulse-badge {
@@ -156,7 +149,6 @@
             50% { transform: scale(1.08); }
         }
 
-        /* Rekor Banner - Replaced */
         .rekor-banner { display: none; }
 
         h2 {
@@ -169,44 +161,33 @@
             text-transform: uppercase;
         }
 
-        /* ===== TOTAL RESI CARD (with Rekor) - Biar transparan ===== */
+        /* ===== TOTAL RESI CARD ===== */
         .total-resi {
-            background: var(--surface);
-            backdrop-filter: var(--backdrop-blur);
-            -webkit-backdrop-filter: var(--backdrop-blur);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             padding: 18px 16px 14px;
             border-radius: 24px;
-            color: var(--text);
-            box-shadow: var(--shadow);
+            color: #fff;
+            box-shadow: 0 12px 30px rgba(237, 28, 36, 0.35);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             overflow: hidden;
             margin-bottom: 12px;
-            border: 1px solid var(--border);
-        }
-
-        /* Gradient overlay untuk card total biar tetap ada aksen warna */
-        .total-resi::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            opacity: 0.15;
-            z-index: 0;
-            border-radius: 24px;
-        }
-
-        .total-resi > * {
-            position: relative;
-            z-index: 1;
         }
 
         .total-resi:hover {
             transform: translateY(-3px);
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 18px 40px rgba(237, 28, 36, 0.45);
+        }
+
+        .total-resi::after {
+            content: '';
+            position: absolute;
+            top: -60%;
+            right: -30%;
+            width: 120%;
+            height: 120%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            pointer-events: none;
         }
 
         .total-header {
@@ -226,7 +207,7 @@
             font-weight: 800;
             letter-spacing: 1px;
             text-transform: uppercase;
-            color: var(--primary);
+            opacity: 0.95;
         }
 
         .total-body {
@@ -251,34 +232,32 @@
             font-weight: 900;
             line-height: 1.2;
             letter-spacing: -0.5px;
-            color: var(--text);
         }
 
         .total-unit {
             font-size: 14px;
             font-weight: 700;
-            color: var(--text2);
+            opacity: 0.9;
         }
 
         .total-divider {
             width: 2px;
             height: 36px;
-            background: var(--border);
+            background: rgba(255,255,255,0.25);
             border-radius: 2px;
             flex-shrink: 0;
         }
 
-        /* --- Rekor inside total card --- */
         .total-rekor {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding-top: 10px;
             margin-top: 8px;
-            border-top: 1px solid var(--border);
+            border-top: 1px solid rgba(255,255,255,0.15);
             font-size: 12px;
             font-weight: 700;
-            color: var(--text2);
+            opacity: 0.9;
         }
 
         .total-rekor .rekor-label {
@@ -288,12 +267,12 @@
         }
 
         .total-rekor .rekor-value {
-            background: rgba(237, 28, 36, 0.1);
+            background: rgba(255,255,255,0.15);
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 13px;
             font-weight: 900;
-            color: var(--primary);
+            letter-spacing: 0.3px;
         }
 
         .total-rekor .rekor-value .resi-count {
@@ -305,7 +284,6 @@
             opacity: 0.8;
             font-size: 11px;
         }
-        /* --- End rekor inside total card --- */
 
         .total-footer {
             display: flex;
@@ -313,8 +291,8 @@
             font-size: 11px;
             font-weight: 700;
             padding-top: 10px;
-            border-top: 1px solid var(--border);
-            color: var(--text2);
+            border-top: 1px solid rgba(255,255,255,0.15);
+            opacity: 0.9;
         }
 
         .total-footer span {
@@ -323,7 +301,7 @@
             gap: 4px;
         }
 
-        /* Gaji Cards - transparan */
+        /* Gaji Cards */
         .gaji-2kolom {
             display: flex;
             gap: 10px;
@@ -332,8 +310,6 @@
 
         .periode-box {
             background: var(--surface);
-            backdrop-filter: var(--backdrop-blur);
-            -webkit-backdrop-filter: var(--backdrop-blur);
             padding: 14px 10px;
             border-radius: 16px;
             flex: 1;
@@ -365,11 +341,9 @@
             font-weight: 700;
         }
 
-        /* Inputs - transparan */
+        /* Inputs */
         .input-tanggal {
             background: var(--surface);
-            backdrop-filter: var(--backdrop-blur);
-            -webkit-backdrop-filter: var(--backdrop-blur);
             padding: 16px;
             border-radius: 20px;
             margin: 16px 0;
@@ -408,17 +382,11 @@
             border-radius: 12px;
             font-size: 13px;
             outline: none;
-            background: rgba(255,255,255,0.5);
+            background: var(--bg);
             color: var(--text);
             font-weight: 700;
             font-family: inherit;
             transition: border-color 0.2s ease;
-        }
-
-        body.dark .input-tanggal input[type="text"],
-        body.dark .input-tanggal input[type="number"],
-        body.dark .input-tanggal select {
-            background: rgba(15, 23, 42, 0.5);
         }
 
         .input-tanggal input:focus {
@@ -477,8 +445,6 @@
             align-items: center;
             padding: 12px;
             background: var(--surface);
-            backdrop-filter: var(--backdrop-blur);
-            -webkit-backdrop-filter: var(--backdrop-blur);
             margin-bottom: 8px;
             border-radius: 14px;
             border: 1px solid var(--border);
@@ -508,8 +474,6 @@
 
         .btn-load-more {
             background: var(--surface);
-            backdrop-filter: var(--backdrop-blur);
-            -webkit-backdrop-filter: var(--backdrop-blur);
             color: var(--primary);
             border: 1.5px solid var(--primary);
             padding: 12px;
@@ -529,11 +493,9 @@
             color: #fff;
         }
 
-        /* Grafik & Settings - transparan */
+        /* Grafik & Settings */
         .grafik-container, .setting-box, .backup-container {
             background: var(--surface);
-            backdrop-filter: var(--backdrop-blur);
-            -webkit-backdrop-filter: var(--backdrop-blur);
             padding: 16px;
             border-radius: 20px;
             margin-top: 16px;
@@ -630,11 +592,9 @@
         .backup-info { font-size: 10px; color: var(--text2); text-align: center; line-height: 1.4; font-weight: 600; }
         #inputFileBackup, #inputFileBg { display: none; }
 
-        /* Riwayat Items - transparan */
+        /* Riwayat Items */
         .riwayat-item {
             background: var(--surface);
-            backdrop-filter: var(--backdrop-blur);
-            -webkit-backdrop-filter: var(--backdrop-blur);
             padding: 14px;
             border-radius: 16px;
             margin-bottom: 10px;
@@ -662,45 +622,34 @@
         .riwayat-body.open { max-height: 500px; padding-top: 12px; }
 
         .riwayat-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 10px; }
-        .stat-box { background: rgba(255,255,255,0.3); padding: 8px; border-radius: 10px; text-align: center; border: 1px solid var(--border); }
-        body.dark .stat-box { background: rgba(0,0,0,0.2); }
+        .stat-box { background: var(--bg); padding: 8px; border-radius: 10px; text-align: center; border: 1px solid var(--border); }
         .stat-label { color: var(--text2); font-size: 9px; text-transform: uppercase; font-weight: 800; }
         .stat-angka { font-weight: 900; color: var(--text); margin-top: 2px; font-size: 13px; }
 
         .periode-detail { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
         .periode-detail .periode-item {
-            background: rgba(255,255,255,0.3);
+            background: var(--bg);
             padding: 6px; border-radius: 8px;
             text-align: center; border: 1px solid var(--border);
         }
-        body.dark .periode-detail .periode-item { background: rgba(0,0,0,0.2); }
 
         .periode-detail .periode-item .label { font-size: 8px; text-transform: uppercase; color: var(--text2); font-weight: 800; }
         .periode-detail .periode-item .value { font-weight: 900; color: var(--primary); font-size: 12px; margin-top: 2px; }
 
         .riwayat-footer { margin-top: 10px; text-align: right; }
-        .hapus-riwayat {
-            background: #EF4444; color: #fff; border: none;
-            padding: 6px 14px; border-radius: 8px; cursor: pointer;
-            font-size: 10px; font-weight: 800; transition: transform 0.2s;
-        }
 
         .total-bulanan {
-            background: var(--surface);
-            backdrop-filter: var(--backdrop-blur);
-            -webkit-backdrop-filter: var(--backdrop-blur);
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
             padding: 18px; border-radius: 18px;
-            margin: 14px 0; text-align: center;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            color: var(--text);
+            margin: 14px 0; text-align: center; color: #fff;
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.25);
         }
 
-        .total-bulanan .label { font-size: 11px; opacity: .9; text-transform: uppercase; font-weight: 800; color: var(--text2); }
-        .total-bulanan .angka { font-size: 24px; font-weight: 900; margin-top: 4px; color: #10B981; }
-        .total-bulanan .sub { font-size: 12px; margin-top: 4px; opacity: .95; font-weight: 700; color: var(--text2); }
+        .total-bulanan .label { font-size: 11px; opacity: .9; text-transform: uppercase; font-weight: 800; }
+        .total-bulanan .angka { font-size: 24px; font-weight: 900; margin-top: 4px; }
+        .total-bulanan .sub { font-size: 12px; margin-top: 4px; opacity: .95; font-weight: 700; }
 
-        /* Floating Tab Navigation - transparan */
+        /* Floating Tab Navigation */
         .tab-menu {
             position: fixed;
             bottom: 12px; left: 50%;
@@ -708,9 +657,9 @@
             width: calc(100% - 24px);
             max-width: 406px;
             display: flex;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 24px;
             padding: 6px;
@@ -721,7 +670,7 @@
         }
 
         body.dark .tab-menu {
-            background: rgba(30, 41, 59, 0.8);
+            background: rgba(30, 41, 59, 0.85);
             border-color: rgba(255, 255, 255, 0.05);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
@@ -792,7 +741,7 @@
         .popup-input-manual .btn-popup-batal { background: transparent; border: none; color: rgba(255,255,255,0.7); padding: 8px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; }
 
         /* Accordion */
-        .bulan-accordion { background: var(--surface); backdrop-filter: var(--backdrop-blur); -webkit-backdrop-filter: var(--backdrop-blur); border-radius: 14px; margin-bottom: 8px; overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow); }
+        .bulan-accordion { background: var(--surface); border-radius: 14px; margin-bottom: 8px; overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow); }
         .bulan-accordion-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; cursor: pointer; transition: .2s; }
         .bulan-accordion-header .bulan-nama { font-weight: 800; font-size: 13px; color: var(--text); }
         .bulan-accordion-header .bulan-total { font-weight: 900; font-size: 13px; color: var(--primary); }
@@ -803,27 +752,23 @@
 
         /* ===== PREDIKSI TARGET ===== */
         .prediksi-target-box {
-            background: var(--surface);
-            backdrop-filter: var(--backdrop-blur);
-            -webkit-backdrop-filter: var(--backdrop-blur);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             border-radius: 20px;
             padding: 16px;
             margin: 16px 0 4px 0;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            color: var(--text);
+            color: #fff;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 10px 25px rgba(237, 28, 36, 0.3);
         }
 
-        /* Aksen warna di prediksi target */
         .prediksi-target-box::before {
             content: '🎯';
             position: absolute;
             right: -10px;
             top: -10px;
             font-size: 80px;
-            opacity: 0.06;
+            opacity: 0.12;
         }
 
         .prediksi-target-box .label {
@@ -836,7 +781,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: var(--text2);
         }
 
         .prediksi-target-box .label-sub {
@@ -849,21 +793,18 @@
             font-size: 14px;
             font-weight: 800;
             margin: 2px 0 2px 0;
-            color: var(--primary);
         }
 
         .prediksi-target-box .target-besar {
             font-size: 26px;
             font-weight: 900;
             margin: 0 0 4px 0;
-            color: var(--text);
         }
 
         .prediksi-target-box .target-besar small {
             font-size: 13px;
             font-weight: 700;
             opacity: 0.85;
-            color: var(--text2);
         }
 
         .prediksi-target-box .progress-section {
@@ -875,13 +816,13 @@
             justify-content: space-between;
             font-size: 11px;
             font-weight: 800;
-            color: var(--text2);
+            opacity: 0.9;
         }
 
         .prediksi-target-box .progress-track {
             width: 100%;
             height: 10px;
-            background: rgba(237, 28, 36, 0.15);
+            background: rgba(255,255,255,0.2);
             border-radius: 10px;
             overflow: hidden;
             margin-top: 6px;
@@ -890,7 +831,7 @@
         .prediksi-target-box .progress-bar {
             height: 100%;
             border-radius: 10px;
-            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            background: linear-gradient(90deg, #FFD700, #FFA500);
             transition: width 0.8s ease;
             width: 0%;
         }
@@ -901,16 +842,15 @@
             gap: 6px;
             margin-top: 10px;
             padding-top: 10px;
-            border-top: 1px solid var(--border);
+            border-top: 1px solid rgba(255,255,255,0.15);
         }
 
         .prediksi-target-box .info-item {
             text-align: center;
-            background: rgba(0,0,0,0.03);
+            background: rgba(255,255,255,0.1);
             padding: 6px 4px;
             border-radius: 10px;
         }
-        body.dark .prediksi-target-box .info-item { background: rgba(255,255,255,0.05); }
 
         .prediksi-target-box .info-item .info-label {
             font-size: 7px;
@@ -918,18 +858,16 @@
             opacity: 0.8;
             font-weight: 800;
             letter-spacing: 0.3px;
-            color: var(--text2);
         }
 
         .prediksi-target-box .info-item .info-value {
             font-size: 12px;
             font-weight: 900;
             margin-top: 2px;
-            color: var(--text);
         }
 
-        .prediksi-target-box .info-item .info-value.success { color: #10B981; }
-        .prediksi-target-box .info-item .info-value.danger { color: #EF4444; }
+        .prediksi-target-box .info-item .info-value.success { color: #4ADE80; }
+        .prediksi-target-box .info-item .info-value.danger { color: #F87171; }
 
         .prediksi-target-box .info-bawah {
             display: flex;
@@ -940,20 +878,16 @@
             flex-wrap: wrap;
             gap: 4px;
             font-weight: 700;
-            color: var(--text2);
         }
 
         .prediksi-target-box .info-bawah span {
-            background: rgba(0,0,0,0.03);
+            background: rgba(255,255,255,0.12);
             padding: 4px 10px;
             border-radius: 12px;
         }
-        body.dark .prediksi-target-box .info-bawah span { background: rgba(255,255,255,0.05); }
 
         .prediksi-target-kosong {
             background: var(--surface);
-            backdrop-filter: var(--backdrop-blur);
-            -webkit-backdrop-filter: var(--backdrop-blur);
             border-radius: 16px;
             padding: 20px;
             margin: 16px 0 4px 0;
@@ -976,29 +910,27 @@
         }
 
         .badge-auto { background: #10B981; color: #fff; padding: 3px 10px; border-radius: 20px; font-size: 9px; font-weight: 800; display: inline-block; }
-        .btn-manual-kecil { background: var(--surface); backdrop-filter: var(--backdrop-blur); -webkit-backdrop-filter: var(--backdrop-blur); border: 1.5px solid var(--primary); color: var(--primary); padding: 6px 12px; border-radius: 10px; font-size: 11px; font-weight: 800; cursor: pointer; transition: .2s; }
+        .btn-manual-kecil { background: var(--surface); border: 1.5px solid var(--primary); color: var(--primary); padding: 6px 12px; border-radius: 10px; font-size: 11px; font-weight: 800; cursor: pointer; transition: .2s; }
         .header-tahunan { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
         .header-tahunan h2 { display: flex; align-items: center; gap: 8px; margin: 0; }
 
-        /* Bonus & Denda Row - transparan */
+        /* Bonus & Denda Row */
         .bd-compact-row { display: flex; gap: 8px; margin: 12px 0; }
-        .bd-box { background: var(--surface); backdrop-filter: var(--backdrop-blur); -webkit-backdrop-filter: var(--backdrop-blur); padding: 10px 8px; border-radius: 14px; flex: 1; text-align: center; border: 1px solid var(--border); box-shadow: var(--shadow); }
+        .bd-box { background: var(--surface); padding: 10px 8px; border-radius: 14px; flex: 1; text-align: center; border: 1px solid var(--border); box-shadow: var(--shadow); }
         .bd-box .bd-label { font-size: 9px; color: var(--text2); text-transform: uppercase; font-weight: 800; }
         .bd-box .bd-value { font-size: 13px; font-weight: 900; margin: 2px 0; }
         .bd-box .bd-value.green { color: #10B981; }
         .bd-box .bd-value.red { color: #EF4444; }
-        .bd-box .bd-edit-btn { background: rgba(0,0,0,0.05); border: 1px solid var(--border); border-radius: 6px; padding: 2px 8px; font-size: 9px; font-weight: 800; color: var(--text2); cursor: pointer; margin-top: 4px; }
-        body.dark .bd-box .bd-edit-btn { background: rgba(255,255,255,0.05); }
-        .bd-box select { font-size: 10px; padding: 4px; border-radius: 6px; border: 1px solid var(--border); background: rgba(255,255,255,0.3); color: var(--text); font-weight: 800; width: 100%; margin-top: 2px; font-family: inherit; }
-        body.dark .bd-box select { background: rgba(0,0,0,0.3); }
+        .bd-box .bd-edit-btn { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 2px 8px; font-size: 9px; font-weight: 800; color: var(--text2); cursor: pointer; margin-top: 4px; }
+        .bd-box select { font-size: 10px; padding: 4px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-weight: 800; width: 100%; margin-top: 2px; font-family: inherit; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="top-bar">
             <div class="logo-sicepat">
+                <svg viewBox="0 0 200 40" xmlns="http://www.w3.org/2000/svg" style="height:28px;"><path d="M14 4 L8 22 L18 22 L12 38 L26 18 L16 18 L22 4 Z" fill="#FFD700"/><text x="38" y="26" font-family="Arial Black, Arial" font-size="20" font-weight="900" fill="#ED1C24">SiCepat</text><text x="38" y="36" font-family="Arial" font-size="8" fill="#ED1C24">EKSPRES</text></svg>
                 <span class="badge-reminder" id="badgeReminder">BELUM INPUT!</span>
-                <svg viewBox="0 0 240 50" xmlns="http://www.w3.org/2000/svg"><path d="M18 5 L10 28 L22 28 L15 48 L32 22 L20 22 L28 5 Z" fill="#FFD700"/><text x="50" y="32" font-family="Arial Black, Arial" font-size="26" font-weight="900" fill="#ED1C24">SiCepat</text><text x="50" y="44" font-family="Arial" font-size="10" fill="#ED1C24">EKSPRES</text></svg>
             </div>
             <div class="top-btn-group">
                 <button class="btn-install" id="btnInstall" onclick="installPWA()">📲</button>
@@ -1187,15 +1119,12 @@
             <div class="grafik-container">
                 <h5>📈 GRAFIK RESI BULAN INI</h5>
                 <canvas id="chartResi" height="180" style="max-height:180px;width:100% !important;height:auto !important;"></canvas>
-                <button onclick="updateGrafik()" style="margin-top:12px;width:100%;padding:10px;background:var(--primary);color:#fff;border:none;border-radius:10px;font-size:11px;font-weight:800;cursor:pointer;transition:.2s;">🔄 RENDER ULANG GRAFIK</button>
             </div>
         </div>
 
         <div id="tab-tahunan" class="tab-content">
             <div class="header-tahunan">
-                <h2>📅 REKAP TAHUNAN <span id="tahunBulanan"></span>
-                    <span class="badge-auto">🤖 AUTO</span>
-                </h2>
+                <h2>📅 REKAP TAHUNAN <span id="tahunBulanan"></span></h2>
                 <button class="btn-manual-kecil" onclick="openPopupManual()">📝 + Manual</button>
             </div>
 
@@ -1206,13 +1135,6 @@
             </div>
 
             <div class="log-harian" id="logBulanan" style="margin-top:16px"></div>
-
-            <div class="setting-box" style="border-color:#EF4444;margin-top:16px">
-                <div class="setting-row">
-                    <div class="setting-label" style="color:#EF4444">⚠️ HAPUS SEMUA DATA TAHUNAN</div>
-                    <button class="btn-setting" style="background:#EF4444" onclick="hapusDataTahunan()">HAPUS</button>
-                </div>
-            </div>
 
             <div class="setting-box" style="border-color:#F59E0B;margin-top:8px">
                 <div class="setting-row">
@@ -1656,7 +1578,7 @@
 
         function cekBadgeReminder() {
             const e = getTanggalHariIni(), t = document.getElementById('badgeReminder');
-            t.style.display = (dataHarian[e] === 0 || dataHarian[e] === undefined) ? 'block' : 'none';
+            t.style.display = (dataHarian[e] === 0 || dataHarian[e] === undefined) ? 'inline-block' : 'none';
         }
 
         // ==================== SIMPAN RESI ====================
@@ -1759,7 +1681,7 @@
             }
         }
 
-        // ==================== HITUNG TOTAL (tanpa update target di footer) ====================
+        // ==================== HITUNG TOTAL ====================
         function hitungTotal() {
             let resi1 = 0, resi2 = 0;
             const bulanIni = getBulanTahun();
@@ -1781,12 +1703,9 @@
             const totalResi = resi1 + resi2;
             const totalGajiBulan = gajiPeriode1 + gajiPeriode2;
 
-            // Ambil bonus/denda dari bulan yang dipilih di dropdown
             const bulanTampil = document.getElementById('bdBulanSelect').value || bulanIni;
             const bonus = getBonus(bulanTampil);
             const denda = getDenda(bulanTampil);
-
-            // Gaji bersih = gaji + bonus - denda
             const gajiBersih = totalGajiBulan + bonus - denda;
 
             document.getElementById('resi1').textContent = resi1.toLocaleString('id-ID');
@@ -1796,11 +1715,9 @@
             document.getElementById('totalResi').textContent = totalResi.toLocaleString('id-ID');
             document.getElementById('totalGaji').textContent = gajiBersih.toLocaleString('id-ID');
 
-            // ==== Rata-rata harian ====
             const rataHarian = hariKerja > 0 ? Math.round(totalResi / hariKerja) : 0;
             document.getElementById('rataHarian').textContent = rataHarian;
 
-            // Simpan data bulanan dengan bonus & denda
             if (totalResi > 0 || dataBulanan[bulanIni]) {
                 if (!dataBulanan[bulanIni]) {
                     dataBulanan[bulanIni] = { resi1: 0, resi2: 0, dibayarPeriode1: 0, dibayarTanggal5: 0, sisaPeriode1: 0, totalGaji: 0, totalResi: 0 };
@@ -1848,7 +1765,6 @@
                 n += '<div style="text-align:center;color:#999;padding:20px;">Belum ada input bulan ini</div>';
             }
 
-            // BONUS & DENDA di LOG - dengan tombol edit langsung
             const bulanSelect = document.getElementById('bdBulanSelect').value || t;
             const bdData = getBonusDenda(bulanSelect);
             n += `<div style="margin-top:10px;padding:8px;background:var(--box);border-radius:8px;border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;font-size:10px;">
@@ -1949,8 +1865,6 @@
             const labels=tanggal.map(t=>t.split('-')[2]);
             const data=tanggal.map(t=>Number(dataHarian[t])||0);
 
-            console.log('[Chart] Render data:', data);
-
             const ctx = canvas.getContext('2d'), textColor = darkMode ? '#e0e0e0' : '#666', gridColor = darkMode ? '#404040' : '#e0e0e0';
 
             if (chartInstance) {
@@ -2005,7 +1919,7 @@
             });
         }
 
-        // ==================== RIWAYAT STATS - EXPANDABLE ====================
+        // ==================== RIWAYAT STATS ====================
         function loadRiwayat() {
             const e = document.getElementById('listRiwayat');
             e.innerHTML = '';
@@ -2017,7 +1931,6 @@
                     const o = new Date(bulan + '-01').toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
                     const r = hitungStatistik(bulan);
                     const a = n.totalResi || (n.resi1 + n.resi2);
-                    // totalGaji sudah termasuk bonus & denda
                     const totalGaji = n.totalGaji || ((n.resi1 + n.resi2) * tarif);
                     const bonus = n.bonus || getBonus(bulan);
                     const denda = n.denda || getDenda(bulan);
@@ -2072,10 +1985,6 @@
                                     <span style="background:#10B981;color:#fff;padding:2px 8px;border-radius:4px;">🎉 Bonus: Rp ${bonus.toLocaleString('id-ID')}</span>
                                     <span style="background:#EF4444;color:#fff;padding:2px 8px;border-radius:4px;">⚠️ Denda: Rp ${denda.toLocaleString('id-ID')}</span>
                                 </div>
-
-                                <div class="riwayat-footer">
-                                    <button class="hapus-riwayat" onclick="hapusRiwayat('${bulan}')">Hapus Bulan</button>
-                                </div>
                             </div>
                         </div>
                     `;
@@ -2102,26 +2011,6 @@
             } else {
                 body.classList.add('open');
                 header.classList.add('active');
-            }
-        }
-
-        function hapusRiwayat(e) {
-            if (confirm(`Hapus semua data bulan ${e}?`)) {
-                Object.keys(dataHarian).forEach(t => { if (t.startsWith(e)) delete dataHarian[t] });
-                delete dataBulanan[e];
-                delete dataBonusDenda[e];
-                localStorage.setItem('gajiSicepatHarian', JSON.stringify(dataHarian));
-                localStorage.setItem('gajiSicepat', JSON.stringify(dataBulanan));
-                localStorage.setItem('dataBonusDenda', JSON.stringify(dataBonusDenda));
-                hitungTotal();
-                tampilLogHarian();
-                loadRiwayat();
-                updateGrafik();
-                cekBadgeReminder();
-                updatePrediksiTarget();
-                populateBulanSelect();
-                updateBonusDendaDisplay();
-                cekAkhirBulanDanUpdateTahunan();
             }
         }
 
@@ -2298,7 +2187,6 @@
                         localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
                         localStorage.setItem('dataBulananManual', JSON.stringify(dataBulananManual));
                         localStorage.setItem('dataBonusDenda', JSON.stringify(dataBonusDenda));
-                        // Update semua data setelah restore
                         updateAllBulananData();
                         showPopupAuto('🔄', 'RESTORE BERHASIL!', 'Halaman bakal reload', '✅ DONE');
                         setTimeout(() => location.reload(), 1500);
@@ -2574,19 +2462,6 @@
                 updateBonusDendaDisplay();
                 showPopupAuto('🗑️', 'DATA BULAN DIHAPUS!', 'Sudah terhapus permanen', '⚠️ DONE');
             }
-        }
-
-        function hapusDataTahunan() {
-            if (!confirm('Hapus SEMUA data tahunan? Data gak bisa dibalikin bos!')) return;
-            dataTahunan = [];
-            dataBulananManual = {};
-            localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
-            localStorage.setItem('dataBulananManual', JSON.stringify(dataBulananManual));
-            tampilLogBulanan();
-            updatePrediksiTarget();
-            populateBulanSelect();
-            updateBonusDendaDisplay();
-            showPopupAuto('⚠️', 'DATA TAHUNAN DIHAPUS!', 'Semua data tahunan hilang', '💀 GONE');
         }
     </script>
 </body>
