@@ -189,7 +189,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
         }
 
         .total-icon {
@@ -210,7 +210,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 10px;
-            margin: 4px 0 10px;
+            margin: 0 0 4px 0;
         }
 
         .total-item {
@@ -223,7 +223,7 @@
         }
 
         .total-number {
-            font-size: 26px;
+            font-size: 28px;
             font-weight: 900;
             line-height: 1.2;
             letter-spacing: -0.5px;
@@ -243,41 +243,37 @@
             flex-shrink: 0;
         }
 
+        /* Rekor - di atas total, kecil */
         .total-rekor {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
-            padding-top: 10px;
-            margin-top: 8px;
-            border-top: 1px solid rgba(255,255,255,0.15);
-            font-size: 12px;
+            gap: 6px;
+            font-size: 11px;
             font-weight: 700;
-            opacity: 0.9;
+            opacity: 0.8;
+            margin-bottom: 2px;
         }
 
         .total-rekor .rekor-label {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
+            font-size: 10px;
         }
 
         .total-rekor .rekor-value {
-            background: rgba(255,255,255,0.15);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 900;
-            letter-spacing: 0.3px;
-        }
-
-        .total-rekor .rekor-value .resi-count {
-            font-size: 16px;
+            background: rgba(255,255,255,0.12);
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 800;
         }
 
         .total-rekor .rekor-date {
-            font-weight: 600;
-            opacity: 0.8;
-            font-size: 11px;
+            font-weight: 500;
+            opacity: 0.7;
+            font-size: 9px;
         }
 
         .total-footer {
@@ -821,8 +817,8 @@
 
         .prediksi-target-box .info-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 6px;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
             margin-top: 10px;
             padding-top: 10px;
             border-top: 1px solid rgba(255,255,255,0.15);
@@ -831,20 +827,20 @@
         .prediksi-target-box .info-item {
             text-align: center;
             background: rgba(255,255,255,0.1);
-            padding: 6px 4px;
+            padding: 8px 4px;
             border-radius: 10px;
         }
 
         .prediksi-target-box .info-item .info-label {
-            font-size: 7px;
+            font-size: 8px;
             text-transform: uppercase;
             opacity: 0.8;
             font-weight: 800;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.5px;
         }
 
         .prediksi-target-box .info-item .info-value {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 900;
             margin-top: 2px;
         }
@@ -854,18 +850,18 @@
 
         .prediksi-target-box .info-bawah {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
+            gap: 12px;
             font-size: 10px;
             opacity: 0.9;
             margin-top: 10px;
             flex-wrap: wrap;
-            gap: 4px;
             font-weight: 700;
         }
 
         .prediksi-target-box .info-bawah span {
             background: rgba(255,255,255,0.12);
-            padding: 4px 10px;
+            padding: 4px 12px;
             border-radius: 12px;
         }
 
@@ -922,6 +918,15 @@
 
         <div id="tab-input" class="tab-content active">
             <div class="total-resi">
+                <!-- REKOR - di atas, kecil -->
+                <div class="total-rekor" id="rekorContainer">
+                    <span class="rekor-label">🏆 Rekor bulan ini</span>
+                    <span>
+                        <span class="rekor-value"><span class="resi-count" id="rekorResi">0</span> resi</span>
+                        <span class="rekor-date" id="rekorTanggal">-</span>
+                    </span>
+                </div>
+
                 <div class="total-header">
                     <span class="total-icon">📦</span>
                     <span class="total-label">TOTAL BULAN INI</span>
@@ -936,14 +941,6 @@
                         <span class="total-unit">Rp</span>
                         <span class="total-number" id="totalGaji">0</span>
                     </div>
-                </div>
-
-                <div class="total-rekor" id="rekorContainer">
-                    <span class="rekor-label">🏆 Rekor</span>
-                    <span>
-                        <span class="rekor-value"><span class="resi-count" id="rekorResi">0</span> resi</span>
-                        <span class="rekor-date" id="rekorTanggal">-</span>
-                    </span>
                 </div>
 
                 <div class="total-footer">
@@ -1010,10 +1007,6 @@
                         <div class="info-item">
                             <div class="info-label">✅ Capaian Bulan Ini</div>
                             <div class="info-value" id="capaianBulanIni">Rp 0</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">🎯 Target Bulan Depan</div>
-                            <div class="info-value" id="targetBulanDepan">Rp 0</div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">📊 Selisih</div>
@@ -1492,14 +1485,19 @@
             return total;
         }
 
-        function getHariKerjaBulan(bulan) {
-            let hari = 0;
+        function getRekorBulan(bulan) {
+            let max = 0;
+            let tglMax = '';
             Object.keys(dataHarian).forEach(tgl => {
-                if (tgl.startsWith(bulan) && (parseInt(dataHarian[tgl]) || 0) > 0) {
-                    hari++;
+                if (tgl.startsWith(bulan)) {
+                    const val = parseInt(dataHarian[tgl]) || 0;
+                    if (val > max) {
+                        max = val;
+                        tglMax = tgl;
+                    }
                 }
             });
-            return hari;
+            return { resi: max, tanggal: tglMax };
         }
 
         function autoIsiNol() {
@@ -1511,26 +1509,14 @@
             localStorage.setItem('gajiSicepatHarian', JSON.stringify(dataHarian));
         }
 
-        function cekRekor(e, t) {
-            if (e > dataRekor.resi) {
-                const n = dataRekor.resi;
-                dataRekor = { resi: e, tanggal: t };
-                localStorage.setItem('gajiSicepatRekor', JSON.stringify(dataRekor));
-                tampilRekor();
-                if (e > 0 && n > 0) {
-                    setTimeout(() => {
-                        showPopupAuto('🔥', `PECAH REKOR BOS! ${e} RESI!`, 'Gacor kang! 🚀', '🏆 REKOR BARU');
-                    }, 500);
-                }
-            }
-        }
-
         function tampilRekor() {
+            const bulanIni = getBulanTahun();
+            const rekor = getRekorBulan(bulanIni);
             const elResi = document.getElementById('rekorResi');
             const elTgl = document.getElementById('rekorTanggal');
-            if (dataRekor.resi > 0) {
-                const tgl = new Date(dataRekor.tanggal).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
-                elResi.textContent = dataRekor.resi.toLocaleString('id-ID');
+            if (rekor.resi > 0) {
+                const tgl = new Date(rekor.tanggal).toLocaleDateString('id-ID', { day: '2-digit', month: 'short' });
+                elResi.textContent = rekor.resi.toLocaleString('id-ID');
                 elTgl.textContent = tgl;
             } else {
                 elResi.textContent = '0';
@@ -1549,7 +1535,6 @@
             if (t <= 0) return alert('Jumlah resi harus lebih dari 0 bos!');
             dataHarian[e] = t;
             localStorage.setItem('gajiSicepatHarian', JSON.stringify(dataHarian));
-            cekRekor(t, e);
             document.getElementById('inputResi').value = '';
             hitungTotal();
             tampilLogHarian();
@@ -1557,6 +1542,7 @@
             updatePrediksiTarget();
             populateBulanSelect();
             updateBonusDendaDisplay();
+            tampilRekor();
 
             cekAkhirBulanDanUpdateTahunan();
 
@@ -1595,13 +1581,13 @@
             if (n !== null && !isNaN(n) && parseInt(n) >= 0) {
                 dataHarian[e] = parseInt(n);
                 localStorage.setItem('gajiSicepatHarian', JSON.stringify(dataHarian));
-                cekRekor(parseInt(n), e);
                 hitungTotal();
                 tampilLogHarian();
                 cekBadgeReminder();
                 updatePrediksiTarget();
                 populateBulanSelect();
                 updateBonusDendaDisplay();
+                tampilRekor();
                 cekAkhirBulanDanUpdateTahunan();
                 setTimeout(() => {
                     if (document.getElementById('tab-statistik').classList.contains('active')) {
@@ -1627,6 +1613,7 @@
                 updatePrediksiTarget();
                 populateBulanSelect();
                 updateBonusDendaDisplay();
+                tampilRekor();
                 cekAkhirBulanDanUpdateTahunan();
                 setTimeout(() => {
                     if (document.getElementById('tab-statistik').classList.contains('active')) {
@@ -2167,6 +2154,9 @@
                     }
 
                     if (totalResiBulan > 0) {
+                        const denda = getDenda(keyBulanan);
+                        const gajiBersih = (totalResiBulan * tarif) - denda;
+
                         dataBulananManual[keyBulanan] = totalResiBulan;
                         localStorage.setItem('dataBulananManual', JSON.stringify(dataBulananManual));
 
@@ -2176,19 +2166,22 @@
                             const bIdx = parseInt(key.split('-')[1]) - 1;
                             const resi = dataBulananManual[key];
                             if (resi > 0) {
+                                const dendaBulan = getDenda(key);
+                                const gajiBersihBulan = (resi * tarif) - dendaBulan;
                                 dataTahunan.push({
                                     bulan: namaBulanList[bIdx],
                                     tahun: parseInt(key.split('-')[0]),
-                                    gaji: resi * tarif,
+                                    gaji: gajiBersihBulan,
                                     resi: resi,
-                                    key: key
+                                    key: key,
+                                    denda: dendaBulan
                                 });
                             }
                         });
                         localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
 
                         const namaBulan = namaBulanList[bulanIni];
-                        showPopupAuto('📅', `AUTO REKAP ${namaBulan}!`, `${totalResiBulan} resi = Rp ${(totalResiBulan * tarif).toLocaleString('id-ID')}`, '✅ OTOMATIS');
+                        showPopupAuto('📅', `AUTO REKAP ${namaBulan}!`, `${totalResiBulan} resi = Rp ${gajiBersih.toLocaleString('id-ID')} (sudah potong denda)`, '✅ OTOMATIS');
 
                         if (document.getElementById('tab-tahunan').classList.contains('active')) {
                             tampilLogBulanan();
@@ -2222,6 +2215,9 @@
             }
 
             if (confirm(`Rekap bulan ${bulanLalu.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })} dengan ${totalResiBulan} resi?`)) {
+                const denda = getDenda(keyBulanan);
+                const gajiBersih = (totalResiBulan * tarif) - denda;
+
                 dataBulananManual[keyBulanan] = totalResiBulan;
                 localStorage.setItem('dataBulananManual', JSON.stringify(dataBulananManual));
 
@@ -2231,12 +2227,15 @@
                     const bIdx = parseInt(key.split('-')[1]) - 1;
                     const resi = dataBulananManual[key];
                     if (resi > 0) {
+                        const dendaBulan = getDenda(key);
+                        const gajiBersihBulan = (resi * tarif) - dendaBulan;
                         dataTahunan.push({
                             bulan: namaBulanList[bIdx],
                             tahun: parseInt(key.split('-')[0]),
-                            gaji: resi * tarif,
+                            gaji: gajiBersihBulan,
                             resi: resi,
-                            key: key
+                            key: key,
+                            denda: dendaBulan
                         });
                     }
                 });
@@ -2246,14 +2245,15 @@
                 updatePrediksiTarget();
                 populateBulanSelect();
                 updateBonusDendaDisplay();
-                showPopupAuto('📅', 'REKAP MANUAL BERHASIL!', `${totalResiBulan} resi direkap`, '✅ DONE');
+                showPopupAuto('📅', 'REKAP MANUAL BERHASIL!', `${totalResiBulan} resi = Rp ${gajiBersih.toLocaleString('id-ID')} (sudah potong denda)`, '✅ DONE');
             }
         }
 
         function updatePrediksiTarget() {
             const bulanIni = getBulanTahun();
             const totalResiBulanIni = getTotalResiBulan(bulanIni);
-            const gajiBulanIni = totalResiBulanIni * tarif;
+            const dendaBulanIni = getDenda(bulanIni);
+            const gajiBulanIni = (totalResiBulanIni * tarif) - dendaBulanIni;
 
             const bulanKeys = Object.keys(dataBulananManual)
                 .filter(k => k < bulanIni)
@@ -2275,10 +2275,14 @@
 
             let totalResi = 0;
             let count = 0;
+            let totalGaji = 0;
             last3.forEach(key => {
                 const resi = dataBulananManual[key] || 0;
+                const denda = getDenda(key);
+                const gaji = (resi * tarif) - denda;
                 if (resi > 0) {
                     totalResi += resi;
+                    totalGaji += gaji;
                     count++;
                 }
             });
@@ -2290,7 +2294,8 @@
             }
 
             const rataResi = Math.round(totalResi / count);
-            const targetGaji = rataResi * tarif;
+            const rataGaji = Math.round(totalGaji / count);
+            const targetGaji = rataGaji;
             const persen = Math.min(100, Math.round((totalResiBulanIni / rataResi) * 100));
             const selisihGaji = targetGaji - gajiBulanIni;
 
@@ -2302,23 +2307,19 @@
             document.getElementById('progressBarTarget').style.width = `${persen}%`;
 
             document.getElementById('capaianBulanIni').textContent = `Rp ${gajiBulanIni.toLocaleString('id-ID')}`;
-            document.getElementById('targetBulanDepan').textContent = `Rp ${targetGaji.toLocaleString('id-ID')}`;
 
             const selisihText = selisihGaji >= 0 ? `+Rp ${selisihGaji.toLocaleString('id-ID')}` : `-Rp ${Math.abs(selisihGaji).toLocaleString('id-ID')}`;
             document.getElementById('selisihTarget').textContent = selisihText;
             document.getElementById('selisihTarget').className = `info-value ${selisihGaji >= 0 ? 'success' : 'danger'}`;
 
             let trendText = '➖ Stabil';
-            let trendClass = 'trend-stable';
             if (last3.length >= 2) {
                 const b1 = dataBulananManual[last3[last3.length - 2]] || 0;
                 const b2 = dataBulananManual[last3[last3.length - 1]] || 0;
                 if (b2 > b1 && b1 > 0) {
                     trendText = '📈 Naik ' + Math.round(((b2 - b1) / b1) * 100) + '%';
-                    trendClass = 'trend-up';
                 } else if (b2 < b1 && b1 > 0) {
                     trendText = '📉 Turun ' + Math.round(((b1 - b2) / b1) * 100) + '%';
-                    trendClass = 'trend-down';
                 }
             }
 
@@ -2327,7 +2328,6 @@
             const namaBulanDepan = bulanDepan.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
 
             document.getElementById('targetTrend').textContent = `📈 Trend: ${trendText}`;
-            document.getElementById('targetTrend').className = trendClass;
             document.getElementById('targetRata').textContent = `📊 Rata-rata 3 bulan: ${rataResi} resi`;
             document.getElementById('targetBulan').textContent = `📅 Target: ${namaBulanDepan}`;
         }
@@ -2347,7 +2347,8 @@
                     const resi = dataBulananManual[key];
                     const bulanIdx = parseInt(key.split('-')[1]) - 1;
                     const namaBln = namaBulan[bulanIdx];
-                    const gaji = resi * tarif;
+                    const denda = getDenda(key);
+                    const gaji = (resi * tarif) - denda;
                     const bd = getBonusDenda(key);
                     totalResi += resi;
                     totalGaji += gaji;
@@ -2386,7 +2387,9 @@
                     const bulanIdx = parseInt(key.split('-')[1]) - 1;
                     const resi = dataBulananManual[key];
                     if (resi > 0) {
-                        dataTahunan.push({ bulan: namaBulanList[bulanIdx], tahun: parseInt(key.split('-')[0]), gaji: resi * tarif, resi: resi, key: key });
+                        const dendaBulan = getDenda(key);
+                        const gajiBersihBulan = (resi * tarif) - dendaBulan;
+                        dataTahunan.push({ bulan: namaBulanList[bulanIdx], tahun: parseInt(key.split('-')[0]), gaji: gajiBersihBulan, resi: resi, key: key, denda: dendaBulan });
                     }
                 });
                 localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
