@@ -10,7 +10,6 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link class="apple-touch-icon" href="icon-192.png">
 
-    <!-- Google Fonts for Modern Look -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -82,7 +81,6 @@
             pointer-events: none;
         }
 
-        /* Top Bar */
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -149,8 +147,6 @@
             50% { transform: scale(1.08); }
         }
 
-        .rekor-banner { display: none; }
-
         h2 {
             color: var(--primary);
             margin: 0 0 16px 0;
@@ -161,7 +157,6 @@
             text-transform: uppercase;
         }
 
-        /* ===== TOTAL RESI CARD ===== */
         .total-resi {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             padding: 18px 16px 14px;
@@ -301,7 +296,6 @@
             gap: 4px;
         }
 
-        /* Gaji Cards */
         .gaji-2kolom {
             display: flex;
             gap: 10px;
@@ -341,7 +335,6 @@
             font-weight: 700;
         }
 
-        /* Inputs */
         .input-tanggal {
             background: var(--surface);
             padding: 16px;
@@ -427,7 +420,6 @@
             transform: translateY(0);
         }
 
-        /* Log Harian */
         .log-harian { font-size: 12px; }
         .log-harian h5 {
             margin: 0 0 12px 0;
@@ -493,7 +485,6 @@
             color: #fff;
         }
 
-        /* Grafik & Settings */
         .grafik-container, .setting-box, .backup-container {
             background: var(--surface);
             padding: 16px;
@@ -555,7 +546,6 @@
         .btn-upload { background: #2563EB; }
         .btn-reset { background: #F59E0B; }
 
-        /* Switches */
         .switch { position: relative; width: 48px; height: 26px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider {
@@ -577,7 +567,6 @@
         input:checked + .slider { background: var(--primary); }
         input:checked + .slider:before { transform: translateX(22px); }
 
-        /* Backup Buttons */
         .backup-btn-group { display: flex; gap: 8px; margin-bottom: 8px; }
         .btn-backup {
             flex: 1; padding: 12px; border: none;
@@ -592,7 +581,6 @@
         .backup-info { font-size: 10px; color: var(--text2); text-align: center; line-height: 1.4; font-weight: 600; }
         #inputFileBackup, #inputFileBg { display: none; }
 
-        /* Riwayat Items */
         .riwayat-item {
             background: var(--surface);
             padding: 14px;
@@ -649,7 +637,6 @@
         .total-bulanan .angka { font-size: 24px; font-weight: 900; margin-top: 4px; }
         .total-bulanan .sub { font-size: 12px; margin-top: 4px; opacity: .95; font-weight: 700; }
 
-        /* Floating Tab Navigation */
         .tab-menu {
             position: fixed;
             bottom: 12px; left: 50%;
@@ -703,7 +690,6 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* Popups */
         .popup-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(15, 23, 42, 0.75);
@@ -731,7 +717,6 @@
         .popup-box .popup-badge { display: inline-block; background: rgba(255,255,255,0.2); padding: 6px 16px; border-radius: 20px; font-size: 11px; font-weight: 800; color: #fff; margin-top: 12px; }
         .popup-box .popup-close { background: rgba(255,255,255,0.2); border: none; color: #fff; padding: 10px 24px; border-radius: 12px; font-size: 12px; font-weight: 800; cursor: pointer; margin-top: 16px; transition: .2s; }
 
-        /* Popup Manual */
         .popup-input-manual { max-width: 340px; width: 92%; padding: 28px 20px; }
         .popup-input-manual .input-group-popup { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
         .popup-input-manual select, .popup-input-manual input { width: 100%; padding: 12px; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; text-align: center; background: rgba(255,255,255,0.2); color: #fff; outline: none; font-family: inherit; }
@@ -740,7 +725,6 @@
         .popup-input-manual .btn-popup-simpan { background: #fff; border: none; color: var(--primary); padding: 12px; border-radius: 12px; font-size: 13px; font-weight: 900; cursor: pointer; transition: .2s; margin-top: 4px; }
         .popup-input-manual .btn-popup-batal { background: transparent; border: none; color: rgba(255,255,255,0.7); padding: 8px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; }
 
-        /* Accordion */
         .bulan-accordion { background: var(--surface); border-radius: 14px; margin-bottom: 8px; overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow); }
         .bulan-accordion-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; cursor: pointer; transition: .2s; }
         .bulan-accordion-header .bulan-nama { font-weight: 800; font-size: 13px; color: var(--text); }
@@ -750,7 +734,6 @@
         .bulan-accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1); padding: 0 14px; }
         .bulan-accordion-body.open { max-height: 2000px; padding: 10px 14px 14px 14px; }
 
-        /* ===== PREDIKSI TARGET ===== */
         .prediksi-target-box {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             border-radius: 20px;
@@ -909,12 +892,10 @@
             opacity: 0.7;
         }
 
-        .badge-auto { background: #10B981; color: #fff; padding: 3px 10px; border-radius: 20px; font-size: 9px; font-weight: 800; display: inline-block; }
         .btn-manual-kecil { background: var(--surface); border: 1.5px solid var(--primary); color: var(--primary); padding: 6px 12px; border-radius: 10px; font-size: 11px; font-weight: 800; cursor: pointer; transition: .2s; }
         .header-tahunan { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
         .header-tahunan h2 { display: flex; align-items: center; gap: 8px; margin: 0; }
 
-        /* Bonus & Denda Row */
         .bd-compact-row { display: flex; gap: 8px; margin: 12px 0; }
         .bd-box { background: var(--surface); padding: 10px 8px; border-radius: 14px; flex: 1; text-align: center; border: 1px solid var(--border); box-shadow: var(--shadow); }
         .bd-box .bd-label { font-size: 9px; color: var(--text2); text-transform: uppercase; font-weight: 800; }
@@ -940,7 +921,6 @@
         <h2>GAJI KURIR <span id="bulanIni"></span></h2>
 
         <div id="tab-input" class="tab-content active">
-            <!-- ===== TOTAL BULAN INI + REKOR ===== -->
             <div class="total-resi">
                 <div class="total-header">
                     <span class="total-icon">📦</span>
@@ -958,7 +938,6 @@
                     </div>
                 </div>
 
-                <!-- REKOR - inside the card -->
                 <div class="total-rekor" id="rekorContainer">
                     <span class="rekor-label">🏆 Rekor</span>
                     <span>
@@ -988,7 +967,6 @@
                 </div>
             </div>
 
-            <!-- BONUS & DENDA COMPACT -->
             <div class="bd-compact-row" id="bdCompactRow">
                 <div class="bd-box">
                     <div class="bd-label">🎉 Bonus</div>
@@ -1006,7 +984,6 @@
                 </div>
             </div>
 
-            <!-- PREDIKSI TARGET OTOMATIS -->
             <div id="prediksiTargetContainer">
                 <div class="prediksi-target-box" id="prediksiTargetBox">
                     <div class="label">
@@ -1145,7 +1122,6 @@
         </div>
     </div>
 
-    <!-- Floating Navigation Menu -->
     <div class="tab-menu">
         <button class="tab-btn" data-tab="log"><span class="tab-icon">📋</span><span>Log</span></button>
         <button class="tab-btn" data-tab="statistik"><span class="tab-icon">📊</span><span>Stats</span></button>
@@ -1154,7 +1130,6 @@
         <button class="tab-btn" data-tab="setting"><span class="tab-icon">⚙️</span><span>Setting</span></button>
     </div>
 
-    <!-- POPUP CANTIK -->
     <div class="popup-overlay" id="popupSemangat" onclick="if(event.target===this)closePopup()">
         <div class="popup-box" id="popupBox">
             <div class="popup-icon" id="popupIcon">🔥</div>
@@ -1166,7 +1141,6 @@
         </div>
     </div>
 
-    <!-- POPUP INPUT MANUAL BULANAN -->
     <div class="popup-overlay" id="popupManual" onclick="if(event.target===this)closePopupManual()">
         <div class="popup-box popup-input-manual">
             <div class="popup-icon" style="font-size:48px;">📝</div>
@@ -1185,7 +1159,6 @@
         </div>
     </div>
 
-    <!-- POPUP EDIT BONUS/DENDA -->
     <div class="popup-overlay" id="popupBonusDenda" onclick="if(event.target===this)closePopupBonusDenda()">
         <div class="popup-box popup-input-manual">
             <div class="popup-icon" style="font-size:48px;">💰</div>
@@ -1218,10 +1191,8 @@
         let deferredPrompt;
         let logLimit = 10;
 
-        // BONUS & DENDA per bulan
         let dataBonusDenda = JSON.parse(localStorage.getItem('dataBonusDenda') || '{}');
 
-        // ==================== POPUP ====================
         function showPopup(icon, text, sub, badge) {
             document.getElementById('popupIcon').textContent = icon || '🔥';
             document.getElementById('popupText').textContent = text || 'GAS TERUS BOS!';
@@ -1241,7 +1212,6 @@
             popupTimer = setTimeout(() => { closePopup(); }, 3000);
         }
 
-        // ==================== POPUP MANUAL ====================
         function openPopupManual() {
             loadPilihBulanPopup();
             document.getElementById('popupManual').classList.add('show');
@@ -1299,7 +1269,6 @@
             showPopupAuto('📝', 'DATA BULAN TERSIMPAN!', `${resi} resi = Rp ${(resi * tarif).toLocaleString('id-ID')}`, '✅ DONE');
         }
 
-        // ==================== BONUS & DENDA ====================
         function getBonusDenda(bulan) {
             if (!dataBonusDenda[bulan]) {
                 dataBonusDenda[bulan] = { bonus: 0, denda: 0 };
@@ -1385,7 +1354,6 @@
             dataBonusDenda[bulan][type] = value;
             localStorage.setItem('dataBonusDenda', JSON.stringify(dataBonusDenda));
 
-            // UPDATE SEMUA DATA BULANAN DENGAN BONUS/DENDA TERBARU
             updateAllBulananData();
 
             closePopupBonusDenda();
@@ -1397,9 +1365,7 @@
             showPopupAuto('✅', `${type === 'bonus' ? 'BONUS' : 'DENDA'} TERSIMPAN!`, `Rp ${value.toLocaleString('id-ID')} untuk ${bulan}`, '💾 DONE');
         }
 
-        // ==================== UPDATE SEMUA DATA BULANAN ====================
         function updateAllBulananData() {
-            // Update semua bulan yang ada di dataBulanan dengan bonus/denda dari dataBonusDenda
             const bulanKeys = Object.keys(dataBulanan);
             bulanKeys.forEach(bulan => {
                 const bonus = getBonus(bulan);
@@ -1417,7 +1383,6 @@
             localStorage.setItem('gajiSicepat', JSON.stringify(dataBulanan));
         }
 
-        // ==================== INSTALL PWA ====================
         window.addEventListener('beforeinstallprompt', e => {
             e.preventDefault();
             deferredPrompt = e;
@@ -1440,7 +1405,6 @@
             deferredPrompt = null;
         });
 
-        // ==================== MAIN ====================
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('checkReminder').checked = reminderAktif;
             if (darkMode) {
@@ -1480,7 +1444,6 @@
                 });
             });
 
-            // Update semua data bulanan dengan bonus/denda yang ada
             updateAllBulananData();
 
             populateBulanSelect();
@@ -1492,7 +1455,7 @@
             cekBadgeReminder();
             updateBonusDendaDisplay();
             updatePrediksiTarget();
-            tampilRekor(); // show rekor in card
+            tampilRekor();
 
             setTimeout(() => {
                 if (document.getElementById('tab-statistik').classList.contains('active')) {
@@ -1509,7 +1472,6 @@
             if (reminderAktif) mintaIzinNotifikasi();
         });
 
-        // ==================== FUNGSI DASAR ====================
         function getBulanTahun() {
             const e = new Date;
             return `${e.getFullYear()}-${String(e.getMonth() + 1).padStart(2, '0')}`;
@@ -1581,7 +1543,6 @@
             t.style.display = (dataHarian[e] === 0 || dataHarian[e] === undefined) ? 'inline-block' : 'none';
         }
 
-        // ==================== SIMPAN RESI ====================
         function simpanResi() {
             const e = document.getElementById('inputTanggal').value, t = parseInt(document.getElementById('inputResi').value) || 0;
             if (!e.match(/^\d{4}-\d{2}-\d{2}$/)) return alert('Format tanggal salah bos! Pake 2026-10-05');
@@ -1681,7 +1642,6 @@
             }
         }
 
-        // ==================== HITUNG TOTAL ====================
         function hitungTotal() {
             let resi1 = 0, resi2 = 0;
             const bulanIni = getBulanTahun();
@@ -1743,7 +1703,6 @@
             return { totalHari: t.length, rata2: o > 0 ? Math.round(n / o) : 0, tertinggi: Math.max(...t), hariKerja: o }
         }
 
-        // ==================== LOG HARIAN ====================
         function tampilLogHarian() {
             autoIsiNol();
             const e = document.getElementById('logHarian'), t = getBulanTahun();
@@ -1848,7 +1807,6 @@
             tampilLogHarian();
         }
 
-        // ==================== GRAFIK ====================
         function updateGrafik() {
             const canvas = document.getElementById('chartResi');
             if (!canvas) {
@@ -1919,7 +1877,6 @@
             });
         }
 
-        // ==================== RIWAYAT STATS ====================
         function loadRiwayat() {
             const e = document.getElementById('listRiwayat');
             e.innerHTML = '';
@@ -2014,7 +1971,6 @@
             }
         }
 
-        // ==================== DARK MODE ====================
         function toggleDarkMode() {
             darkMode = !darkMode;
             document.body.classList.toggle('dark');
@@ -2023,7 +1979,6 @@
             if (chartInstance) updateGrafik()
         }
 
-        // ==================== WARNA ====================
         function ubahWarnaUtama(warna) {
             warnaCustom = warna;
             localStorage.setItem('warnaCustom', warna);
@@ -2054,7 +2009,6 @@
             terapkanWarnaCustom()
         }
 
-        // ==================== BACKGROUND ====================
         function uploadBackground(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -2105,7 +2059,6 @@
             document.documentElement.style.setProperty('--bg-opacity', val / 100)
         }
 
-        // ==================== REMINDER ====================
         function toggleReminder() {
             reminderAktif = document.getElementById('checkReminder').checked;
             localStorage.setItem('reminderAktif', reminderAktif);
@@ -2128,7 +2081,6 @@
         }
         setInterval(cekReminder, 6e4);
 
-        // ==================== BACKUP ====================
         function cekBackupReminder() {
             const e = new Date, t = e.getDate(), bulanIni = getBulanTahun(), keyBackup = `autoBackup_${bulanIni}_${t}`;
             if ((t === 15 || t === 30) && !localStorage.getItem(keyBackup)) {
@@ -2197,7 +2149,6 @@
             e.target.value = ''
         }
 
-        // ==================== AUTO REKAP BULANAN ====================
         function cekAkhirBulanDanUpdateTahunan() {
             const today = new Date();
             const tomorrow = new Date(today);
@@ -2250,7 +2201,6 @@
             }
         }
 
-        // ==================== REKAP MANUAL ====================
         function rekapManualBulanLalu() {
             const today = new Date();
             const bulanLalu = new Date(today);
@@ -2300,7 +2250,6 @@
             }
         }
 
-        // ==================== PREDIKSI TARGET ====================
         function updatePrediksiTarget() {
             const bulanIni = getBulanTahun();
             const totalResiBulanIni = getTotalResiBulan(bulanIni);
@@ -2383,7 +2332,6 @@
             document.getElementById('targetBulan').textContent = `📅 Target: ${namaBulanDepan}`;
         }
 
-        // ==================== LOG BULANAN ====================
         function tampilLogBulanan() {
             const tahun = new Date().getFullYear();
             const namaBulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
