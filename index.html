@@ -210,7 +210,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 10px;
-            margin: 0 0 4px 0;
+            margin: 0 0 8px 0;
         }
 
         .total-item {
@@ -243,26 +243,26 @@
             flex-shrink: 0;
         }
 
-        /* Rekor - di atas total, kecil */
-        .total-rekor {
+        /* Bottom row: Rekor kiri, Rata-rata kanan */
+        .total-bottom {
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
             align-items: center;
-            gap: 6px;
+            padding-top: 10px;
+            margin-top: 6px;
+            border-top: 1px solid rgba(255,255,255,0.15);
             font-size: 11px;
             font-weight: 700;
-            opacity: 0.8;
-            margin-bottom: 2px;
+            opacity: 0.9;
         }
 
-        .total-rekor .rekor-label {
+        .total-bottom .rekor-box {
             display: flex;
             align-items: center;
             gap: 4px;
-            font-size: 10px;
         }
 
-        .total-rekor .rekor-value {
+        .total-bottom .rekor-box .rekor-value {
             background: rgba(255,255,255,0.12);
             padding: 2px 10px;
             border-radius: 12px;
@@ -270,38 +270,28 @@
             font-weight: 800;
         }
 
-        .total-rekor .rekor-date {
+        .total-bottom .rekor-box .rekor-date {
             font-weight: 500;
             opacity: 0.7;
             font-size: 9px;
         }
 
-        .total-footer {
-            display: flex;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: 700;
-            padding-top: 10px;
-            border-top: 1px solid rgba(255,255,255,0.15);
-            opacity: 0.9;
-        }
-
-        .total-footer span {
+        .total-bottom .rata-box {
             display: flex;
             align-items: center;
             gap: 4px;
         }
 
-        .gaji-2kolom {
+        .gaji-3kolom {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             margin: 12px 0;
         }
 
         .periode-box {
             background: var(--surface);
-            padding: 14px 10px;
-            border-radius: 16px;
+            padding: 12px 8px;
+            border-radius: 14px;
             flex: 1;
             text-align: center;
             border: 1px solid var(--border);
@@ -309,26 +299,31 @@
         }
 
         .periode-box h4 {
-            margin: 0 0 6px 0;
-            font-size: 10px;
+            margin: 0 0 4px 0;
+            font-size: 9px;
             color: var(--text2);
             text-transform: uppercase;
             font-weight: 800;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
         }
 
         .periode-box .angka {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 900;
             color: var(--primary);
             margin: 2px 0;
         }
 
         .periode-box .sub {
-            font-size: 10px;
+            font-size: 9px;
             color: var(--text2);
-            margin-top: 4px;
+            margin-top: 2px;
             font-weight: 700;
+        }
+
+        .periode-box .sub .highlight {
+            color: var(--primary);
+            font-weight: 900;
         }
 
         .input-tanggal {
@@ -918,15 +913,6 @@
 
         <div id="tab-input" class="tab-content active">
             <div class="total-resi">
-                <!-- REKOR - di atas, kecil -->
-                <div class="total-rekor" id="rekorContainer">
-                    <span class="rekor-label">🏆 Rekor bulan ini</span>
-                    <span>
-                        <span class="rekor-value"><span class="resi-count" id="rekorResi">0</span> resi</span>
-                        <span class="rekor-date" id="rekorTanggal">-</span>
-                    </span>
-                </div>
-
                 <div class="total-header">
                     <span class="total-icon">📦</span>
                     <span class="total-label">TOTAL BULAN INI</span>
@@ -943,14 +929,35 @@
                     </div>
                 </div>
 
-                <div class="total-footer">
-                    <span>📈 Rata-rata: <span id="rataHarian">0</span> resi/hari</span>
+                <!-- Bottom: Rekor kiri, Rata-rata kanan -->
+                <div class="total-bottom">
+                    <div class="rekor-box">
+                        🏆 Rekor: <span class="rekor-value" id="rekorResi">0</span> resi
+                        <span class="rekor-date" id="rekorTanggal">-</span>
+                    </div>
+                    <div class="rata-box">
+                        📈 Rata-rata: <span id="rataHarian">0</span> resi/hari
+                    </div>
                 </div>
             </div>
 
-            <div class="gaji-2kolom">
-                <div class="periode-box"><h4>TGL 1-15 DIBAYAR</h4><div class="angka">Rp <span id="gaji1">0</span></div><div class="sub"><span id="resi1">0</span> resi | 50%</div></div>
-                <div class="periode-box"><h4>TGL 16-AKHIR DIBAYAR</h4><div class="angka">Rp <span id="gaji2">0</span></div><div class="sub"><span id="resi2">0</span> resi | 50%</div></div>
+            <!-- 3 Kolom Gaji -->
+            <div class="gaji-3kolom">
+                <div class="periode-box">
+                    <h4>📆 TGL 1-15</h4>
+                    <div class="angka">Rp <span id="gaji1">0</span></div>
+                    <div class="sub"><span id="resi1">0</span> resi | 50%</div>
+                </div>
+                <div class="periode-box">
+                    <h4>📆 TGL 16-AKHIR</h4>
+                    <div class="angka">Rp <span id="gaji2">0</span></div>
+                    <div class="sub"><span id="resi2">0</span> resi | 50%</div>
+                </div>
+                <div class="periode-box" style="border-color:#FFD700;">
+                    <h4>💵 SISA TGL 1-15</h4>
+                    <div class="angka">Rp <span id="sisaGaji1">0</span></div>
+                    <div class="sub">dibayar tgl 5</div>
+                </div>
             </div>
 
             <div class="input-tanggal">
@@ -1659,6 +1666,7 @@
             document.getElementById('resi2').textContent = resi2.toLocaleString('id-ID');
             document.getElementById('gaji1').textContent = dibayarPeriode1.toLocaleString('id-ID');
             document.getElementById('gaji2').textContent = dibayarTanggal5.toLocaleString('id-ID');
+            document.getElementById('sisaGaji1').textContent = sisaPeriode1.toLocaleString('id-ID');
             document.getElementById('totalResi').textContent = totalResi.toLocaleString('id-ID');
             document.getElementById('totalGaji').textContent = gajiBersih.toLocaleString('id-ID');
 
