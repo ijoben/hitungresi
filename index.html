@@ -281,18 +281,18 @@
             gap: 4px;
         }
 
-        /* GAJI LIST - 1 KOLOM KE BAWAH */
+        /* GAJI LIST - COMPACT */
         .gaji-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            margin: 12px 0;
+            gap: 6px;
+            margin: 10px 0;
         }
 
         .gaji-item {
             background: var(--surface);
-            padding: 12px 16px;
-            border-radius: 14px;
+            padding: 8px 14px;
+            border-radius: 12px;
             border: 1px solid var(--border);
             box-shadow: var(--shadow);
             display: flex;
@@ -301,38 +301,37 @@
             transition: all 0.2s ease;
         }
 
-        .gaji-item:hover {
-            transform: translateX(4px);
-            border-color: var(--primary);
+        .gaji-item:active {
+            transform: scale(0.98);
         }
 
         .gaji-item .gaji-left {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .gaji-item .gaji-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 13px;
             flex-shrink: 0;
         }
 
         .gaji-item .gaji-icon.merah {
-            background: rgba(237, 28, 36, 0.12);
+            background: rgba(237, 28, 36, 0.1);
         }
 
         .gaji-item .gaji-icon.hijau {
-            background: rgba(16, 185, 129, 0.12);
+            background: rgba(16, 185, 129, 0.1);
         }
 
         .gaji-item .gaji-icon.kuning {
-            background: rgba(245, 158, 11, 0.12);
+            background: rgba(245, 158, 11, 0.1);
         }
 
         .gaji-item .gaji-info {
@@ -341,16 +340,16 @@
         }
 
         .gaji-item .gaji-info .gaji-label {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             color: var(--text2);
             letter-spacing: 0.3px;
         }
 
         .gaji-item .gaji-info .gaji-sub {
-            font-size: 9px;
+            font-size: 8px;
             color: var(--text2);
-            opacity: 0.7;
+            opacity: 0.6;
             margin-top: 1px;
         }
 
@@ -359,7 +358,7 @@
         }
 
         .gaji-item .gaji-right .gaji-nominal {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 900;
             color: var(--text);
         }
@@ -377,25 +376,17 @@
         }
 
         .gaji-item .gaji-right .gaji-resi {
-            font-size: 9px;
+            font-size: 8px;
             color: var(--text2);
             font-weight: 600;
-        }
-
-        .gaji-item.highlight {
-            border-color: #F59E0B;
-            background: linear-gradient(135deg, var(--surface), rgba(245, 158, 11, 0.05));
-        }
-
-        .gaji-item.highlight .gaji-nominal {
-            color: #F59E0B;
+            opacity: 0.6;
         }
 
         .input-tanggal {
             background: var(--surface);
             padding: 16px;
             border-radius: 20px;
-            margin: 16px 0;
+            margin: 12px 0 16px 0;
             border: 1px solid var(--border);
             box-shadow: var(--shadow);
         }
@@ -1040,6 +1031,53 @@
             border-radius: 12px;
         }
 
+        /* ANIMASI CELEBRASI DI KANAN ATAS PREDIKSI */
+        .prediksi-target-box .celebration {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            font-size: 28px;
+            opacity: 0;
+            transform: scale(0.5) rotate(-10deg);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .prediksi-target-box .celebration.show {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+            animation: celebrationPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes celebrationPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.15) rotate(5deg); }
+        }
+
+        .prediksi-target-box .celebration-text {
+            position: absolute;
+            top: 42px;
+            right: 8px;
+            font-size: 8px;
+            font-weight: 800;
+            background: rgba(255,215,0,0.2);
+            padding: 2px 8px;
+            border-radius: 10px;
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+            z-index: 2;
+            color: #FFD700;
+            letter-spacing: 0.5px;
+        }
+
+        .prediksi-target-box .celebration-text.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         .prediksi-target-kosong {
             background: var(--surface);
             border-radius: 16px;
@@ -1111,7 +1149,7 @@
                 </div>
             </div>
 
-            <!-- GAJI LIST - 1 KOLOM KE BAWAH -->
+            <!-- GAJI LIST - COMPACT TANPA HIGHLIGHT -->
             <div class="gaji-list">
                 <div class="gaji-item">
                     <div class="gaji-left">
@@ -1139,7 +1177,7 @@
                     </div>
                 </div>
 
-                <div class="gaji-item highlight">
+                <div class="gaji-item">
                     <div class="gaji-left">
                         <div class="gaji-icon kuning">💰</div>
                         <div class="gaji-info">
@@ -1171,6 +1209,10 @@
 
             <div id="prediksiTargetContainer">
                 <div class="prediksi-target-box" id="prediksiTargetBox">
+                    <!-- CELEBRATION ANIMATION -->
+                    <div class="celebration" id="celebrationIcon">🎉</div>
+                    <div class="celebration-text" id="celebrationText">MELEWATI TARGET!</div>
+
                     <div class="label">
                         <span class="label-sub">berdasarkan 3 bulan terakhir</span>
                     </div>
@@ -2496,6 +2538,9 @@
             if (last3.length < 2) {
                 box.style.display = 'none';
                 kosong.style.display = 'block';
+                // Sembunyikan celebration
+                document.getElementById('celebrationIcon').classList.remove('show');
+                document.getElementById('celebrationText').classList.remove('show');
                 return;
             }
 
@@ -2519,6 +2564,8 @@
             if (count === 0) {
                 box.style.display = 'none';
                 kosong.style.display = 'block';
+                document.getElementById('celebrationIcon').classList.remove('show');
+                document.getElementById('celebrationText').classList.remove('show');
                 return;
             }
 
@@ -2540,6 +2587,17 @@
             const selisihText = selisihGaji >= 0 ? `+Rp ${selisihGaji.toLocaleString('id-ID')}` : `-Rp ${Math.abs(selisihGaji).toLocaleString('id-ID')}`;
             document.getElementById('selisihTarget').textContent = selisihText;
             document.getElementById('selisihTarget').className = `info-value ${selisihGaji >= 0 ? 'success' : 'danger'}`;
+
+            // CELEBRATION - muncul jika capaian >= 100% dan selisih positif
+            const celebrationIcon = document.getElementById('celebrationIcon');
+            const celebrationText = document.getElementById('celebrationText');
+            if (persen >= 100 && selisihGaji >= 0) {
+                celebrationIcon.classList.add('show');
+                celebrationText.classList.add('show');
+            } else {
+                celebrationIcon.classList.remove('show');
+                celebrationText.classList.remove('show');
+            }
 
             let trendText = '➖ Stabil';
             if (last3.length >= 2) {
