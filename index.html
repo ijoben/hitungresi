@@ -494,6 +494,7 @@
             transform: translateY(0);
         }
 
+        /* ===== LOG HARIAN - DIPERBAIKI ===== */
         .log-harian { font-size: 12px; }
         .log-harian h5 {
             margin: 0 0 12px 0;
@@ -509,26 +510,26 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px;
+            padding: 10px 12px;
             background: var(--surface);
-            margin-bottom: 8px;
-            border-radius: 14px;
+            margin-bottom: 6px;
+            border-radius: 12px;
             border: 1px solid var(--border);
             box-shadow: var(--shadow);
         }
 
         .log-item.kosong { opacity: .5; }
         .log-info { flex: 1; }
-        .log-tgl { font-weight: 800; color: var(--primary); font-size: 12px; }
-        .log-resi { font-size: 11px; color: var(--text2); margin-top: 2px; font-weight: 600; }
-        .log-btn { display: flex; gap: 6px; }
+        .log-tgl { font-weight: 800; color: var(--primary); font-size: 11px; }
+        .log-resi { font-size: 10px; color: var(--text2); margin-top: 1px; font-weight: 600; }
+        .log-btn { display: flex; gap: 4px; }
 
         .btn-edit, .btn-hapus-log {
             border: none;
-            padding: 6px 12px;
-            border-radius: 8px;
+            padding: 4px 10px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 11px;
+            font-size: 9px;
             color: #fff;
             font-weight: 800;
             transition: transform 0.2s;
@@ -542,14 +543,14 @@
             background: var(--surface);
             color: var(--primary);
             border: 1.5px solid var(--primary);
-            padding: 12px;
+            padding: 10px;
             border-radius: 12px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 800;
             width: 100%;
             text-align: center;
-            margin-top: 8px;
+            margin-top: 6px;
             text-transform: uppercase;
             transition: all 0.2s;
         }
@@ -557,6 +558,76 @@
         .btn-load-more:hover {
             background: var(--primary);
             color: #fff;
+        }
+
+        /* Bulan accordion di log */
+        .bulan-accordion {
+            background: var(--surface);
+            border-radius: 12px;
+            margin-bottom: 6px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .bulan-accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .bulan-accordion-header:active {
+            background: var(--primary-light);
+        }
+
+        .bulan-accordion-header .bulan-nama {
+            font-weight: 800;
+            font-size: 12px;
+            color: var(--text);
+        }
+
+        .bulan-accordion-header .bulan-total {
+            font-weight: 900;
+            font-size: 12px;
+            color: var(--primary);
+        }
+
+        .bulan-accordion-header .bulan-arrow {
+            font-size: 10px;
+            transition: .3s;
+            color: var(--text2);
+            margin-left: 6px;
+        }
+
+        .bulan-accordion-header.active .bulan-arrow {
+            transform: rotate(180deg);
+        }
+
+        .bulan-accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 0 12px;
+        }
+
+        .bulan-accordion-body.open {
+            max-height: 2000px;
+            padding: 8px 12px 12px 12px;
+        }
+
+        .bulan-accordion-body .log-item {
+            margin-bottom: 4px;
+            padding: 8px 10px;
+        }
+
+        .bulan-accordion-body .log-item .log-tgl {
+            font-size: 10px;
+        }
+        .bulan-accordion-body .log-item .log-resi {
+            font-size: 9px;
         }
 
         .grafik-container, .setting-box, .backup-container {
@@ -655,14 +726,13 @@
         .backup-info { font-size: 10px; color: var(--text2); text-align: center; line-height: 1.4; font-weight: 600; }
         #inputFileBackup, #inputFileBg { display: none; }
 
-        /* ===== STATS & TAHUNAN GABUNGAN ===== */
+        /* ===== STATS ===== */
         .stats-tahunan-container {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
 
-        /* Total tahunan minimalis */
         .total-tahunan-mini {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -696,7 +766,6 @@
             color: var(--text2);
         }
 
-        /* Card bulanan dalam accordion */
         .bulan-accordion-stats {
             background: var(--surface);
             border-radius: 14px;
@@ -768,7 +837,6 @@
             padding: 10px 14px 14px 14px;
         }
 
-        /* Detail card dalam accordion */
         .detail-card-stats {
             background: var(--bg);
             border-radius: 12px;
@@ -873,14 +941,14 @@
             color: #EF4444;
         }
 
-        /* ===== CATATAN TAB ===== */
+        /* ===== CATATAN ===== */
         .catatan-container {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
 
-        .modal-awal-box {
+        .total-gaji-box {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 16px;
@@ -888,14 +956,14 @@
             box-shadow: var(--shadow);
         }
 
-        .modal-awal-box .modal-header {
+        .total-gaji-box .gaji-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 8px;
         }
 
-        .modal-awal-box .modal-header .label {
+        .total-gaji-box .gaji-header .label {
             font-size: 11px;
             font-weight: 800;
             color: var(--text2);
@@ -903,13 +971,13 @@
             letter-spacing: 0.5px;
         }
 
-        .modal-awal-box .modal-header .value {
+        .total-gaji-box .gaji-header .value {
             font-size: 18px;
             font-weight: 900;
             color: var(--primary);
         }
 
-        .modal-awal-box .modal-sub {
+        .total-gaji-box .gaji-sub {
             font-size: 10px;
             color: var(--text2);
             font-weight: 600;
@@ -998,7 +1066,6 @@
             transform: scale(0.97);
         }
 
-        /* SALDO TERSAKIR - DIPERBESAR */
         .saldo-terakhir {
             font-size: 14px;
             font-weight: 800;
@@ -1403,21 +1470,6 @@
             color: #fff;
         }
 
-        .header-stats {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-        .header-stats h2 {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin: 0;
-        }
-
         .rekap-manual-btn {
             background: var(--surface);
             border: 1.5px solid #F59E0B;
@@ -1435,20 +1487,6 @@
             color: #fff;
         }
 
-        /* Responsive */
-        @media (max-width: 380px) {
-            .total-number { font-size: 22px; }
-            .gaji-item .gaji-right .gaji-nominal { font-size: 12px; }
-            .tab-btn { font-size: 7px; padding: 6px 1px; }
-            .tab-icon { font-size: 14px; }
-            .tab-btn-center .tab-icon { width: 38px; height: 38px; font-size: 16px; }
-            .detail-card-stats .stats-grid { grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
-            .detail-card-stats .stats-grid .stat-item .stat-value { font-size: 11px; }
-            .prediksi-target-box .target-besar { font-size: 20px; }
-            .total-tahunan-mini .value { font-size: 14px; }
-            .saldo-terakhir .saldo-angka { font-size: 20px; }
-        }
-
         .bd-edit-btn {
             padding: 2px 8px;
             font-size: 8px;
@@ -1463,6 +1501,20 @@
         .bd-edit-btn:hover {
             border-color: var(--primary);
             color: var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 380px) {
+            .total-number { font-size: 22px; }
+            .gaji-item .gaji-right .gaji-nominal { font-size: 12px; }
+            .tab-btn { font-size: 7px; padding: 6px 1px; }
+            .tab-icon { font-size: 14px; }
+            .tab-btn-center .tab-icon { width: 38px; height: 38px; font-size: 16px; }
+            .detail-card-stats .stats-grid { grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
+            .detail-card-stats .stats-grid .stat-item .stat-value { font-size: 11px; }
+            .prediksi-target-box .target-besar { font-size: 20px; }
+            .total-tahunan-mini .value { font-size: 14px; }
+            .saldo-terakhir .saldo-angka { font-size: 20px; }
         }
     </style>
 </head>
@@ -1609,30 +1661,26 @@
             </div>
         </div>
 
-        <!-- TAB LOG (tetap) -->
+        <!-- TAB LOG -->
         <div id="tab-log" class="tab-content">
             <div class="log-harian" id="logHarian"></div>
         </div>
 
-        <!-- TAB STATS (gabungan statistik + tahunan - SEMUA BULAN) -->
+        <!-- TAB STATS -->
         <div id="tab-stats" class="tab-content">
             <div class="stats-tahunan-container">
-                <!-- Total tahunan minimalis -->
                 <div class="total-tahunan-mini">
                     <span class="label">📅 TOTAL TAHUNAN</span>
                     <span class="value">Rp <span id="totalGajiBulanan">0</span> <small>| <span id="totalResiBulanan">0</span> resi</small></span>
                 </div>
 
-                <!-- Grafik -->
                 <div class="grafik-container">
                     <h5>📈 GRAFIK RESI BULAN INI</h5>
                     <canvas id="chartResi" height="180" style="max-height:180px;width:100% !important;height:auto !important;"></canvas>
                 </div>
 
-                <!-- Rekap bulanan accordion - SEMUA BULAN -->
                 <div id="listRiwayat"></div>
 
-                <!-- Tombol rekap manual -->
                 <div style="display:flex;justify-content:flex-end;margin-top:4px;">
                     <button class="rekap-manual-btn" onclick="rekapManualBulanLalu()">🔄 Rekap Manual</button>
                 </div>
@@ -1642,12 +1690,12 @@
         <!-- TAB CATATAN -->
         <div id="tab-catatan" class="tab-content">
             <div class="catatan-container">
-                <div class="modal-awal-box">
-                    <div class="modal-header">
-                        <span class="label">💰 Modal Awal Bulan Ini</span>
-                        <span class="value">Rp <span id="modalAwal">0</span></span>
+                <div class="total-gaji-box">
+                    <div class="gaji-header">
+                        <span class="label">💰 Total Gaji</span>
+                        <span class="value">Rp <span id="totalGajiCatatan">0</span></span>
                     </div>
-                    <div class="modal-sub">
+                    <div class="gaji-sub">
                         Berdasarkan total gaji bulan sebelumnya
                         <span style="display:block;font-size:9px;color:var(--text2);margin-top:2px;">
                             Gaji bulan lalu: Rp <span id="gajiBulanLaluAcuan">0</span> | <span id="resiBulanLaluAcuan">0</span> resi
@@ -1660,7 +1708,7 @@
                 <button class="btn-transaksi" onclick="openPopupTransaksi()">➕ TAMBAH TRANSAKSI</button>
 
                 <div class="saldo-terakhir">
-                    💰 SALDO TERSAKIR
+                    💰 SALDO TERAKHIR
                     <span class="saldo-angka">Rp <span id="saldoTersisa">0</span></span>
                 </div>
             </div>
@@ -1814,7 +1862,6 @@
 
         let dataBonusDenda = JSON.parse(localStorage.getItem('dataBonusDenda') || '{}');
 
-        // ==================== FUNGSI UTAMA ====================
         function getBulanTahun() {
             const e = new Date;
             return `${e.getFullYear()}-${String(e.getMonth() + 1).padStart(2, '0')}`;
@@ -1846,7 +1893,6 @@
             return { resi: max, tanggal: tglMax };
         }
 
-        // ==================== BONUS & DENDA ====================
         function getBonusDenda(bulan) {
             if (!dataBonusDenda[bulan]) dataBonusDenda[bulan] = { bonus: 0, denda: 0 };
             return dataBonusDenda[bulan];
@@ -1881,6 +1927,51 @@
             });
             localStorage.setItem('gajiSicepat', JSON.stringify(dataBulanan));
         }
+
+        // ==================== POPUP ====================
+        function showPopup(icon, text, sub, badge) {
+            document.getElementById('popupIcon').textContent = icon || '🔥';
+            document.getElementById('popupText').textContent = text || 'GAS TERUS BOS!';
+            document.getElementById('popupSub').textContent = sub || '💸 Cuan terus ngalir!';
+            document.getElementById('popupBadge').textContent = badge || '🏆 KURIR HEBAT';
+            document.getElementById('popupSemangat').classList.add('show');
+        }
+
+        function closePopup() {
+            document.getElementById('popupSemangat').classList.remove('show');
+        }
+
+        let popupTimer;
+
+        function showPopupAuto(icon, text, sub, badge) {
+            showPopup(icon, text, sub, badge);
+            clearTimeout(popupTimer);
+            popupTimer = setTimeout(() => { closePopup(); }, 3000);
+        }
+
+        // ==================== PWA ====================
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', e => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('btnInstall').classList.add('show');
+        });
+
+        function installPWA() {
+            if (!deferredPrompt) return alert('App udah diinstall atau browser gak support bos!');
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then(r => {
+                if (r.outcome === 'accepted') {
+                    document.getElementById('btnInstall').classList.remove('show');
+                    showPopupAuto('🎉', 'APP BERHASIL DIINSTALL!', 'Sekarang bisa diakses dari layar utama', '📱 PWA ACTIVE');
+                }
+                deferredPrompt = null;
+            });
+        }
+        window.addEventListener('appinstalled', () => {
+            document.getElementById('btnInstall').classList.remove('show');
+            deferredPrompt = null;
+        });
 
         // ==================== POPUP BONUS & DENDA ====================
         function openPopupBonusDenda() {
@@ -1948,51 +2039,6 @@
             tampilLogHarian();
             loadRiwayat();
             showPopupAuto('✅', `${type === 'bonus' ? 'BONUS' : 'DENDA'} TERSIMPAN!`, `Rp ${value.toLocaleString('id-ID')} untuk ${bulan}`, '💾 DONE');
-        }
-
-        // ==================== PWA ====================
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', e => {
-            e.preventDefault();
-            deferredPrompt = e;
-            document.getElementById('btnInstall').classList.add('show');
-        });
-
-        function installPWA() {
-            if (!deferredPrompt) return alert('App udah diinstall atau browser gak support bos!');
-            deferredPrompt.prompt();
-            deferredPrompt.userChoice.then(r => {
-                if (r.outcome === 'accepted') {
-                    document.getElementById('btnInstall').classList.remove('show');
-                    showPopupAuto('🎉', 'APP BERHASIL DIINSTALL!', 'Sekarang bisa diakses dari layar utama', '📱 PWA ACTIVE');
-                }
-                deferredPrompt = null;
-            });
-        }
-        window.addEventListener('appinstalled', () => {
-            document.getElementById('btnInstall').classList.remove('show');
-            deferredPrompt = null;
-        });
-
-        // ==================== POPUP ====================
-        function showPopup(icon, text, sub, badge) {
-            document.getElementById('popupIcon').textContent = icon || '🔥';
-            document.getElementById('popupText').textContent = text || 'GAS TERUS BOS!';
-            document.getElementById('popupSub').textContent = sub || '💸 Cuan terus ngalir!';
-            document.getElementById('popupBadge').textContent = badge || '🏆 KURIR HEBAT';
-            document.getElementById('popupSemangat').classList.add('show');
-        }
-
-        function closePopup() {
-            document.getElementById('popupSemangat').classList.remove('show');
-        }
-
-        let popupTimer;
-
-        function showPopupAuto(icon, text, sub, badge) {
-            showPopup(icon, text, sub, badge);
-            clearTimeout(popupTimer);
-            popupTimer = setTimeout(() => { closePopup(); }, 3000);
         }
 
         // ==================== SIMPAN RESI ====================
@@ -2103,8 +2149,7 @@
             const rataHarian = hariKerja > 0 ? Math.round(totalResi / hariKerja) : 0;
             document.getElementById('rataHarian').textContent = rataHarian;
 
-            // Update modal awal dari bulan sebelumnya
-            updateModalAwal();
+            updateTotalGajiCatatan();
 
             if (totalResi > 0 || dataBulanan[bulanIni]) {
                 if (!dataBulanan[bulanIni]) {
@@ -2147,7 +2192,16 @@
                     const r = dataHarian[o],
                         a = new Date(o).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', weekday: 'short' }),
                         i = r === 0 ? 'kosong' : '';
-                    n += `<div class="log-item ${i}"><div class="log-info"><div class="log-tgl">${a}</div><div class="log-resi">${r} resi = Rp ${(r * tarif).toLocaleString('id-ID')}</div></div><div class="log-btn"><button class="btn-edit" onclick="editTanggal('${o}')">Edit</button>${r > 0 ? `<button class="btn-hapus-log" onclick="hapusTanggal('${o}')">X</button>` : ''}</div></div>`;
+                    n += `<div class="log-item ${i}">
+                        <div class="log-info">
+                            <div class="log-tgl">${a}</div>
+                            <div class="log-resi">${r} resi = Rp ${(r * tarif).toLocaleString('id-ID')}</div>
+                        </div>
+                        <div class="log-btn">
+                            <button class="btn-edit" onclick="editTanggal('${o}')">Edit</button>
+                            ${r > 0 ? `<button class="btn-hapus-log" onclick="hapusTanggal('${o}')">X</button>` : ''}
+                        </div>
+                    </div>`;
                 });
                 if (o.length > logLimit) {
                     n += `<button class="btn-load-more" onclick="loadMoreLog()">Tampilkan Lebih Banyak</button>`;
@@ -2191,7 +2245,16 @@
                         const r = dataHarian[tgl];
                         const a = new Date(tgl).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', weekday: 'short' });
                         const i = r === 0 ? 'kosong' : '';
-                        n += `<div class="log-item ${i}"><div class="log-info"><div class="log-tgl">${a}</div><div class="log-resi">${r} resi = Rp ${(r * tarif).toLocaleString('id-ID')}</div></div><div class="log-btn"><button class="btn-edit" onclick="editTanggal('${tgl}')">Edit</button>${r > 0 ? `<button class="btn-hapus-log" onclick="hapusTanggal('${tgl}')">X</button>` : ''}</div></div>`;
+                        n += `<div class="log-item ${i}">
+                            <div class="log-info">
+                                <div class="log-tgl">${a}</div>
+                                <div class="log-resi">${r} resi = Rp ${(r * tarif).toLocaleString('id-ID')}</div>
+                            </div>
+                            <div class="log-btn">
+                                <button class="btn-edit" onclick="editTanggal('${tgl}')">Edit</button>
+                                ${r > 0 ? `<button class="btn-hapus-log" onclick="hapusTanggal('${tgl}')">X</button>` : ''}
+                            </div>
+                        </div>`;
                     });
                     n += `</div></div>`;
                 });
@@ -2292,17 +2355,22 @@
             });
         }
 
-        // ==================== RIWAYAT (STATS + TAHUNAN GABUNGAN - SEMUA BULAN) ====================
+        // ==================== RIWAYAT (STATS - SEMUA BULAN DARI AWAL TAHUN) ====================
         function loadRiwayat() {
             const e = document.getElementById('listRiwayat');
             e.innerHTML = '';
-            // Ambil semua bulan dari dataBulanan, urutkan dari terbaru
-            const t = Object.keys(dataBulanan).sort().reverse();
+
+            // Filter bulan dari tahun berjalan
+            const tahunIni = new Date().getFullYear();
+            const bulanKeys = Object.keys(dataBulanan)
+                .filter(k => k.startsWith(String(tahunIni)))
+                .sort()
+                .reverse();
 
             // Hitung total tahunan
             let totalGajiTahun = 0;
             let totalResiTahun = 0;
-            Object.keys(dataBulanan).forEach(bulan => {
+            bulanKeys.forEach(bulan => {
                 const n = dataBulanan[bulan];
                 const resi = n.totalResi || (n.resi1 + n.resi2) || 0;
                 const gaji = n.totalGaji || ((n.resi1 + n.resi2) * tarif) || 0;
@@ -2312,8 +2380,8 @@
             document.getElementById('totalResiBulanan').textContent = totalResiTahun.toLocaleString('id-ID');
             document.getElementById('totalGajiBulanan').textContent = totalGajiTahun.toLocaleString('id-ID');
 
-            if (t.length > 0) {
-                t.forEach((bulan, index) => {
+            if (bulanKeys.length > 0) {
+                bulanKeys.forEach((bulan, index) => {
                     const n = dataBulanan[bulan];
                     const o = new Date(bulan + '-01').toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
                     const r = hitungStatistik(bulan);
@@ -2394,7 +2462,7 @@
                     `;
                 });
             } else {
-                e.innerHTML = '<div style="text-align:center;color:#999;padding:20px;">Belum ada data</div>';
+                e.innerHTML = '<div style="text-align:center;color:#999;padding:20px;">Belum ada data tahun ini</div>';
             }
         }
 
@@ -2580,7 +2648,7 @@
             document.getElementById('targetBulan').textContent = `📅 Target: ${namaBulanDepan}`;
         }
 
-        // ==================== LOG BULANAN (untuk total tahunan) ====================
+        // ==================== LOG BULANAN ====================
         function tampilLogBulanan() {
             const tahun = new Date().getFullYear();
             let totalResi = 0,
@@ -2598,44 +2666,40 @@
             document.getElementById('totalResiBulanan').textContent = totalResi.toLocaleString('id-ID');
             document.getElementById('totalGajiBulanan').textContent = totalGaji.toLocaleString('id-ID');
 
-            updateModalAwal();
+            updateTotalGajiCatatan();
         }
 
         // ==================== CATATAN KEUANGAN ====================
-        function updateModalAwal() {
-            // Ambil bulan sebelumnya
+        function updateTotalGajiCatatan() {
             const now = new Date();
             const bulanLalu = new Date(now);
             bulanLalu.setMonth(bulanLalu.getMonth() - 1);
             const keyBulanLalu = `${bulanLalu.getFullYear()}-${String(bulanLalu.getMonth() + 1).padStart(2, '0')}`;
 
-            let modal = 0;
+            let totalGaji = 0;
             let resiBulanLalu = 0;
             let gajiBulanLalu = 0;
 
-            // Cek dari dataBulanan
             if (dataBulanan[keyBulanLalu]) {
                 const data = dataBulanan[keyBulanLalu];
                 resiBulanLalu = data.totalResi || (data.resi1 + data.resi2) || 0;
                 gajiBulanLalu = data.totalGaji || ((data.resi1 + data.resi2) * tarif) || 0;
-                modal = gajiBulanLalu;
+                totalGaji = gajiBulanLalu;
             } else {
-                // Cek dari dataBulananManual
                 const resiManual = dataBulananManual[keyBulanLalu] || 0;
                 const denda = getDenda(keyBulanLalu);
                 if (resiManual > 0) {
                     resiBulanLalu = resiManual;
                     gajiBulanLalu = (resiManual * tarif) - denda;
-                    modal = gajiBulanLalu;
+                    totalGaji = gajiBulanLalu;
                 }
             }
 
-            document.getElementById('modalAwal').textContent = modal.toLocaleString('id-ID');
+            document.getElementById('totalGajiCatatan').textContent = totalGaji.toLocaleString('id-ID');
             document.getElementById('gajiBulanLaluAcuan').textContent = gajiBulanLalu.toLocaleString('id-ID');
             document.getElementById('resiBulanLaluAcuan').textContent = resiBulanLalu.toLocaleString('id-ID');
 
-            // Simpan modal untuk referensi
-            localStorage.setItem('modalAwalBulan', JSON.stringify({ bulan: keyBulanLalu, modal: modal }));
+            localStorage.setItem('totalGajiCatatan', JSON.stringify({ bulan: keyBulanLalu, totalGaji: totalGaji }));
             tampilTransaksi();
         }
 
@@ -2653,7 +2717,7 @@
             }
 
             let html = '';
-            sorted.forEach((item, idx) => {
+            sorted.forEach((item) => {
                 const isKeluar = item.tipe === 'keluar';
                 const nominal = item.nominal || 0;
                 const tgl = new Date(item.tanggal).toLocaleDateString('id-ID', { day: '2-digit', month: 'short' });
@@ -2676,7 +2740,7 @@
         }
 
         function updateSaldoTersisa() {
-            const modalAwal = parseInt(document.getElementById('modalAwal').textContent.replace(/\./g, '')) || 0;
+            const totalGaji = parseInt(document.getElementById('totalGajiCatatan').textContent.replace(/\./g, '')) || 0;
             let totalKeluar = 0,
                 totalMasuk = 0;
             dataTransaksi.forEach(item => {
@@ -2684,7 +2748,7 @@
                 if (item.tipe === 'keluar') totalKeluar += nominal;
                 else if (item.tipe === 'masuk') totalMasuk += nominal;
             });
-            const saldo = modalAwal + totalMasuk - totalKeluar;
+            const saldo = totalGaji + totalMasuk - totalKeluar;
             document.getElementById('saldoTersisa').textContent = saldo.toLocaleString('id-ID');
         }
 
@@ -2935,7 +2999,6 @@
             document.getElementById('inputTanggal').value = getTanggalHariIni();
             document.getElementById('bulanIni').textContent = new Date().toLocaleDateString('id-ID', { month: 'long', year: 'numeric' }).toUpperCase();
 
-            // Tab navigation
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const tabName = this.getAttribute('data-tab');
@@ -2955,7 +3018,7 @@
                     }
                     if (tabName === 'catatan') {
                         tampilTransaksi();
-                        updateModalAwal();
+                        updateTotalGajiCatatan();
                     }
                 });
             });
@@ -2971,7 +3034,7 @@
             tampilRekor();
             tampilLogBulanan();
             tampilTransaksi();
-            updateModalAwal();
+            updateTotalGajiCatatan();
 
             setTimeout(() => {
                 if (document.getElementById('tab-stats').classList.contains('active')) {
@@ -2987,15 +3050,14 @@
             cekBackupReminder();
             if (reminderAktif) mintaIzinNotifikasi();
 
-            // Load saved modal
-            const savedModal = JSON.parse(localStorage.getItem('modalAwalBulan') || '{}');
-            if (savedModal.bulan) {
+            const savedGaji = JSON.parse(localStorage.getItem('totalGajiCatatan') || '{}');
+            if (savedGaji.bulan) {
                 const now = new Date();
                 const bulanLalu = new Date(now);
                 bulanLalu.setMonth(bulanLalu.getMonth() - 1);
                 const keyBulanLalu = `${bulanLalu.getFullYear()}-${String(bulanLalu.getMonth() + 1).padStart(2, '0')}`;
-                if (savedModal.bulan === keyBulanLalu) {
-                    document.getElementById('modalAwal').textContent = (savedModal.modal || 0).toLocaleString('id-ID');
+                if (savedGaji.bulan === keyBulanLalu) {
+                    document.getElementById('totalGajiCatatan').textContent = (savedGaji.totalGaji || 0).toLocaleString('id-ID');
                 }
             }
         });
