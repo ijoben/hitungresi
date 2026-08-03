@@ -2406,7 +2406,7 @@
             });
         }
 
-        // ==================== RIWAYAT (STATS - DATA DARI SISTEM, URUT TERBALIK) ====================
+        // ==================== RIWAYAT (STATS - SEMUA BULAN DARI JANUARI, URUT TERBALIK) ====================
         function loadRiwayat() {
             const e = document.getElementById('listRiwayat');
             e.innerHTML = '';
@@ -2415,50 +2415,60 @@
             const bulanIni = getBulanTahun();
             const namaBulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
-            // Ambil semua bulan dari dataBulanan yang tahunnya sama dengan tahun ini
-            const bulanKeys = Object.keys(dataBulanan)
-                .filter(k => k.startsWith(String(tahunIni)))
-                .sort()
-                .reverse(); // Dibalik: bulan ini di atas
-
-            // Hitung total tahunan
+            // Hitung total tahunan dari data yang ada
             let totalGajiTahun = 0;
             let totalResiTahun = 0;
-            bulanKeys.forEach(bulan => {
-                const n = dataBulanan[bulan];
-                const resi = n.totalResi || (n.resi1 + n.resi2) || 0;
-                const gaji = n.totalGaji || ((n.resi1 + n.resi2) * tarif) || 0;
-                totalResiTahun += resi;
-                totalGajiTahun += gaji;
+            Object.keys(dataBulanan).forEach(bulan => {
+                if (bulan.startsWith(String(tahunIni))) {
+                    const n = dataBulanan[bulan];
+                    const resi = n.totalResi || (n.resi1 + n.resi2) || 0;
+                    const gaji = n.totalGaji || ((n.resi1 + n.resi2) * tarif) || 0;
+                    totalResiTahun += resi;
+                    totalGajiTahun += gaji;
+                }
             });
             document.getElementById('totalResiBulanan').textContent = totalResiTahun.toLocaleString('id-ID');
             document.getElementById('totalGajiBulanan').textContent = totalGajiTahun.toLocaleString('id-ID');
 
-            if (bulanKeys.length > 0) {
-                bulanKeys.forEach((bulan, index) => {
-                    const n = dataBulanan[bulan];
-                    const bulanNum = parseInt(bulan.split('-')[1]);
-                    const o = namaBulan[bulanNum - 1] + ' ' + tahunIni;
-                    const r = hitungStatistik(bulan);
+            // Buat daftar bulan dari bulan ini ke bawah (terbalik)
+            const bulanSekarang = new Date().getMonth(); // 0-based
+            const bulanList = [];
+            for (let i = bulanSekarang; i >= 0; i--) {
+                bulanList.push(i);
+            }
+
+            bulanList.forEach((bulanIdx, index) => {
+                const bulanNum = String(bulanIdx + 1).padStart(2, '0');
+                const keyBulan = `${tahunIni}-${bulanNum}`;
+                const namaBln = namaBulan[bulanIdx];
+                const isBulanIni = keyBulan === bulanIni;
+                const dataBln = dataBulanan[keyBulan];
+
+                // Cek apakah ada data
+                const hasData = dataBln && (dataBln.totalResi || dataBln.resi1 || dataBln.resi2);
+
+                if (hasData) {
+                    // Ada data - tampilkan detail
+                    const n = dataBln;
+                    const r = hitungStatistik(keyBulan);
                     const resiBulan = n.totalResi || (n.resi1 + n.resi2) || 0;
                     const totalGaji = n.totalGaji || ((n.resi1 + n.resi2) * tarif) || 0;
-                    const bonus = n.bonus || getBonus(bulan);
-                    const denda = n.denda || getDenda(bulan);
+                    const bonus = n.bonus || getBonus(keyBulan);
+                    const denda = n.denda || getDenda(keyBulan);
 
                     const gajiPeriode1 = (n.resi1 || 0) * tarif * 0.5;
                     const gajiPeriode2 = (n.resi2 || 0) * tarif;
                     const dibayarTanggal5 = gajiPeriode2 + ((n.resi1 || 0) * tarif * 0.5);
 
-                    // Bulan ini yang di-expand (index 0 karena urutan terbalik)
+                    // Hanya bulan ini yang open (index 0)
                     const isOpen = index === 0 ? 'open' : '';
                     const isActive = index === 0 ? 'active' : '';
-                    const isBulanIni = bulan === bulanIni;
 
                     e.innerHTML += `
                         <div class="bulan-accordion-stats">
                             <div class="accordion-header ${isActive}" onclick="toggleAccordionStats(this)">
                                 <span class="bulan-nama">
-                                    ${o}
+                                    ${namaBln} ${tahunIni}
                                     ${isBulanIni ? '<span class="badge-bulan">BULAN INI</span>' : ''}
                                 </span>
                                 <span style="display:flex;align-items:center;gap:6px;">
@@ -2516,10 +2526,34 @@
                             </div>
                         </div>
                     `;
-                });
-            } else {
-                e.innerHTML = '<div style="text-align:center;color:#999;padding:20px;">Belum ada data tahun ini</div>';
-            }
+                } else {
+                    // Tidak ada data - tampilkan kosong
+                    e.innerHTML += `
+                        <div class="bulan-accordion-stats" style="opacity:0.7;">
+                            <div class="accordion-header" onclick="toggleAccordionStats(this)">
+                                <span class="bulan-nama">
+                                    ${namaBln} ${tahunIni}
+                                    ${isBulanIni ? '<span class="badge-bulan">BULAN INI</span>' : ''}
+                                    <span class="badge-kosong">KOSONG</span>
+                                </span>
+                                <span style="display:flex;align-items:center;gap:6px;">
+                                    <span class="bulan-total kosong">0 resi</span>
+                                    <span style="font-size:11px;font-weight:700;color:var(--text2);opacity:0.4;">Rp 0</span>
+                                    <span class="bulan-arrow">▼</span>
+                                </span>
+                            </div>
+                            <div class="accordion-body">
+                                <div class="detail-card-stats">
+                                    <div class="kosong-info">📭 Belum ada data untuk bulan ini</div>
+                                    <div style="display:flex;justify-content:center;gap:8px;margin-top:8px;">
+                                        <button class="bd-edit-btn" onclick="alert('Input resi di tab Input untuk bulan ${namaBln}')" style="font-size:9px;padding:4px 12px;">➕ Input Resi</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
         }
 
         function toggleAccordionStats(header) {
