@@ -2406,7 +2406,7 @@
             });
         }
 
-        // ==================== RIWAYAT (STATS - SEMUA BULAN DARI JANUARI SAMPAI DESEMBER) ====================
+        // ==================== RIWAYAT (STATS - DARI DATA TAHUNAN) ====================
         function loadRiwayat() {
             const e = document.getElementById('listRiwayat');
             e.innerHTML = '';
@@ -2415,35 +2415,40 @@
             const bulanIni = getBulanTahun();
             const namaBulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
-            // Hitung total tahunan dari data yang ada
+            // Ambil bulan yang sudah dilewati (sampai bulan ini)
+            const now = new Date();
+            const bulanSekarang = now.getMonth(); // 0-based
+            const bulanTerakhir = bulanSekarang;
+
+            // Hitung total tahunan dari dataTahunan
             let totalGajiTahun = 0;
             let totalResiTahun = 0;
-            Object.keys(dataBulanan).forEach(bulan => {
-                if (bulan.startsWith(String(tahunIni))) {
-                    const n = dataBulanan[bulan];
-                    const resi = n.totalResi || (n.resi1 + n.resi2) || 0;
-                    const gaji = n.totalGaji || ((n.resi1 + n.resi2) * tarif) || 0;
-                    totalResiTahun += resi;
-                    totalGajiTahun += gaji;
+            dataTahunan.forEach(item => {
+                if (item.tahun === tahunIni) {
+                    totalResiTahun += item.resi || 0;
+                    totalGajiTahun += item.gaji || 0;
                 }
             });
             document.getElementById('totalResiBulanan').textContent = totalResiTahun.toLocaleString('id-ID');
             document.getElementById('totalGajiBulanan').textContent = totalGajiTahun.toLocaleString('id-ID');
 
-            // Looping semua bulan dari Januari sampai Desember
-            for (let i = 0; i < 12; i++) {
+            // Looping dari Januari (0) sampai bulan sekarang
+            for (let i = 0; i <= bulanTerakhir; i++) {
                 const bulanNum = String(i + 1).padStart(2, '0');
                 const keyBulan = `${tahunIni}-${bulanNum}`;
                 const namaBln = namaBulan[i];
                 const isBulanIni = keyBulan === bulanIni;
-                const dataBln = dataBulanan[keyBulan];
 
-                // Cek apakah ada data
-                const hasData = dataBln && (dataBln.totalResi || dataBln.resi1 || dataBln.resi2);
+                // Cari data di dataTahunan
+                const dataBln = dataTahunan.find(item => item.key === keyBulan);
+                const hasData = dataBln && dataBln.resi > 0;
 
-                if (hasData) {
+                // Cek juga di dataBulanan untuk detail
+                const dataDetail = dataBulanan[keyBulan];
+
+                if (hasData && dataDetail) {
                     // Ada data - tampilkan detail
-                    const n = dataBln;
+                    const n = dataDetail;
                     const r = hitungStatistik(keyBulan);
                     const resiBulan = n.totalResi || (n.resi1 + n.resi2) || 0;
                     const totalGaji = n.totalGaji || ((n.resi1 + n.resi2) * tarif) || 0;
@@ -2454,9 +2459,9 @@
                     const gajiPeriode2 = (n.resi2 || 0) * tarif;
                     const dibayarTanggal5 = gajiPeriode2 + ((n.resi1 || 0) * tarif * 0.5);
 
-                    // Hanya bulan pertama (Januari) yang open
-                    const isOpen = i === 0 ? 'open' : '';
-                    const isActive = i === 0 ? 'active' : '';
+                    // Bulan ini yang di-expand
+                    const isOpen = isBulanIni ? 'open' : '';
+                    const isActive = isBulanIni ? 'active' : '';
 
                     e.innerHTML += `
                         <div class="bulan-accordion-stats">
@@ -2522,12 +2527,9 @@
                     `;
                 } else {
                     // Tidak ada data - tampilkan kosong
-                    const isOpen = i === 0 ? 'open' : '';
-                    const isActive = i === 0 ? 'active' : '';
-
                     e.innerHTML += `
                         <div class="bulan-accordion-stats" style="opacity:0.7;">
-                            <div class="accordion-header ${isActive}" onclick="toggleAccordionStats(this)">
+                            <div class="accordion-header" onclick="toggleAccordionStats(this)">
                                 <span class="bulan-nama">
                                     ${namaBln} ${tahunIni}
                                     ${isBulanIni ? '<span class="badge-bulan">BULAN INI</span>' : ''}
@@ -2539,7 +2541,7 @@
                                     <span class="bulan-arrow">▼</span>
                                 </span>
                             </div>
-                            <div class="accordion-body ${isOpen}">
+                            <div class="accordion-body">
                                 <div class="detail-card-stats">
                                     <div class="kosong-info">📭 Belum ada data untuk bulan ini</div>
                                     <div style="display:flex;justify-content:center;gap:8px;margin-top:8px;">
