@@ -998,14 +998,26 @@
             transform: scale(0.97);
         }
 
+        /* SALDO TERSAKIR - DIPERBESAR */
         .saldo-terakhir {
-            font-size: 10px;
-            color: var(--text2);
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text);
             text-align: center;
-            font-weight: 600;
-            padding: 6px;
-            background: var(--bg);
-            border-radius: 8px;
+            padding: 14px;
+            background: var(--surface);
+            border-radius: 12px;
+            border: 2px solid var(--primary);
+            box-shadow: var(--shadow);
+            margin-top: 4px;
+        }
+
+        .saldo-terakhir .saldo-angka {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--primary);
+            display: block;
+            margin-top: 4px;
         }
 
         /* ===== TAB MENU ===== */
@@ -1434,6 +1446,7 @@
             .detail-card-stats .stats-grid .stat-item .stat-value { font-size: 11px; }
             .prediksi-target-box .target-besar { font-size: 20px; }
             .total-tahunan-mini .value { font-size: 14px; }
+            .saldo-terakhir .saldo-angka { font-size: 20px; }
         }
 
         .bd-edit-btn {
@@ -1601,13 +1614,13 @@
             <div class="log-harian" id="logHarian"></div>
         </div>
 
-        <!-- TAB STATS (gabungan statistik + tahunan) -->
+        <!-- TAB STATS (gabungan statistik + tahunan - SEMUA BULAN) -->
         <div id="tab-stats" class="tab-content">
             <div class="stats-tahunan-container">
                 <!-- Total tahunan minimalis -->
                 <div class="total-tahunan-mini">
                     <span class="label">📅 TOTAL TAHUNAN</span>
-                    <span class="value">Rp <span id="totalGajiBulanan">0</span> <small>| <span id="totalResiBulanan">0</small> resi</span>
+                    <span class="value">Rp <span id="totalGajiBulanan">0</span> <small>| <span id="totalResiBulanan">0</span> resi</small></span>
                 </div>
 
                 <!-- Grafik -->
@@ -1616,7 +1629,7 @@
                     <canvas id="chartResi" height="180" style="max-height:180px;width:100% !important;height:auto !important;"></canvas>
                 </div>
 
-                <!-- Rekap bulanan accordion -->
+                <!-- Rekap bulanan accordion - SEMUA BULAN -->
                 <div id="listRiwayat"></div>
 
                 <!-- Tombol rekap manual -->
@@ -1631,13 +1644,13 @@
             <div class="catatan-container">
                 <div class="modal-awal-box">
                     <div class="modal-header">
-                        <span class="label">💰 Modal Awal Bulan</span>
+                        <span class="label">💰 Modal Awal Bulan Ini</span>
                         <span class="value">Rp <span id="modalAwal">0</span></span>
                     </div>
                     <div class="modal-sub">
-                        Berdasarkan gaji diterima tgl 5 bulan berjalan
+                        Berdasarkan total gaji bulan sebelumnya
                         <span style="display:block;font-size:9px;color:var(--text2);margin-top:2px;">
-                            Gaji tgl 5: Rp <span id="gajiTgl5Acuan">0</span>
+                            Gaji bulan lalu: Rp <span id="gajiBulanLaluAcuan">0</span> | <span id="resiBulanLaluAcuan">0</span> resi
                         </span>
                     </div>
                 </div>
@@ -1646,8 +1659,9 @@
 
                 <button class="btn-transaksi" onclick="openPopupTransaksi()">➕ TAMBAH TRANSAKSI</button>
 
-                <div class="saldo-terakhir" id="saldoTerakhir">
-                    💰 Saldo tersisa: Rp <span id="saldoTersisa">0</span>
+                <div class="saldo-terakhir">
+                    💰 SALDO TERSAKIR
+                    <span class="saldo-angka">Rp <span id="saldoTersisa">0</span></span>
                 </div>
             </div>
         </div>
@@ -1846,6 +1860,7 @@
             Object.keys(dataHarian).forEach(k => allKeys.add(k.substring(0, 7)));
             Object.keys(dataBulananManual).forEach(k => allKeys.add(k));
             Object.keys(dataBonusDenda).forEach(k => allKeys.add(k));
+            Object.keys(dataBulanan).forEach(k => allKeys.add(k));
             return Array.from(allKeys).sort();
         }
 
@@ -2088,8 +2103,7 @@
             const rataHarian = hariKerja > 0 ? Math.round(totalResi / hariKerja) : 0;
             document.getElementById('rataHarian').textContent = rataHarian;
 
-            // Update modal awal untuk catatan
-            document.getElementById('gajiTgl5Acuan').textContent = dibayarTanggal5.toLocaleString('id-ID');
+            // Update modal awal dari bulan sebelumnya
             updateModalAwal();
 
             if (totalResi > 0 || dataBulanan[bulanIni]) {
@@ -2278,19 +2292,33 @@
             });
         }
 
-        // ==================== RIWAYAT (STATS + TAHUNAN GABUNGAN) ====================
+        // ==================== RIWAYAT (STATS + TAHUNAN GABUNGAN - SEMUA BULAN) ====================
         function loadRiwayat() {
             const e = document.getElementById('listRiwayat');
             e.innerHTML = '';
+            // Ambil semua bulan dari dataBulanan, urutkan dari terbaru
             const t = Object.keys(dataBulanan).sort().reverse();
+
+            // Hitung total tahunan
+            let totalGajiTahun = 0;
+            let totalResiTahun = 0;
+            Object.keys(dataBulanan).forEach(bulan => {
+                const n = dataBulanan[bulan];
+                const resi = n.totalResi || (n.resi1 + n.resi2) || 0;
+                const gaji = n.totalGaji || ((n.resi1 + n.resi2) * tarif) || 0;
+                totalResiTahun += resi;
+                totalGajiTahun += gaji;
+            });
+            document.getElementById('totalResiBulanan').textContent = totalResiTahun.toLocaleString('id-ID');
+            document.getElementById('totalGajiBulanan').textContent = totalGajiTahun.toLocaleString('id-ID');
 
             if (t.length > 0) {
                 t.forEach((bulan, index) => {
                     const n = dataBulanan[bulan];
                     const o = new Date(bulan + '-01').toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
                     const r = hitungStatistik(bulan);
-                    const a = n.totalResi || (n.resi1 + n.resi2);
-                    const totalGaji = n.totalGaji || ((n.resi1 + n.resi2) * tarif);
+                    const resiBulan = n.totalResi || (n.resi1 + n.resi2) || 0;
+                    const totalGaji = n.totalGaji || ((n.resi1 + n.resi2) * tarif) || 0;
                     const bonus = n.bonus || getBonus(bulan);
                     const denda = n.denda || getDenda(bulan);
 
@@ -2300,16 +2328,18 @@
 
                     const isOpen = index === 0 ? 'open' : '';
                     const isActive = index === 0 ? 'active' : '';
+                    const isBulanIni = bulan === getBulanTahun();
 
                     e.innerHTML += `
                         <div class="bulan-accordion-stats">
                             <div class="accordion-header ${isActive}" onclick="toggleAccordionStats(this)">
                                 <span class="bulan-nama">
                                     ${o}
-                                    ${index === 0 ? '<span class="badge-bulan">BULAN INI</span>' : ''}
+                                    ${isBulanIni ? '<span class="badge-bulan">BULAN INI</span>' : ''}
                                 </span>
                                 <span style="display:flex;align-items:center;gap:6px;">
-                                    <span class="bulan-total">Rp ${totalGaji.toLocaleString('id-ID')}</span>
+                                    <span class="bulan-total">${resiBulan} resi</span>
+                                    <span style="font-size:11px;font-weight:700;color:var(--text2);">Rp ${totalGaji.toLocaleString('id-ID')}</span>
                                     <span class="bulan-arrow">▼</span>
                                 </span>
                             </div>
@@ -2318,7 +2348,7 @@
                                     <div class="stats-grid">
                                         <div class="stat-item">
                                             <div class="stat-label">Total Resi</div>
-                                            <div class="stat-value primary">${a.toLocaleString('id-ID')}</div>
+                                            <div class="stat-value primary">${resiBulan.toLocaleString('id-ID')}</div>
                                         </div>
                                         <div class="stat-item">
                                             <div class="stat-label">Hari Kerja</div>
@@ -2364,7 +2394,7 @@
                     `;
                 });
             } else {
-                e.innerHTML = '<div style="text-align:center;color:#999;padding:20px;">Belum ada riwayat</div>';
+                e.innerHTML = '<div style="text-align:center;color:#999;padding:20px;">Belum ada data</div>';
             }
         }
 
@@ -2568,21 +2598,44 @@
             document.getElementById('totalResiBulanan').textContent = totalResi.toLocaleString('id-ID');
             document.getElementById('totalGajiBulanan').textContent = totalGaji.toLocaleString('id-ID');
 
-            // Update modal awal
             updateModalAwal();
         }
 
         // ==================== CATATAN KEUANGAN ====================
         function updateModalAwal() {
-            const bulanIni = getBulanTahun();
-            const data = dataBulanan[bulanIni];
+            // Ambil bulan sebelumnya
+            const now = new Date();
+            const bulanLalu = new Date(now);
+            bulanLalu.setMonth(bulanLalu.getMonth() - 1);
+            const keyBulanLalu = `${bulanLalu.getFullYear()}-${String(bulanLalu.getMonth() + 1).padStart(2, '0')}`;
+
             let modal = 0;
-            if (data && data.dibayarTanggal5) {
-                modal = data.dibayarTanggal5;
+            let resiBulanLalu = 0;
+            let gajiBulanLalu = 0;
+
+            // Cek dari dataBulanan
+            if (dataBulanan[keyBulanLalu]) {
+                const data = dataBulanan[keyBulanLalu];
+                resiBulanLalu = data.totalResi || (data.resi1 + data.resi2) || 0;
+                gajiBulanLalu = data.totalGaji || ((data.resi1 + data.resi2) * tarif) || 0;
+                modal = gajiBulanLalu;
+            } else {
+                // Cek dari dataBulananManual
+                const resiManual = dataBulananManual[keyBulanLalu] || 0;
+                const denda = getDenda(keyBulanLalu);
+                if (resiManual > 0) {
+                    resiBulanLalu = resiManual;
+                    gajiBulanLalu = (resiManual * tarif) - denda;
+                    modal = gajiBulanLalu;
+                }
             }
+
             document.getElementById('modalAwal').textContent = modal.toLocaleString('id-ID');
-            // Simpan modal untuk referensi transaksi
-            localStorage.setItem('modalAwalBulan', JSON.stringify({ bulan: bulanIni, modal: modal }));
+            document.getElementById('gajiBulanLaluAcuan').textContent = gajiBulanLalu.toLocaleString('id-ID');
+            document.getElementById('resiBulanLaluAcuan').textContent = resiBulanLalu.toLocaleString('id-ID');
+
+            // Simpan modal untuk referensi
+            localStorage.setItem('modalAwalBulan', JSON.stringify({ bulan: keyBulanLalu, modal: modal }));
             tampilTransaksi();
         }
 
@@ -2902,6 +2955,7 @@
                     }
                     if (tabName === 'catatan') {
                         tampilTransaksi();
+                        updateModalAwal();
                     }
                 });
             });
@@ -2935,8 +2989,14 @@
 
             // Load saved modal
             const savedModal = JSON.parse(localStorage.getItem('modalAwalBulan') || '{}');
-            if (savedModal.bulan === getBulanTahun()) {
-                document.getElementById('modalAwal').textContent = (savedModal.modal || 0).toLocaleString('id-ID');
+            if (savedModal.bulan) {
+                const now = new Date();
+                const bulanLalu = new Date(now);
+                bulanLalu.setMonth(bulanLalu.getMonth() - 1);
+                const keyBulanLalu = `${bulanLalu.getFullYear()}-${String(bulanLalu.getMonth() + 1).padStart(2, '0')}`;
+                if (savedModal.bulan === keyBulanLalu) {
+                    document.getElementById('modalAwal').textContent = (savedModal.modal || 0).toLocaleString('id-ID');
+                }
             }
         });
     </script>
