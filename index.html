@@ -1169,7 +1169,7 @@
                     <div class="gaji-left">
                         <div class="gaji-icon hijau">📆</div>
                         <div class="gaji-info">
-                            <span class="gaji-label">TGL 16-AKHIR</span>
+                            <span class="gaji-label">TGL 16-AKHIR (DIBAYAR TGL 15)</span>
                             <span class="gaji-sub"><span id="resi2">0</span> resi · 50%</span>
                         </div>
                     </div>
@@ -1182,8 +1182,8 @@
                     <div class="gaji-left">
                         <div class="gaji-icon kuning">💰</div>
                         <div class="gaji-info">
-                            <span class="gaji-label">TERIMA TGL 5</span>
-                            <span class="gaji-sub">Sisa Tgl 1-15 + Tgl 16-Akhir</span>
+                            <span class="gaji-label">TERIMA TGL 5 BULAN DEPAN</span>
+                            <span class="gaji-sub">Sisa 50% Tgl 1-15 + Sisa 50% Tgl 16-Akhir</span>
                         </div>
                     </div>
                     <div class="gaji-right">
@@ -1772,10 +1772,10 @@
         }
 
         function autoIsiNol() {
-            const e = new Date, t = e.getFullYear(), n = e.getMonth() + 1, o = e.getDate();
-            for (let e = 1; e <= o; e++) {
-                const o = `${t}-${String(n).padStart(2, '0')}-${String(e).padStart(2, '0')}`;
-                if (dataHarian[o] === undefined) dataHarian[o] = 0;
+            const today = new Date, year = today.getFullYear(), month = today.getMonth() + 1, lastDay = today.getDate();
+            for (let day = 1; day <= lastDay; day++) {
+                const dateKey = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                if (dataHarian[dateKey] === undefined) dataHarian[dateKey] = 0;
             }
             localStorage.setItem('gajiSicepatHarian', JSON.stringify(dataHarian));
         }
@@ -1913,7 +1913,9 @@
             const gajiPeriode2 = resi2 * tarif;
             const dibayarPeriode1 = gajiPeriode1 * 0.5;
             const sisaPeriode1 = gajiPeriode1 * 0.5;
-            const dibayarTanggal5 = gajiPeriode2 + sisaPeriode1;
+            const sisaPeriode2 = gajiPeriode2 * 0.5;
+            const dibayarTanggal5 = sisaPeriode1 + sisaPeriode2;
+            const gaji2Tampil = gajiPeriode2 * 0.5;
             const totalResi = resi1 + resi2;
             const totalGajiBulan = gajiPeriode1 + gajiPeriode2;
 
@@ -1924,7 +1926,7 @@
             document.getElementById('resi1').textContent = resi1.toLocaleString('id-ID');
             document.getElementById('resi2').textContent = resi2.toLocaleString('id-ID');
             document.getElementById('gaji1').textContent = dibayarPeriode1.toLocaleString('id-ID');
-            document.getElementById('gaji2').textContent = gajiPeriode2.toLocaleString('id-ID');
+            document.getElementById('gaji2').textContent = gaji2Tampil.toLocaleString('id-ID');
             document.getElementById('terimaTgl5').textContent = dibayarTanggal5.toLocaleString('id-ID');
             document.getElementById('totalResi').textContent = totalResi.toLocaleString('id-ID');
             document.getElementById('totalGaji').textContent = gajiBersih.toLocaleString('id-ID');
@@ -2143,8 +2145,8 @@
                     const denda = n.denda || getDenda(bulan);
 
                     const gajiPeriode1 = (n.resi1 || 0) * tarif * 0.5;
-                    const gajiPeriode2 = (n.resi2 || 0) * tarif;
-                    const dibayarTanggal5 = gajiPeriode2 + ((n.resi1 || 0) * tarif * 0.5);
+                    const gajiPeriode2 = (n.resi2 || 0) * tarif * 0.5;
+                    const dibayarTanggal5 = ((n.resi1 || 0) * tarif * 0.5) + ((n.resi2 || 0) * tarif * 0.5);
 
                     const isOpen = index === 0 ? 'open' : '';
                     const isActive = index === 0 ? 'active' : '';
@@ -2183,14 +2185,14 @@
                                         <div style="font-size:7px;color:var(--text2);">${n.resi1 || 0} resi</div>
                                     </div>
                                     <div class="periode-item">
-                                        <div class="label">📆 Tgl 16-Akhir (50%)</div>
+                                        <div class="label">📆 Tgl 16-Akhir (Dibayar Tgl 15)</div>
                                         <div class="value">Rp ${gajiPeriode2.toLocaleString('id-ID')}</div>
-                                        <div style="font-size:7px;color:var(--text2);">${n.resi2 || 0} resi</div>
+                                        <div style="font-size:7px;color:var(--text2);">${n.resi2 || 0} resi · 50%</div>
                                     </div>
                                     <div class="periode-item" style="grid-column:1/3;">
-                                        <div class="label">💰 Terima Tgl 5</div>
+                                        <div class="label">💰 Terima Tgl 5 Bulan Depan</div>
                                         <div class="value">Rp ${dibayarTanggal5.toLocaleString('id-ID')}</div>
-                                        <div style="font-size:7px;color:var(--text2);">Sisa Tgl 1-15 + Tgl 16-Akhir</div>
+                                        <div style="font-size:7px;color:var(--text2);">Sisa 50% Tgl 1-15 + Sisa 50% Tgl 16-Akhir</div>
                                     </div>
                                 </div>
 
