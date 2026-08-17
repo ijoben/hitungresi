@@ -562,7 +562,8 @@
                 const tahunan = JSON.parse(localStorage.getItem('dataTahunan') || '[]');
                 const manual = JSON.parse(localStorage.getItem('dataBulananManual') || '{}');
                 const bonusDenda = JSON.parse(localStorage.getItem('dataBonusDenda') || '{}');
-                const data = { dataHarian: harian, dataBulanan: bulanan, dataRekor: rekor, dataTahunan: tahunan, dataBulananManual: manual, dataBonusDenda: bonusDenda, tanggalBackup: new Date().toISOString(), versi: '4.2' };
+                const rencana = JSON.parse(localStorage.getItem('gajiSicepatRencana') || '{}');
+                const data = { dataHarian: harian, dataBulanan: bulanan, dataRekor: rekor, dataTahunan: tahunan, dataBulananManual: manual, dataBonusDenda: bonusDenda, dataRencana: rencana, tanggalBackup: new Date().toISOString(), versi: '4.3' };
                 const name = 'backup-gaji-sicepat-' + new Date().toISOString().slice(0, 10) + '.json';
                 const result = await driveUploadFile(token, name, JSON.stringify(data, null, 2));
                 if (result.id) {
