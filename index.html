@@ -223,7 +223,7 @@
         }
 
         .total-number {
-            font-size: 28px;
+            font-size: 22px;
             font-weight: 900;
             line-height: 1.2;
             letter-spacing: -0.5px;
@@ -1155,8 +1155,8 @@
                     <div class="gaji-left">
                         <div class="gaji-icon merah">📆</div>
                         <div class="gaji-info">
-                            <span class="gaji-label">TGL 1-15 · BAYAR TGL 20</span>
-                            <span class="gaji-sub"><span id="resi1">0</span> resi · 50% × 2500</span>
+                            <span class="gaji-label">TGL 1-15</span>
+                            <span class="gaji-sub"><span id="resi1">0</span> resi</span>
                         </div>
                     </div>
                     <div class="gaji-right">
@@ -1168,8 +1168,8 @@
                     <div class="gaji-left">
                         <div class="gaji-icon hijau">📆</div>
                         <div class="gaji-info">
-                            <span class="gaji-label">TGL 16-AKHIR · BAYAR TGL 5</span>
-                            <span class="gaji-sub"><span id="resi2">0</span> resi · FULL + 50% sisa P1</span>
+                            <span class="gaji-label">TGL 16-AKHIR</span>
+                            <span class="gaji-sub"><span id="resi2">0</span> resi</span>
                         </div>
                     </div>
                     <div class="gaji-right">
@@ -1923,8 +1923,9 @@
             document.getElementById('resi1').textContent = resi1.toLocaleString('id-ID');
             document.getElementById('resi2').textContent = resi2.toLocaleString('id-ID');
             document.getElementById('gaji1').textContent = dibayarPeriode1.toLocaleString('id-ID');
-            // TGL 16-akhir: full (2500/resi) + 50% sisa periode 1, dibayar tgl 5
-            document.getElementById('gaji2').textContent = (gajiPeriode2 + sisaPeriode1).toLocaleString('id-ID');
+            // TGL 16-akhir: full biasa (2500/resi)
+            document.getElementById('gaji2').textContent = gajiPeriode2.toLocaleString('id-ID');
+            // Terima tgl 5: total periode 2 (full) + 50% sisa periode 1
             document.getElementById('terimaTgl5').textContent = dibayarTanggal5.toLocaleString('id-ID');
             document.getElementById('totalResi').textContent = totalResi.toLocaleString('id-ID');
             document.getElementById('totalGaji').textContent = gajiBersih.toLocaleString('id-ID');
@@ -2183,9 +2184,9 @@
                                         <div style="font-size:7px;color:var(--text2);">${n.resi1 || 0} resi</div>
                                     </div>
                                     <div class="periode-item">
-                                        <div class="label">📆 Tgl 16-Akhir (FULL + 50% sisa)</div>
-                                        <div class="value">Rp ${dibayarTanggal5.toLocaleString('id-ID')}</div>
-                                        <div style="font-size:7px;color:var(--text2);">${n.resi2 || 0} resi · bayar tgl 5</div>
+                                        <div class="label">📆 Tgl 16-Akhir (FULL)</div>
+                                        <div class="value">Rp ${gajiPeriode2.toLocaleString('id-ID')}</div>
+                                        <div style="font-size:7px;color:var(--text2);">${n.resi2 || 0} resi</div>
                                     </div>
                                     <div class="periode-item" style="grid-column:1/3;">
                                         <div class="label">💰 Terima Tgl 5</div>
