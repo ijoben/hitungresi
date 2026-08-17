@@ -2700,7 +2700,12 @@
         function driveConnect() {
             if (driveTokens && driveTokens.refresh_token) { drivePutus(); return; }
             const cid = getDriveClientId();
-            if (!cid) return alert('Belum ada Client ID. Minta ke admin bos!');
+            if (!cid) {
+                if (localStorage.getItem('driveTokens')) {
+                    return alert('Client ID belum tersimpan di HP ini, padahal token Drive sudah ada. Minta admin isi DRIVE_CLIENT_ID_BAWAAN di source, atau buka admin.html → Simpan Client ID & Secret di HP ini.');
+                }
+                return alert('Belum ada Client ID di HP ini. Minta admin isi DRIVE_CLIENT_ID_BAWAAN di source app, atau buka admin.html → Simpan Client ID & Secret.');
+            }
             if (location.protocol === 'file:') return alert('App dibuka dari file:// — Google OAuth gak bisa. Buka lewat URL (localhost/hosting) dulu bos!');
 
             const verifier = driveB64url(crypto.getRandomValues(new Uint8Array(64)));
