@@ -1516,7 +1516,7 @@
                 <div class="rencana-card pemasukan">
                     <div class="label">💵 Pemasukan</div>
                     <div class="angka">Rp <span id="rencanaPemasukan">0</span></div>
-                    <div class="sub">Gaji tgl 5 + tambahan</div>
+                    <div class="sub" id="rencanaSubPemasukan">Gaji tgl 20</div>
                 </div>
                 <div class="rencana-card pengeluaran">
                     <div class="label">💸 Pengeluaran</div>
@@ -1550,14 +1550,14 @@
 
             <div class="rencana-section">
                 <div class="sub-tab-menu">
-                    <button class="sub-tab-btn active" data-list="masuk" onclick="switchListRencana('masuk')">💵 Daftar Pemasukan</button>
-                    <button class="sub-tab-btn" data-list="keluar" onclick="switchListRencana('keluar')">💸 Daftar Pengeluaran</button>
+                    <button class="sub-tab-btn active" data-list="keluar" onclick="switchListRencana('keluar')">💸 Daftar Pengeluaran</button>
+                    <button class="sub-tab-btn" data-list="masuk" onclick="switchListRencana('masuk')">💵 Daftar Pemasukan</button>
                 </div>
-                <div id="list-masuk" class="sub-tab-content active">
-                    <div id="listRencanaMasuk"></div>
-                </div>
-                <div id="list-keluar" class="sub-tab-content">
+                <div id="list-keluar" class="sub-tab-content active">
                     <div id="listRencana"></div>
+                </div>
+                <div id="list-masuk" class="sub-tab-content">
+                    <div id="listRencanaMasuk"></div>
                 </div>
             </div>
         </div>
@@ -1565,9 +1565,9 @@
 
     <div class="tab-menu">
         <button class="tab-btn" data-tab="log"><span class="tab-icon">📋</span><span>Log</span></button>
-        <button class="tab-btn" data-tab="rencana"><span class="tab-icon">📝</span><span>Rencana</span></button>
-        <button class="tab-btn tab-btn-center active" data-tab="input"><span class="tab-icon">💰</span><span>Input</span></button>
         <button class="tab-btn" data-tab="statistik"><span class="tab-icon">📊</span><span>Stats</span></button>
+        <button class="tab-btn tab-btn-center active" data-tab="input"><span class="tab-icon">💰</span><span>Input</span></button>
+        <button class="tab-btn" data-tab="rencana"><span class="tab-icon">📝</span><span>Rencana</span></button>
         <button class="tab-btn" data-tab="setting"><span class="tab-icon">⚙️</span><span>Setting</span></button>
     </div>
 
@@ -2644,18 +2644,26 @@
         // ==================== GOOGLE DRIVE (KURIR: HUBUNGKAN SENDIRI) ====================
         let driveTokens = JSON.parse(localStorage.getItem('driveTokens') || 'null');
         let driveClientId = localStorage.getItem('driveClientId') || '';
+        let driveClientSecret = localStorage.getItem('driveClientSecret') || '';
         let driveAuto = localStorage.getItem('driveAuto') === 'true';
         let driveFolderId = localStorage.getItem('driveFolderId') || '';
         let drivePopupTimer = null;
         const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
-        // Client ID bawaan untuk kurir — isi sekali di sini oleh admin, semua kurir otomatis pakai.
-        // (Atau set via admin.html → Simpan Client ID, tersimpan per HP.)
+        // Client ID & Secret bawaan untuk kurir — isi sekali di sini oleh admin, semua kurir otomatis pakai.
+        // (Atau set via admin.html → Simpan Client ID & Secret, tersimpan per HP.)
         const DRIVE_CLIENT_ID_BAWAAN = '';
+        const DRIVE_CLIENT_SECRET_BAWAAN = '';
 
         function getDriveClientId() {
             const input = document.getElementById('inputClientId');
             const v = input && input.value.trim() ? input.value.trim() : '';
             return v || driveClientId || DRIVE_CLIENT_ID_BAWAAN;
+        }
+
+        function getDriveClientSecret() {
+            const input = document.getElementById('inputClientSecret');
+            const v = input && input.value.trim() ? input.value.trim() : '';
+            return v || driveClientSecret || DRIVE_CLIENT_SECRET_BAWAAN;
         }
 
         function driveRedirectUri() { return location.origin + location.pathname; }
@@ -2733,6 +2741,7 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: 'client_id=' + encodeURIComponent(getDriveClientId())
+                        + '&client_secret=' + encodeURIComponent(getDriveClientSecret())
                         + '&code=' + encodeURIComponent(code)
                         + '&redirect_uri=' + encodeURIComponent(driveRedirectUri())
                         + '&code_verifier=' + encodeURIComponent(verifier || '')
@@ -2777,6 +2786,7 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: 'client_id=' + encodeURIComponent(driveClientId)
+                        + '&client_secret=' + encodeURIComponent(getDriveClientSecret())
                         + '&refresh_token=' + encodeURIComponent(driveTokens.refresh_token)
                         + '&grant_type=refresh_token'
                 });
@@ -3182,9 +3192,25 @@
 
         function getPemasukanAuto(bulan) {
             const dataBulan = dataBulanan[bulan];
-            if (dataBulan && dataBulan.dibayarTanggal5) return dataBulan.dibayarTanggal5;
+            const sekarang = new Date();
+            const tgl = sekarang.getDate();
+            const isBulanIni = bulan === getBulanTahun();
+
+            // Bulan lain (riwayat): gaji yang diterima tgl 5
+            if (!isBulanIni) {
+                return dataBulan ? (dataBulan.dibayarTanggal5 || 0) : 0;
+            }
+
+            // Bulan berjalan: tgl 1-15 → gaji terima tgl 20 (50% periode 1); tgl 16-akhir → gaji terima tgl 5
+            if (tgl >= 1 && tgl <= 15) {
+                if (dataBulan) return dataBulan.dibayarPeriode1 || 0;
+                const el = document.getElementById('gaji1');
+                if (el) return parseInt(el.textContent.replace(/\D/g, '')) || 0;
+                return 0;
+            }
+            if (dataBulan) return dataBulan.dibayarTanggal5 || 0;
             const el = document.getElementById('terimaTgl5');
-            if (el && bulan === getBulanTahun()) return parseInt(el.textContent.replace(/\D/g, '')) || 0;
+            if (el) return parseInt(el.textContent.replace(/\D/g, '')) || 0;
             return 0;
         }
 
@@ -3205,12 +3231,12 @@
 
         function renderRencana() {
             const items = getRencanaBulan();
-            const gajiTgl5 = getPemasukanAuto(bulanRencana);
+            const pemasukanAuto = getPemasukanAuto(bulanRencana);
             const itemsMasuk = items.filter(item => item.tipe === 'pemasukan');
             const itemsKeluar = items.filter(item => item.tipe !== 'pemasukan');
             const totalMasukManual = itemsMasuk.reduce((sum, item) => sum + (parseInt(item.nominal) || 0), 0);
             const totalPengeluaran = itemsKeluar.reduce((sum, item) => sum + (parseInt(item.nominal) || 0), 0);
-            const totalPemasukan = gajiTgl5 + totalMasukManual;
+            const totalPemasukan = pemasukanAuto + totalMasukManual;
             const sisa = totalPemasukan - totalPengeluaran;
 
             const labelBulan = document.getElementById('rencanaBulanLabel');
@@ -3221,6 +3247,16 @@
             document.getElementById('rencanaPengeluaran').textContent = totalPengeluaran.toLocaleString('id-ID');
             document.getElementById('rencanaSubPengeluaran').textContent = itemsKeluar.length + ' item';
             document.getElementById('rencanaSisa').textContent = sisa.toLocaleString('id-ID');
+
+            const subMasuk = document.getElementById('rencanaSubPemasukan');
+            if (subMasuk) {
+                const tgl = new Date().getDate();
+                if (bulanRencana === getBulanTahun()) {
+                    subMasuk.textContent = (tgl >= 1 && tgl <= 15) ? 'Gaji terima tgl 20' : 'Gaji terima tgl 5';
+                } else {
+                    subMasuk.textContent = 'Gaji terima tgl 5';
+                }
+            }
 
             const listMasuk = document.getElementById('listRencanaMasuk');
             if (itemsMasuk.length === 0) {
