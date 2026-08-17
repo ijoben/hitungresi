@@ -418,6 +418,8 @@
             const cid = getDriveClientId();
             if (!cid) return alert('Isi Client ID Google dulu di kolom atas bos!');
             if (location.protocol === 'file:') return alert('Halaman dibuka dari file:// — Google OAuth gak bisa. Buka lewat URL (localhost/hosting) dulu bos!');
+            // Auto-simpan Client ID & Secret supaya halaman index.html (kurir) ikut terbaca
+            simpanClientId();
 
             const verifier = driveB64url(crypto.getRandomValues(new Uint8Array(64)));
             localStorage.setItem('driveVerifier', verifier);
