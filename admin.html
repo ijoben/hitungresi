@@ -471,6 +471,9 @@
                 if (!data.access_token) return alert('Gagal dapat token: ' + JSON.stringify(data));
                 driveTokens = { access_token: data.access_token, refresh_token: data.refresh_token || '', expiry: Date.now() + (data.expires_in || 3600) * 1000 };
                 localStorage.setItem('driveTokens', JSON.stringify(driveTokens));
+                // Otomatis aktifkan backup Drive di HP ini setelah login
+                driveAuto = true;
+                localStorage.setItem('driveAuto', 'true');
                 updateDriveUI();
                 showPopupAuto('🔗', 'GOOGLE DRIVE TERHUBUNG!', 'Backup pertama dimulai sekarang', '☁️ OK');
                 driveBackupSekarang();
