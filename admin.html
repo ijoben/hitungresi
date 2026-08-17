@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>Admin — Backup Drive SiCepat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ED1C24;
+            --primary-dark: #c9181f;
+            --bg: #F8F9FA;
+            --surface: #FFFFFF;
+            --text: #1E293B;
+            --text2: #64748B;
+            --border: #E2E8F0;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            max-width: 430px;
+            margin: 0 auto;
+            padding: 0;
+            background: var(--bg);
+            min-height: 100vh;
+            color: var(--text);
+        }
+        .container { padding: 16px 14px 40px 14px; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .logo-sicepat { display: flex; align-items: center; gap: 10px; }
+        h2 { text-align: center; color: var(--primary); margin: 4px 0 14px 0; font-size: 16px; letter-spacing: .5px; }
+        .btn-back-home {
+            background: var(--surface); border: 1.5px solid var(--border);
+            padding: 8px 14px; border-radius: 10px; cursor: pointer;
+            font-size: 11px; font-weight: 800; color: var(--text2);
+            font-family: inherit; text-decoration: none; display: inline-block;
+        }
+        .setting-box {
+            background: var(--surface);
+            padding: 16px;
+            border-radius: 20px;
+            margin-top: 16px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+        .setting-box h5 { margin: 0 0 12px 0; text-align: center; color: var(--primary); font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        .setting-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .setting-label { font-size: 12px; font-weight: 700; }
+        .setting-control { display: flex; gap: 8px; align-items: center; }
+        .btn-setting {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 800;
+            color: #fff;
+            transition: transform 0.2s;
+        }
+        .btn-setting:hover { transform: scale(1.05); }
+        .btn-backup {
+            flex: 1; padding: 12px; border: none;
+            border-radius: 10px; cursor: pointer;
+            font-size: 11px; font-weight: 800; color: #fff;
+            text-transform: uppercase; transition: transform 0.2s;
+            width: 100%;
+        }
+        .btn-backup:hover { transform: translateY(-2px); }
+        .backup-info { font-size: 10px; color: var(--text2); text-align: center; line-height: 1.4; font-weight: 600; }
+        .input-admin {
+            width: 100%;
+            padding: 10px;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-size: 12px;
+            background: var(--bg);
+            color: var(--text);
+            font-family: inherit;
+            font-weight: 700;
+            outline: none;
+        }
+        .input-admin:focus { border-color: #4285F4; }
+        .switch { position: relative; width: 48px; height: 26px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--border);
+            transition: .3s; border-radius: 30px;
+        }
+        .slider:before {
+            position: absolute; content: "";
+            height: 20px; width: 20px;
+            left: 3px; bottom: 3px;
+            background: #fff; transition: .3s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        input:checked + .slider { background: #4285F4; }
+        input:checked + .slider:before { transform: translateX(22px); }
+
+        /* POPUP */
+        .popup-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 999; display: none; align-items: center; justify-content: center;
+            animation: fadeIn .3s ease;
+        }
+        .popup-overlay.show { display: flex; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .popup-box {
+            background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+            padding: 32px 24px; border-radius: 28px; text-align: center;
+            max-width: 310px; width: 90%; animation: popupIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        @keyframes popupIn { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .popup-box .popup-icon { font-size: 64px; line-height: 1; margin-bottom: 12px; }
+        .popup-box .popup-title { color: rgba(255,255,255,0.85); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+        .popup-box .popup-text { color: #fff; font-size: 18px; font-weight: 900; line-height: 1.3; }
+        .popup-box .popup-sub { color: rgba(255,255,255,0.85); font-size: 13px; font-weight: 600; margin-top: 6px; }
+        .popup-box .popup-badge { display: inline-block; background: rgba(255,255,255,0.2); padding: 6px 16px; border-radius: 20px; font-size: 11px; font-weight: 800; color: #fff; margin-top: 12px; }
+        .popup-box .popup-close { background: rgba(255,255,255,0.2); border: none; color: #fff; padding: 10px 24px; border-radius: 12px; font-size: 12px; font-weight: 800; cursor: pointer; margin-top: 16px; transition: .2s; }
+        .popup-input-manual { max-width: 330px; width: 90%; padding: 26px 20px; }
+        .popup-input-manual .popup-title { font-size: 12px; }
+        .input-group-popup { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+        .input-group-popup input, .input-group-popup select {
+            width: 100%; padding: 12px;
+            border: none; border-radius: 12px;
+            font-size: 14px; outline: none;
+            font-weight: 700; font-family: inherit;
+            background: #fff; color: #1E293B;
+        }
+        .btn-popup-simpan {
+            background: #fff; color: var(--primary);
+            border: none; padding: 12px; border-radius: 12px;
+            font-size: 13px; font-weight: 900; cursor: pointer;
+            text-transform: uppercase; letter-spacing: .5px;
+        }
+        .btn-popup-batal {
+            background: rgba(255,255,255,0.2); color: #fff;
+            border: none; padding: 10px; border-radius: 12px;
+            font-size: 12px; font-weight: 800; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-bar">
+            <div class="logo-sicepat">
+                <a class="btn-back-home" href="index.html">⬅ Back ke App</a>
+            </div>
+        </div>
+        <h2>🔒 ADMIN — BACKUP GOOGLE DRIVE</h2>
+
+        <div class="setting-box" style="border-color:#4285F4">
+            <div class="setting-row">
+                <span class="setting-label" id="driveStatus">🔌 Backup ke Google Drive</span>
+                <div class="setting-control">
+                    <button class="btn-setting" style="background:#4285F4" id="btnDriveConnect" onclick="driveConnect()">Hubungkan</button>
+                </div>
+            </div>
+            <div style="text-align:center;font-size:10px;color:var(--text2);font-weight:700" id="driveSubInfo">Hubungkan akun Google Drive kamu agar backup otomatis tersimpan di cloud.</div>
+        </div>
+
+        <div class="setting-box" style="border-color:var(--border)">
+            <div class="setting-row">
+                <span class="setting-label">🔒 Buka Pengaturan Admin</span>
+                <div class="setting-control">
+                    <button class="btn-setting" style="background:#4285F4" id="btnAdminDrive" onclick="toggleAdminDrive()">Buka</button>
+                </div>
+            </div>
+            <div class="backup-info">Client ID, auto backup tgl 15 & 30, dll.</div>
+        </div>
+
+        <div class="setting-box" style="border-color:#4285F4;display:none" id="driveSection">
+            <h5 style="color:#4285F4">⚙️ SETTING BACKUP DRIVE (ADMIN)</h5>
+            <div class="setting-row" style="flex-direction:column;align-items:stretch;gap:8px">
+                <span class="setting-label">Client ID Google (dari Google Cloud Console)</span>
+                <input type="text" class="input-admin" id="inputClientId" placeholder="xxxxx.apps.googleusercontent.com">
+                <button class="btn-setting" style="background:#4285F4;width:100%" onclick="simpanClientId()">💾 Simpan Client ID</button>
+            </div>
+            <div class="setting-row">
+                <span class="setting-label">Auto backup ke Drive tgl 15 & 30</span>
+                <label class="switch">
+                    <input type="checkbox" id="checkDriveAuto" onchange="toggleDriveAuto()">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <button class="btn-backup" style="background:#4285F4" onclick="driveBackupSekarang()">☁️ Backup ke Drive Sekarang</button>
+            <details style="margin-top:10px">
+                <summary style="font-size:10px;font-weight:800;color:#4285F4;cursor:pointer">📖 Cara buat Client ID (sekali saja)</summary>
+                <div class="backup-info" style="text-align:left;margin-top:6px;line-height:1.7">
+                    1. Buka <strong>console.cloud.google.com</strong> → buat Project baru.<br>
+                    2. Menu <strong>APIs & Services → Library</strong> → cari & aktifkan <strong>Google Drive API</strong>.<br>
+                    3. <strong>OAuth consent screen</strong> → pilih External → tambahkan email kamu sebagai <strong>Test user</strong>.<br>
+                    4. <strong>Credentials → Create credentials → OAuth client ID</strong> → pilih tipe <strong>Web application</strong>.<br>
+                    5. Di <strong>Authorized redirect URIs</strong>, tambahkan URL halaman admin ini (lihat di bawah), lalu Save.<br>
+                    6. Salin <strong>Client ID</strong>-nya ke kolom di atas → Simpan → Hubungkan.
+                </div>
+            </details>
+            <div class="backup-info" id="driveInfo" style="margin-top:8px;word-break:break-word">—</div>
+            <button class="btn-setting" style="background:#F59E0B;width:100%;margin-top:8px" onclick="gantiPinAdmin()">🔑 Ganti PIN Admin</button>
+        </div>
+    </div>
+
+    <!-- POPUP SEMANGAT -->
+    <div class="popup-overlay" id="popupSemangat" onclick="if(event.target===this)closePopup()">
+        <div class="popup-box" id="popupBox">
+            <div class="popup-icon" id="popupIcon">🔥</div>
+            <div class="popup-title">💪 ADMIN</div>
+            <div class="popup-text" id="popupText">SELESAI!</div>
+            <div class="popup-sub" id="popupSub">💸 Cuan terus ngalir!</div>
+            <div class="popup-badge" id="popupBadge">🏆 OK</div>
+            <button class="popup-close" onclick="closePopup()">✕ TUTUP</button>
+        </div>
+    </div>
+
+    <!-- POPUP PIN ADMIN -->
+    <div class="popup-overlay" id="popupPin" onclick="if(event.target===this)closePopupPin()">
+        <div class="popup-box popup-input-manual" style="background:linear-gradient(145deg,#4285F4,#1a56db)">
+            <div class="popup-icon" style="font-size:48px;">🔒</div>
+            <div class="popup-title" style="font-size:12px;">PIN ADMIN</div>
+            <div class="popup-text" style="font-size:15px;" id="pinDesc">Masukkan PIN admin</div>
+
+            <div class="input-group-popup">
+                <input type="password" id="inputPin" placeholder="• • • •" inputmode="numeric" autocomplete="off">
+                <button class="btn-popup-simpan" onclick="submitPin()">🔓 BUKA</button>
+                <button class="btn-popup-batal" onclick="closePopupPin()">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== POPUP ====================
+        function showPopup(icon, text, sub, badge) {
+            document.getElementById('popupIcon').textContent = icon || '🔥';
+            document.getElementById('popupText').textContent = text || 'SELESAI!';
+            document.getElementById('popupSub').textContent = sub || '💸 Cuan terus ngalir!';
+            document.getElementById('popupBadge').textContent = badge || '🏆 OK';
+            document.getElementById('popupSemangat').classList.add('show');
+        }
+        function closePopup() {
+            document.getElementById('popupSemangat').classList.remove('show');
+        }
+        let popupTimer;
+        function showPopupAuto(icon, text, sub, badge) {
+            showPopup(icon, text, sub, badge);
+            clearTimeout(popupTimer);
+            popupTimer = setTimeout(() => { closePopup(); }, 3000);
+        }
+
+        // ==================== ADMIN PIN ====================
+        let driveSectionOpen = false;
+        let pinMode = ''; // 'create' | 'verify' | 'ganti-lama' | 'ganti-baru'
+
+        function toggleAdminDrive() {
+            if (driveSectionOpen) { setDriveSectionOpen(false); return; }
+            pinMode = localStorage.getItem('driveAdminPin') ? 'verify' : 'create';
+            document.getElementById('pinDesc').textContent = pinMode === 'create'
+                ? 'Buat PIN admin dulu (minimal 4 karakter):'
+                : 'Masukkan PIN admin:';
+            openPopupPin();
+        }
+
+        function openPopupPin() {
+            document.getElementById('inputPin').value = '';
+            document.getElementById('popupPin').classList.add('show');
+            setTimeout(() => document.getElementById('inputPin').focus(), 150);
+        }
+
+        function closePopupPin() {
+            document.getElementById('popupPin').classList.remove('show');
+            pinMode = '';
+        }
+
+        function submitPin() {
+            const val = document.getElementById('inputPin').value.trim();
+            if (pinMode === 'create') {
+                if (val.length < 4) return alert('PIN minimal 4 karakter bos!');
+                localStorage.setItem('driveAdminPin', val);
+                closePopupPin();
+                setDriveSectionOpen(true);
+                showPopupAuto('🔒', 'PIN ADMIN DIBUAT!', 'Simpan baik-baik, jangan kasih tau kurir', '✅ OK');
+            } else if (pinMode === 'verify') {
+                if (val === localStorage.getItem('driveAdminPin')) {
+                    closePopupPin();
+                    setDriveSectionOpen(true);
+                } else {
+                    alert('PIN salah bos!');
+                    document.getElementById('inputPin').value = '';
+                    document.getElementById('inputPin').focus();
+                }
+            } else if (pinMode === 'ganti-lama') {
+                if (val === localStorage.getItem('driveAdminPin')) {
+                    pinMode = 'ganti-baru';
+                    document.getElementById('pinDesc').textContent = 'PIN baru (minimal 4 karakter):';
+                    document.getElementById('inputPin').value = '';
+                    document.getElementById('inputPin').focus();
+                } else {
+                    alert('PIN lama salah bos!');
+                    document.getElementById('inputPin').value = '';
+                    document.getElementById('inputPin').focus();
+                }
+            } else if (pinMode === 'ganti-baru') {
+                if (val.length < 4) return alert('PIN minimal 4 karakter bos!');
+                localStorage.setItem('driveAdminPin', val);
+                closePopupPin();
+                showPopupAuto('🔑', 'PIN DIGANTI!', 'PIN admin berhasil diubah', '✅ OK');
+            }
+        }
+
+        function gantiPinAdmin() {
+            pinMode = 'ganti-lama';
+            document.getElementById('pinDesc').textContent = 'PIN lama:';
+            openPopupPin();
+        }
+
+        function setDriveSectionOpen(open) {
+            driveSectionOpen = open;
+            document.getElementById('driveSection').style.display = open ? 'block' : 'none';
+            document.getElementById('btnAdminDrive').textContent = open ? 'Sembunyikan' : 'Buka';
+        }
+
+        // ==================== GOOGLE DRIVE AUTO BACKUP ====================
+        let driveTokens = JSON.parse(localStorage.getItem('driveTokens') || 'null');
+        let driveClientId = localStorage.getItem('driveClientId') || '';
+        let driveAuto = localStorage.getItem('driveAuto') === 'true';
+        let driveFolderId = localStorage.getItem('driveFolderId') || '';
+        let drivePopupTimer = null;
+        const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
+
+        function getDriveClientId() {
+            const input = document.getElementById('inputClientId');
+            const v = input && input.value.trim() ? input.value.trim() : '';
+            return v || driveClientId;
+        }
+
+        function driveRedirectUri() { return location.origin + location.pathname; }
+
+        function simpanClientId() {
+            driveClientId = document.getElementById('inputClientId').value.trim();
+            localStorage.setItem('driveClientId', driveClientId);
+            updateDriveUI();
+            showPopupAuto('💾', 'CLIENT ID TERSIMPAN!', 'Sekarang tekan tombol Hubungkan', '🔑 OK');
+        }
+
+        function updateDriveUI() {
+            const status = document.getElementById('driveStatus');
+            const btn = document.getElementById('btnDriveConnect');
+            const sub = document.getElementById('driveSubInfo');
+            const check = document.getElementById('checkDriveAuto');
+            if (check) check.checked = driveAuto;
+            if (driveTokens && driveTokens.refresh_token) {
+                if (status) status.textContent = '🔗 Backup ke Google Drive';
+                if (btn) { btn.textContent = 'Putuskan'; btn.style.background = '#EF4444'; }
+                if (sub) sub.textContent = 'Tersimpan otomatis tiap tgl 15 & 30 ke Drive kamu.';
+            } else {
+                if (status) status.textContent = '🔌 Backup ke Google Drive';
+                if (btn) { btn.textContent = 'Hubungkan'; btn.style.background = '#4285F4'; }
+                if (sub) sub.textContent = 'Hubungkan akun Google Drive kamu agar backup otomatis tersimpan di cloud.';
+            }
+            updateDriveInfo('');
+        }
+
+        function updateDriveInfo(msg) {
+            const el = document.getElementById('driveInfo');
+            if (!el) return;
+            if (msg) {
+                el.textContent = msg;
+                el.style.color = '#4285F4';
+                el.style.fontWeight = '800';
+                return;
+            }
+            el.style.color = '';
+            el.style.fontWeight = '';
+            if (location.protocol === 'file:') {
+                el.textContent = '⚠️ Halaman dibuka dari file:// — OAuth Google gak bisa jalan. Akses lewat URL (localhost / hosting) ya bos.';
+                return;
+            }
+            const last = localStorage.getItem('driveLastBackup');
+            el.textContent = 'Redirect URI untuk Google Console: ' + driveRedirectUri() + (last ? ' · Backup terakhir: ' + last : '');
+        }
+
+        // ---------- PKCE OAuth ----------
+        function driveB64url(bytes) {
+            let bin = '';
+            bytes.forEach(b => bin += String.fromCharCode(b));
+            return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+        }
+
+        async function driveSha256(text) {
+            const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+            return driveB64url(new Uint8Array(buf));
+        }
+
+        function driveConnect() {
+            if (driveTokens && driveTokens.refresh_token) { drivePutus(); return; }
+            const cid = getDriveClientId();
+            if (!cid) return alert('Isi Client ID Google dulu di kolom atas bos!');
+            if (location.protocol === 'file:') return alert('Halaman dibuka dari file:// — Google OAuth gak bisa. Buka lewat URL (localhost/hosting) dulu bos!');
+
+            const verifier = driveB64url(crypto.getRandomValues(new Uint8Array(64)));
+            localStorage.setItem('driveVerifier', verifier);
+            driveSha256(verifier).then(challenge => {
+                const url = 'https://accounts.google.com/o/oauth2/v2/auth'
+                    + '?client_id=' + encodeURIComponent(cid)
+                    + '&redirect_uri=' + encodeURIComponent(driveRedirectUri())
+                    + '&response_type=code'
+                    + '&scope=' + encodeURIComponent(DRIVE_SCOPE)
+                    + '&code_challenge=' + encodeURIComponent(challenge)
+                    + '&code_challenge_method=S256'
+                    + '&access_type=offline'
+                    + '&prompt=consent'
+                    + '&include_granted_scopes=true';
+                const popup = window.open(url, 'driveAuth', 'width=520,height=640');
+                if (!popup) { location.href = url; return; }
+                drivePopupTimer = setInterval(() => {
+                    try {
+                        const u = new URL(popup.location.href);
+                        if (u.searchParams.has('code')) {
+                            clearInterval(drivePopupTimer);
+                            popup.close();
+                            driveExchangeCode(u.searchParams.get('code'));
+                        } else if (u.searchParams.has('error')) {
+                            clearInterval(drivePopupTimer);
+                            popup.close();
+                            alert('Login dibatalkan / error: ' + u.searchParams.get('error'));
+                        }
+                    } catch (e) { /* masih di halaman Google, tunggu */ }
+                }, 700);
+            });
+        }
+
+        async function driveExchangeCode(code) {
+            const verifier = localStorage.getItem('driveVerifier');
+            localStorage.removeItem('driveVerifier');
+            try {
+                const res = await fetch('https://oauth2.googleapis.com/token', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'client_id=' + encodeURIComponent(getDriveClientId())
+                        + '&code=' + encodeURIComponent(code)
+                        + '&redirect_uri=' + encodeURIComponent(driveRedirectUri())
+                        + '&code_verifier=' + encodeURIComponent(verifier || '')
+                        + '&grant_type=authorization_code'
+                });
+                const data = await res.json();
+                if (!data.access_token) return alert('Gagal dapat token: ' + JSON.stringify(data));
+                driveTokens = { access_token: data.access_token, refresh_token: data.refresh_token || '', expiry: Date.now() + (data.expires_in || 3600) * 1000 };
+                localStorage.setItem('driveTokens', JSON.stringify(driveTokens));
+                updateDriveUI();
+                showPopupAuto('🔗', 'GOOGLE DRIVE TERHUBUNG!', 'Backup pertama dimulai sekarang', '☁️ OK');
+                driveBackupSekarang();
+            } catch (e) { alert('Gagal menghubungkan: ' + e.message); }
+        }
+
+        function drivePutus() {
+            clearInterval(drivePopupTimer);
+            driveTokens = null;
+            driveFolderId = '';
+            localStorage.removeItem('driveTokens');
+            localStorage.removeItem('driveFolderId');
+            updateDriveUI();
+            showPopupAuto('🔌', 'DRIVE DIPUTUSKAN', 'Token Google dihapus dari HP', '✅ OK');
+        }
+
+        function toggleDriveAuto() {
+            driveAuto = document.getElementById('checkDriveAuto').checked;
+            localStorage.setItem('driveAuto', driveAuto);
+            showPopupAuto('☁️', driveAuto ? 'AUTO BACKUP DRIVE AKTIF!' : 'AUTO BACKUP DRIVE DIMATIKAN', 'Otomatis tiap tgl 15 & 30', driveAuto ? 'ON' : 'OFF');
+        }
+
+        // ---------- Token & Upload ----------
+        async function driveGetAccessToken() {
+            if (!driveTokens || !driveTokens.refresh_token) return null;
+            if (Date.now() < (driveTokens.expiry - 60000)) return driveTokens.access_token;
+            try {
+                const res = await fetch('https://oauth2.googleapis.com/token', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'client_id=' + encodeURIComponent(driveClientId)
+                        + '&refresh_token=' + encodeURIComponent(driveTokens.refresh_token)
+                        + '&grant_type=refresh_token'
+                });
+                const data = await res.json();
+                if (!data.access_token) { drivePutus(); return null; }
+                driveTokens.access_token = data.access_token;
+                driveTokens.expiry = Date.now() + (data.expires_in || 3600) * 1000;
+                localStorage.setItem('driveTokens', JSON.stringify(driveTokens));
+                return data.access_token;
+            } catch (e) { return null; }
+        }
+
+        async function driveCariFolder(token) {
+            const q = encodeURIComponent("name='Gaji SiCepat' and mimeType='application/vnd.google-apps.folder' and trashed=false");
+            const res = await fetch('https://www.googleapis.com/drive/v3/files?q=' + q + '&fields=files(id)', { headers: { Authorization: 'Bearer ' + token } });
+            const data = await res.json();
+            if (data.files && data.files.length) return data.files[0].id;
+            const res2 = await fetch('https://www.googleapis.com/drive/v3/files', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+                body: JSON.stringify({ name: 'Gaji SiCepat', mimeType: 'application/vnd.google-apps.folder' })
+            });
+            const d2 = await res2.json();
+            return d2.id;
+        }
+
+        async function driveUploadFile(token, name, content) {
+            if (!driveFolderId) driveFolderId = await driveCariFolder(token);
+            const form = new FormData();
+            form.append('metadata', new Blob([JSON.stringify({ name: name, parents: [driveFolderId] })], { type: 'application/json' }));
+            form.append('file', new Blob([content], { type: 'application/json' }), name);
+            const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+                method: 'POST',
+                headers: { Authorization: 'Bearer ' + token },
+                body: form
+            });
+            return res.json();
+        }
+
+        async function driveBersihkanLama(token) {
+            try {
+                const q = encodeURIComponent("'" + driveFolderId + "' in parents and trashed=false");
+                const res = await fetch('https://www.googleapis.com/drive/v3/files?q=' + q + '&orderBy=createdTime desc&fields=files(id)', { headers: { Authorization: 'Bearer ' + token } });
+                const data = await res.json();
+                (data.files || []).slice(5).forEach(f => {
+                    fetch('https://www.googleapis.com/drive/v3/files/' + f.id, { method: 'DELETE', headers: { Authorization: 'Bearer ' + token } });
+                });
+            } catch (e) {}
+        }
+
+        async function driveBackupSekarang() {
+            const token = await driveGetAccessToken();
+            if (!token) return alert('Belum terhubung Google Drive bos! Hubungkan dulu.');
+            try {
+                updateDriveInfo('⏳ Uploading ke Drive...');
+                const harian = JSON.parse(localStorage.getItem('gajiSicepatHarian') || '{}');
+                const bulanan = JSON.parse(localStorage.getItem('gajiSicepat') || '{}');
+                const rekor = JSON.parse(localStorage.getItem('gajiSicepatRekor') || '{"resi":0,"tanggal":""}');
+                const tahunan = JSON.parse(localStorage.getItem('dataTahunan') || '[]');
+                const manual = JSON.parse(localStorage.getItem('dataBulananManual') || '{}');
+                const bonusDenda = JSON.parse(localStorage.getItem('dataBonusDenda') || '{}');
+                const data = { dataHarian: harian, dataBulanan: bulanan, dataRekor: rekor, dataTahunan: tahunan, dataBulananManual: manual, dataBonusDenda: bonusDenda, tanggalBackup: new Date().toISOString(), versi: '4.2' };
+                const name = 'backup-gaji-sicepat-' + new Date().toISOString().slice(0, 10) + '.json';
+                const result = await driveUploadFile(token, name, JSON.stringify(data, null, 2));
+                if (result.id) {
+                    localStorage.setItem('driveFolderId', driveFolderId);
+                    localStorage.setItem('driveLastBackup', new Date().toLocaleString('id-ID'));
+                    driveBersihkanLama(token);
+                    updateDriveUI();
+                    showPopupAuto('☁️', 'BACKUP KE DRIVE BERHASIL!', 'File "' + name + '" di folder "Gaji SiCepat"', '✅ DONE');
+                } else {
+                    updateDriveInfo('⚠️ Gagal upload: ' + JSON.stringify(result));
+                    if (result.error && result.error.code === 401) drivePutus();
+                }
+            } catch (e) { updateDriveInfo('⚠️ Gagal upload: ' + e.message); }
+        }
+
+        function driveHandleCallback() {
+            const params = new URLSearchParams(location.search);
+            const code = params.get('code');
+            const err = params.get('error');
+            if (code || err) {
+                history.replaceState(null, '', location.pathname);
+                if (code) driveExchangeCode(code);
+                else if (err && err !== 'access_denied') alert('Login error: ' + err);
+            }
+        }
+
+        // ==================== INIT ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('inputClientId').value = driveClientId;
+            document.getElementById('checkDriveAuto').checked = driveAuto;
+            setDriveSectionOpen(false);
+            updateDriveUI();
+            driveHandleCallback();
+        });
+    </script>
+</body>
+</html>
