@@ -1104,6 +1104,154 @@
         .btn-manual-kecil { background: var(--surface); border: 1.5px solid var(--primary); color: var(--primary); padding: 6px 12px; border-radius: 10px; font-size: 11px; font-weight: 800; cursor: pointer; transition: .2s; }
         .header-tahunan { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
         .header-tahunan h2 { display: flex; align-items: center; gap: 8px; margin: 0; }
+
+        /* ===== SUB-TAB BULANAN / TAHUNAN ===== */
+        .sub-tab-menu {
+            display: flex;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 4px;
+            gap: 4px;
+            margin-bottom: 14px;
+        }
+        .sub-tab-btn {
+            flex: 1;
+            padding: 9px 4px;
+            border: none;
+            border-radius: 10px;
+            background: transparent;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--text2);
+            transition: all 0.2s ease;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        .sub-tab-btn.active { background: var(--surface); color: var(--primary); box-shadow: var(--shadow); }
+        .sub-tab-content { display: none; }
+        .sub-tab-content.active { display: block; }
+
+        /* ===== RENCANA (PENGELUARAN & PEMASUKAN) ===== */
+        .rencana-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+        .rencana-card {
+            border-radius: 18px;
+            padding: 16px;
+            color: #fff;
+            box-shadow: var(--shadow);
+        }
+        .rencana-card.pemasukan { background: linear-gradient(135deg, #10B981, #059669); }
+        .rencana-card.pengeluaran { background: linear-gradient(135deg, #EF4444, #DC2626); }
+        .rencana-card.sisa { background: linear-gradient(135deg, #3B82F6, #2563EB); }
+        .rencana-card .label { font-size: 10px; font-weight: 800; text-transform: uppercase; opacity: .9; letter-spacing: .5px; }
+        .rencana-card .angka { font-size: 13px; font-weight: 900; margin-top: 4px; word-break: break-all; }
+        .rencana-card .sub { font-size: 9px; margin-top: 2px; opacity: .85; font-weight: 600; }
+        .rencana-card.full { grid-column: 1 / -1; }
+        .rencana-section { margin-top: 12px; }
+        .rencana-section h5 {
+            margin: 0 0 8px 0;
+            font-size: 11px;
+            color: var(--text2);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+        .rencana-add { display: flex; gap: 8px; margin-bottom: 10px; }
+        .rencana-add input, .rencana-add select {
+            flex: 1;
+            min-width: 0;
+            padding: 10px;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-size: 12px;
+            background: var(--bg);
+            color: var(--text);
+            font-weight: 700;
+            outline: none;
+            font-family: inherit;
+        }
+        .rencana-add select { flex: 0 0 auto; width: 120px; max-width: 120px; font-size: 12px; }
+        .rencana-add input:focus, .rencana-add select:focus { border-color: var(--primary); }
+        .rencana-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            background: var(--surface);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-bottom: 6px;
+            box-shadow: var(--shadow);
+        }
+        .rencana-item .info { flex: 1; }
+        .rencana-item .nama { font-size: 12px; font-weight: 800; }
+        .rencana-item .nominal { font-size: 10px; color: var(--text2); font-weight: 700; margin-top: 2px; }
+        .rencana-item .actions { display: flex; gap: 6px; }
+        .btn-mini {
+            border: none;
+            padding: 6px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 10px;
+            color: #fff;
+            font-weight: 800;
+            transition: transform 0.2s;
+        }
+        .btn-mini:hover { transform: scale(1.05); }
+        .btn-mini.edit { background: #2563EB; }
+        .btn-mini.hapus { background: #EF4444; }
+        .btn-rencana-tambah {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: #fff;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+        .btn-rencana-tambah.pengeluaran { background: linear-gradient(135deg, #EF4444, #DC2626); }
+        .rencana-empty { text-align: center; color: #999; padding: 14px; font-size: 11px; }
+        .rencana-sembunyi { display: none; }
+        .rencana-bulan-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 8px 10px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+        }
+        .rencana-bulan-nav span {
+            font-size: 12px;
+            font-weight: 900;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+        .btn-bulan-nav {
+            border: 1.5px solid var(--border);
+            background: var(--bg);
+            color: var(--text2);
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: .2s;
+        }
+        .btn-bulan-nav:hover { border-color: var(--primary); color: var(--primary); }
     </style>
 </head>
 <body>
@@ -1311,35 +1459,105 @@
                 <input type="file" id="inputFileBackup" accept=".json" onchange="importBackup(event)">
                 <div class="backup-info">✅ Auto backup tiap tgl 15 & 30!</div>
             </div>
+
+            <!-- KURIR: Hubungkan Drive masing-masing -->
+            <div class="setting-box" style="border-color:#4285F4">
+                <div class="setting-row">
+                    <span class="setting-label" id="driveStatus">🔌 Backup ke Google Drive</span>
+                    <div class="setting-control">
+                        <button class="btn-setting" style="background:#4285F4" id="btnDriveConnect" onclick="driveConnect()">Hubungkan</button>
+                    </div>
+                </div>
+                <div style="text-align:center;font-size:10px;color:var(--text2);font-weight:700" id="driveSubInfo">Hubungkan akun Google Drive kamu agar backup otomatis tersimpan di cloud.</div>
+            </div>
+
         </div>
 
         <div id="tab-statistik" class="tab-content">
-            <div id="listRiwayat"></div>
+            <div class="sub-tab-menu">
+                <button class="sub-tab-btn active" data-sub="bulanan" onclick="switchSubTab('bulanan')">📊 Bulanan</button>
+                <button class="sub-tab-btn" data-sub="tahunan" onclick="switchSubTab('tahunan')">📅 Tahunan</button>
+            </div>
 
-            <div class="grafik-container">
-                <h5>📈 GRAFIK RESI BULAN INI</h5>
-                <canvas id="chartResi" height="180" style="max-height:180px;width:100% !important;height:auto !important;"></canvas>
+            <div id="sub-bulanan" class="sub-tab-content active">
+                <div id="listRiwayat"></div>
+
+                <div class="grafik-container">
+                    <h5>📈 GRAFIK RESI BULAN INI</h5>
+                    <canvas id="chartResi" height="180" style="max-height:180px;width:100% !important;height:auto !important;"></canvas>
+                </div>
+            </div>
+
+            <div id="sub-tahunan" class="sub-tab-content">
+                <div class="header-tahunan">
+                    <h2>📅 REKAP TAHUNAN <span id="tahunBulanan"></span></h2>
+                    <button class="btn-manual-kecil" onclick="openPopupManual()">📝 + Manual</button>
+                </div>
+
+                <div class="total-bulanan">
+                    <div class="label">📊 TOTAL SETAHUN</div>
+                    <div class="angka">Rp <span id="totalGajiBulanan">0</span></div>
+                    <div class="sub"><span id="totalResiBulanan">0</span> Resi</div>
+                </div>
+
+                <div class="log-harian" id="logBulanan" style="margin-top:16px"></div>
+
+                <div class="setting-box" style="border-color:#F59E0B;margin-top:8px">
+                    <div class="setting-row">
+                        <div class="setting-label" style="color:#F59E0B;font-size:10px;">🔄 Rekap Manual (Jika auto gagal)</div>
+                        <button class="btn-setting" style="background:#F59E0B;font-size:9px;" onclick="rekapManualBulanLalu()">REKAP SEKARANG</button>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div id="tab-tahunan" class="tab-content">
-            <div class="header-tahunan">
-                <h2>📅 REKAP TAHUNAN <span id="tahunBulanan"></span></h2>
-                <button class="btn-manual-kecil" onclick="openPopupManual()">📝 + Manual</button>
+        <div id="tab-rencana" class="tab-content">
+            <div class="rencana-summary">
+                <div class="rencana-card pemasukan">
+                    <div class="label">💵 Pemasukan</div>
+                    <div class="angka">Rp <span id="rencanaPemasukan">0</span></div>
+                    <div class="sub">Gaji tgl 5 + tambahan</div>
+                </div>
+                <div class="rencana-card pengeluaran">
+                    <div class="label">💸 Pengeluaran</div>
+                    <div class="angka">Rp <span id="rencanaPengeluaran">0</span></div>
+                    <div class="sub" id="rencanaSubPengeluaran">0 item</div>
+                </div>
+                <div class="rencana-card sisa full">
+                    <div class="label">💰 Sisa</div>
+                    <div class="angka">Rp <span id="rencanaSisa">0</span></div>
+                    <div class="sub">Pemasukan - Pengeluaran</div>
+                </div>
             </div>
 
-            <div class="total-bulanan">
-                <div class="label">📊 TOTAL SETAHUN</div>
-                <div class="angka">Rp <span id="totalGajiBulanan">0</span></div>
-                <div class="sub"><span id="totalResiBulanan">0</span> Resi</div>
+            <div class="rencana-bulan-nav">
+                <button class="btn-bulan-nav" onclick="pindahBulanRencana(-1)">◀</button>
+                <span id="rencanaBulanLabel"></span>
+                <button class="btn-bulan-nav" onclick="pindahBulanRencana(1)">▶</button>
             </div>
 
-            <div class="log-harian" id="logBulanan" style="margin-top:16px"></div>
+            <div class="rencana-section">
+                <div class="rencana-add">
+                    <select id="rencanaTipe">
+                        <option value="pengeluaran">Pengeluaran</option>
+                        <option value="pemasukan">Pemasukan</option>
+                    </select>
+                    <input type="text" id="rencanaNama" placeholder="Nama" maxlength="40">
+                    <input type="number" id="rencanaNominal" min="0" placeholder="Rp" inputmode="numeric" style="max-width:75px">
+                </div>
+                <button class="btn-rencana-tambah" style="width:100%;" onclick="tambahRencana()">➕ TAMBAH</button>
+            </div>
 
-            <div class="setting-box" style="border-color:#F59E0B;margin-top:8px">
-                <div class="setting-row">
-                    <div class="setting-label" style="color:#F59E0B;font-size:10px;">🔄 Rekap Manual (Jika auto gagal)</div>
-                    <button class="btn-setting" style="background:#F59E0B;font-size:9px;" onclick="rekapManualBulanLalu()">REKAP SEKARANG</button>
+            <div class="rencana-section">
+                <div class="sub-tab-menu">
+                    <button class="sub-tab-btn active" data-list="masuk" onclick="switchListRencana('masuk')">💵 Daftar Pemasukan</button>
+                    <button class="sub-tab-btn" data-list="keluar" onclick="switchListRencana('keluar')">💸 Daftar Pengeluaran</button>
+                </div>
+                <div id="list-masuk" class="sub-tab-content active">
+                    <div id="listRencanaMasuk"></div>
+                </div>
+                <div id="list-keluar" class="sub-tab-content">
+                    <div id="listRencana"></div>
                 </div>
             </div>
         </div>
@@ -1347,9 +1565,9 @@
 
     <div class="tab-menu">
         <button class="tab-btn" data-tab="log"><span class="tab-icon">📋</span><span>Log</span></button>
-        <button class="tab-btn" data-tab="statistik"><span class="tab-icon">📊</span><span>Stats</span></button>
+        <button class="tab-btn" data-tab="rencana"><span class="tab-icon">📝</span><span>Rencana</span></button>
         <button class="tab-btn tab-btn-center active" data-tab="input"><span class="tab-icon">💰</span><span>Input</span></button>
-        <button class="tab-btn" data-tab="tahunan"><span class="tab-icon">📅</span><span>Tahunan</span></button>
+        <button class="tab-btn" data-tab="statistik"><span class="tab-icon">📊</span><span>Stats</span></button>
         <button class="tab-btn" data-tab="setting"><span class="tab-icon">⚙️</span><span>Setting</span></button>
     </div>
 
@@ -1672,6 +1890,8 @@
         // ==================== MAIN ====================
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('checkReminder').checked = reminderAktif;
+            updateDriveUI();
+            driveHandleCallback();
             if (darkMode) {
                 document.body.classList.add('dark');
                 document.getElementById('btnDark').textContent = '☀️';
@@ -1699,12 +1919,17 @@
                         tampilLogHarian();
                     }
                     if (tabName === 'statistik') {
-                        requestAnimationFrame(() => {
-                            setTimeout(updateGrafik, 50);
-                        });
+                        const subAktif = document.querySelector('.sub-tab-btn.active').getAttribute('data-sub');
+                        if (subAktif === 'tahunan') {
+                            tampilLogBulanan();
+                        } else {
+                            requestAnimationFrame(() => {
+                                setTimeout(updateGrafik, 50);
+                            });
+                        }
                     }
-                    if (tabName === 'tahunan') {
-                        tampilLogBulanan();
+                    if (tabName === 'rencana') {
+                        renderRencana();
                     }
                 });
             });
@@ -1949,6 +2174,7 @@
             }
             localStorage.setItem('gajiSicepat', JSON.stringify(dataBulanan));
             loadRiwayat();
+            renderRencana();
         }
 
         function hitungStatistik(e) {
@@ -2341,6 +2567,7 @@
             }
         }
         setInterval(cekReminder, 6e4);
+        setInterval(cekBackupReminder, 6e4);
 
         // ==================== BACKUP ====================
         function cekBackupReminder() {
@@ -2356,6 +2583,9 @@
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
                 localStorage.setItem(keyBackup, 'true');
+                if (driveAuto && driveTokens && driveTokens.refresh_token) {
+                    setTimeout(driveBackupSekarang, 1200);
+                }
                 setTimeout(() => { 
                     showPopupAuto('✅', 'BACKUP OTOMATIS BERHASIL!', 'File masuk folder Download HP', '💾 AUTO SAVE')
                 }, 500);
@@ -2411,6 +2641,216 @@
             e.target.value = ''
         }
 
+        // ==================== GOOGLE DRIVE (KURIR: HUBUNGKAN SENDIRI) ====================
+        let driveTokens = JSON.parse(localStorage.getItem('driveTokens') || 'null');
+        let driveClientId = localStorage.getItem('driveClientId') || '';
+        let driveAuto = localStorage.getItem('driveAuto') === 'true';
+        let driveFolderId = localStorage.getItem('driveFolderId') || '';
+        let drivePopupTimer = null;
+        const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
+        // Client ID bawaan untuk kurir — isi sekali di sini oleh admin, semua kurir otomatis pakai.
+        // (Atau set via admin.html → Simpan Client ID, tersimpan per HP.)
+        const DRIVE_CLIENT_ID_BAWAAN = '';
+
+        function getDriveClientId() {
+            const input = document.getElementById('inputClientId');
+            const v = input && input.value.trim() ? input.value.trim() : '';
+            return v || driveClientId || DRIVE_CLIENT_ID_BAWAAN;
+        }
+
+        function driveRedirectUri() { return location.origin + location.pathname; }
+
+        function updateDriveUI() {
+            const status = document.getElementById('driveStatus');
+            const btn = document.getElementById('btnDriveConnect');
+            const sub = document.getElementById('driveSubInfo');
+            if (driveTokens && driveTokens.refresh_token) {
+                if (status) status.textContent = '🔗 Backup ke Google Drive';
+                if (btn) { btn.textContent = 'Putuskan'; btn.style.background = '#EF4444'; }
+                if (sub) sub.textContent = 'Tersimpan otomatis tiap tgl 15 & 30 ke Drive kamu.';
+            } else {
+                if (status) status.textContent = '🔌 Backup ke Google Drive';
+                if (btn) { btn.textContent = 'Hubungkan'; btn.style.background = '#4285F4'; }
+                if (sub) sub.textContent = 'Hubungkan akun Google Drive kamu agar backup otomatis tersimpan di cloud.';
+            }
+        }
+
+        // ---------- PKCE OAuth (login kurir masing-masing) ----------
+        function driveB64url(bytes) {
+            let bin = '';
+            bytes.forEach(b => bin += String.fromCharCode(b));
+            return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+        }
+
+        async function driveSha256(text) {
+            const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+            return driveB64url(new Uint8Array(buf));
+        }
+
+        function driveConnect() {
+            if (driveTokens && driveTokens.refresh_token) { drivePutus(); return; }
+            const cid = getDriveClientId();
+            if (!cid) return alert('Belum ada Client ID. Minta ke admin bos!');
+            if (location.protocol === 'file:') return alert('App dibuka dari file:// — Google OAuth gak bisa. Buka lewat URL (localhost/hosting) dulu bos!');
+
+            const verifier = driveB64url(crypto.getRandomValues(new Uint8Array(64)));
+            localStorage.setItem('driveVerifier', verifier);
+            driveSha256(verifier).then(challenge => {
+                const url = 'https://accounts.google.com/o/oauth2/v2/auth'
+                    + '?client_id=' + encodeURIComponent(cid)
+                    + '&redirect_uri=' + encodeURIComponent(driveRedirectUri())
+                    + '&response_type=code'
+                    + '&scope=' + encodeURIComponent(DRIVE_SCOPE)
+                    + '&code_challenge=' + encodeURIComponent(challenge)
+                    + '&code_challenge_method=S256'
+                    + '&access_type=offline'
+                    + '&prompt=consent'
+                    + '&include_granted_scopes=true';
+                const popup = window.open(url, 'driveAuth', 'width=520,height=640');
+                if (!popup) { location.href = url; return; }
+                drivePopupTimer = setInterval(() => {
+                    try {
+                        const u = new URL(popup.location.href);
+                        if (u.searchParams.has('code')) {
+                            clearInterval(drivePopupTimer);
+                            popup.close();
+                            driveExchangeCode(u.searchParams.get('code'));
+                        } else if (u.searchParams.has('error')) {
+                            clearInterval(drivePopupTimer);
+                            popup.close();
+                            alert('Login dibatalkan / error: ' + u.searchParams.get('error'));
+                        }
+                    } catch (e) { /* masih di halaman Google, tunggu */ }
+                }, 700);
+            });
+        }
+
+        async function driveExchangeCode(code) {
+            const verifier = localStorage.getItem('driveVerifier');
+            localStorage.removeItem('driveVerifier');
+            try {
+                const res = await fetch('https://oauth2.googleapis.com/token', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'client_id=' + encodeURIComponent(getDriveClientId())
+                        + '&code=' + encodeURIComponent(code)
+                        + '&redirect_uri=' + encodeURIComponent(driveRedirectUri())
+                        + '&code_verifier=' + encodeURIComponent(verifier || '')
+                        + '&grant_type=authorization_code'
+                });
+                const data = await res.json();
+                if (!data.access_token) return alert('Gagal dapat token: ' + JSON.stringify(data));
+                driveTokens = { access_token: data.access_token, refresh_token: data.refresh_token || '', expiry: Date.now() + (data.expires_in || 3600) * 1000 };
+                localStorage.setItem('driveTokens', JSON.stringify(driveTokens));
+                updateDriveUI();
+                showPopupAuto('🔗', 'GOOGLE DRIVE TERHUBUNG!', 'Backup pertama dimulai sekarang', '☁️ OK');
+                driveBackupSekarang();
+            } catch (e) { alert('Gagal menghubungkan: ' + e.message); }
+        }
+
+        function drivePutus() {
+            clearInterval(drivePopupTimer);
+            driveTokens = null;
+            driveFolderId = '';
+            localStorage.removeItem('driveTokens');
+            localStorage.removeItem('driveFolderId');
+            updateDriveUI();
+            showPopupAuto('🔌', 'DRIVE DIPUTUSKAN', 'Token Google dihapus dari HP', '✅ OK');
+        }
+
+        function driveHandleCallback() {
+            const params = new URLSearchParams(location.search);
+            const code = params.get('code');
+            const err = params.get('error');
+            if (code || err) {
+                history.replaceState(null, '', location.pathname);
+                if (code) driveExchangeCode(code);
+                else if (err && err !== 'access_denied') alert('Login error: ' + err);
+            }
+        }
+
+        async function driveGetAccessToken() {
+            if (!driveTokens || !driveTokens.refresh_token) return null;
+            if (Date.now() < (driveTokens.expiry - 60000)) return driveTokens.access_token;
+            try {
+                const res = await fetch('https://oauth2.googleapis.com/token', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'client_id=' + encodeURIComponent(driveClientId)
+                        + '&refresh_token=' + encodeURIComponent(driveTokens.refresh_token)
+                        + '&grant_type=refresh_token'
+                });
+                const data = await res.json();
+                if (!data.access_token) { drivePutus(); return null; }
+                driveTokens.access_token = data.access_token;
+                driveTokens.expiry = Date.now() + (data.expires_in || 3600) * 1000;
+                localStorage.setItem('driveTokens', JSON.stringify(driveTokens));
+                return data.access_token;
+            } catch (e) { return null; }
+        }
+
+        async function driveCariFolder(token) {
+            const q = encodeURIComponent("name='Gaji SiCepat' and mimeType='application/vnd.google-apps.folder' and trashed=false");
+            const res = await fetch('https://www.googleapis.com/drive/v3/files?q=' + q + '&fields=files(id)', { headers: { Authorization: 'Bearer ' + token } });
+            const data = await res.json();
+            if (data.files && data.files.length) return data.files[0].id;
+            const res2 = await fetch('https://www.googleapis.com/drive/v3/files', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+                body: JSON.stringify({ name: 'Gaji SiCepat', mimeType: 'application/vnd.google-apps.folder' })
+            });
+            const d2 = await res2.json();
+            return d2.id;
+        }
+
+        async function driveUploadFile(token, name, content) {
+            if (!driveFolderId) driveFolderId = await driveCariFolder(token);
+            const form = new FormData();
+            form.append('metadata', new Blob([JSON.stringify({ name: name, parents: [driveFolderId] })], { type: 'application/json' }));
+            form.append('file', new Blob([content], { type: 'application/json' }), name);
+            const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+                method: 'POST',
+                headers: { Authorization: 'Bearer ' + token },
+                body: form
+            });
+            return res.json();
+        }
+
+        async function driveBersihkanLama(token) {
+            try {
+                const q = encodeURIComponent("'" + driveFolderId + "' in parents and trashed=false");
+                const res = await fetch('https://www.googleapis.com/drive/v3/files?q=' + q + '&orderBy=createdTime desc&fields=files(id)', { headers: { Authorization: 'Bearer ' + token } });
+                const data = await res.json();
+                (data.files || []).slice(5).forEach(f => {
+                    fetch('https://www.googleapis.com/drive/v3/files/' + f.id, { method: 'DELETE', headers: { Authorization: 'Bearer ' + token } });
+                });
+            } catch (e) {}
+        }
+
+        function drivePutus() {
+            driveTokens = null;
+            driveFolderId = '';
+            localStorage.removeItem('driveTokens');
+            localStorage.removeItem('driveFolderId');
+        }
+
+        async function driveBackupSekarang() {
+            const token = await driveGetAccessToken();
+            if (!token) return;
+            try {
+                const data = { dataHarian, dataBulanan, dataRekor, dataTahunan, dataBulananManual, dataBonusDenda, tanggalBackup: new Date().toISOString(), versi: '4.2' };
+                const name = 'backup-gaji-sicepat-' + getTanggalHariIni() + '.json';
+                const result = await driveUploadFile(token, name, JSON.stringify(data, null, 2));
+                if (result.id) {
+                    localStorage.setItem('driveFolderId', driveFolderId);
+                    localStorage.setItem('driveLastBackup', new Date().toLocaleString('id-ID'));
+                    driveBersihkanLama(token);
+                } else if (result.error && result.error.code === 401) {
+                    drivePutus();
+                }
+            } catch (e) {}
+        }
+
         // ==================== AUTO REKAP ====================
         function cekAkhirBulanDanUpdateTahunan() {
             const today = new Date();
@@ -2459,7 +2899,7 @@
                         const namaBulan = namaBulanList[bulanIni];
                         showPopupAuto('📅', `AUTO REKAP ${namaBulan}!`, `${totalResiBulan} resi = Rp ${gajiBersih.toLocaleString('id-ID')} (sudah potong denda)`, '✅ OTOMATIS');
 
-                        if (document.getElementById('tab-tahunan').classList.contains('active')) {
+                        if (document.getElementById('tab-statistik').classList.contains('active') && document.querySelector('.sub-tab-btn.active').getAttribute('data-sub') === 'tahunan') {
                             tampilLogBulanan();
                         }
                         updatePrediksiTarget();
@@ -2698,6 +3138,205 @@
                 tampilLogBulanan();
                 updatePrediksiTarget();
                 showPopupAuto('🗑️', 'DATA BULAN DIHAPUS!', 'Sudah terhapus permanen', '⚠️ DONE');
+            }
+        }
+
+        // ==================== SUB-TAB BULANAN / TAHUNAN ====================
+        function switchSubTab(sub) {
+            document.querySelectorAll('.sub-tab-btn').forEach(b => {
+                b.classList.toggle('active', b.getAttribute('data-sub') === sub);
+            });
+            document.querySelectorAll('.sub-tab-content').forEach(c => {
+                c.classList.toggle('active', c.id === 'sub-' + sub);
+            });
+            if (sub === 'tahunan') {
+                tampilLogBulanan();
+            } else {
+                requestAnimationFrame(() => {
+                    setTimeout(updateGrafik, 50);
+                });
+            }
+        }
+
+        // ==================== RENCANA (PENGELUARAN & PEMASUKAN PER BULAN) ====================
+        // Format: { "2026-08": [{nama, nominal, tipe}, ...] }
+        let dataRencana = JSON.parse(localStorage.getItem('gajiSicepatRencana') || '{}');
+        // Migrasi data lama (format array polos) ke per-bulan
+        if (Array.isArray(dataRencana)) {
+            const lama = dataRencana.map(item => ({
+                ...item,
+                tipe: item.tipe || 'pengeluaran'
+            }));
+            dataRencana = { [getBulanTahun()]: lama };
+            localStorage.setItem('gajiSicepatRencana', JSON.stringify(dataRencana));
+        }
+        let bulanRencana = getBulanTahun();
+
+        function getRencanaBulan() {
+            return dataRencana[bulanRencana] || [];
+        }
+
+        function simpanRencana() {
+            localStorage.setItem('gajiSicepatRencana', JSON.stringify(dataRencana));
+        }
+
+        function getPemasukanAuto(bulan) {
+            const dataBulan = dataBulanan[bulan];
+            if (dataBulan && dataBulan.dibayarTanggal5) return dataBulan.dibayarTanggal5;
+            const el = document.getElementById('terimaTgl5');
+            if (el && bulan === getBulanTahun()) return parseInt(el.textContent.replace(/\D/g, '')) || 0;
+            return 0;
+        }
+
+        function switchListRencana(list) {
+            document.querySelectorAll('[data-list]').forEach(b => {
+                b.classList.toggle('active', b.getAttribute('data-list') === list);
+            });
+            document.getElementById('list-masuk').classList.toggle('active', list === 'masuk');
+            document.getElementById('list-keluar').classList.toggle('active', list === 'keluar');
+        }
+
+        function pindahBulanRencana(delta) {
+            const [tahun, bulan] = bulanRencana.split('-').map(Number);
+            const d = new Date(tahun, bulan - 1 + delta, 1);
+            bulanRencana = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+            renderRencana();
+        }
+
+        function renderRencana() {
+            const items = getRencanaBulan();
+            const gajiTgl5 = getPemasukanAuto(bulanRencana);
+            const itemsMasuk = items.filter(item => item.tipe === 'pemasukan');
+            const itemsKeluar = items.filter(item => item.tipe !== 'pemasukan');
+            const totalMasukManual = itemsMasuk.reduce((sum, item) => sum + (parseInt(item.nominal) || 0), 0);
+            const totalPengeluaran = itemsKeluar.reduce((sum, item) => sum + (parseInt(item.nominal) || 0), 0);
+            const totalPemasukan = gajiTgl5 + totalMasukManual;
+            const sisa = totalPemasukan - totalPengeluaran;
+
+            const labelBulan = document.getElementById('rencanaBulanLabel');
+            if (labelBulan) {
+                labelBulan.textContent = new Date(bulanRencana + '-01').toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+            }
+            document.getElementById('rencanaPemasukan').textContent = totalPemasukan.toLocaleString('id-ID');
+            document.getElementById('rencanaPengeluaran').textContent = totalPengeluaran.toLocaleString('id-ID');
+            document.getElementById('rencanaSubPengeluaran').textContent = itemsKeluar.length + ' item';
+            document.getElementById('rencanaSisa').textContent = sisa.toLocaleString('id-ID');
+
+            const listMasuk = document.getElementById('listRencanaMasuk');
+            if (itemsMasuk.length === 0) {
+                listMasuk.innerHTML = '<div class="rencana-empty">Belum ada pemasukan tambahan</div>';
+            } else {
+                listMasuk.innerHTML = itemsMasuk.map((item, idx) => `
+                    <div class="bulan-accordion${idx >= 5 ? ' rencana-sembunyi' : ''}">
+                        <div class="bulan-accordion-header" onclick="toggleBulanLog(this)">
+                            <span class="bulan-nama">${escapeHtml(item.nama)}</span>
+                            <span style="display:flex;align-items:center;gap:8px;">
+                                <span class="bulan-total" style="color:#10B981;">Rp ${(parseInt(item.nominal) || 0).toLocaleString('id-ID')}</span>
+                                <span class="bulan-arrow">▼</span>
+                            </span>
+                        </div>
+                        <div class="bulan-accordion-body">
+                            <div style="display:flex;gap:8px;">
+                                <button class="btn-mini edit" style="flex:1" onclick="editRencana(${items.indexOf(item)})">✏️ Edit</button>
+                                <button class="btn-mini hapus" style="flex:1" onclick="hapusRencana(${items.indexOf(item)})">🗑️ Hapus</button>
+                            </div>
+                        </div>
+                    </div>`).join('')
+                    + (itemsMasuk.length > 5 ? `<button class="btn-load-more" onclick="expandRencanaList(this)">⬇ Tampilkan ${itemsMasuk.length - 5} lagi</button>` : '');
+            }
+
+            const list = document.getElementById('listRencana');
+            if (itemsKeluar.length === 0) {
+                list.innerHTML = '<div class="rencana-empty">Belum ada pengeluaran</div>';
+            } else {
+                list.innerHTML = itemsKeluar.map((item, idx) => `
+                    <div class="bulan-accordion${idx >= 5 ? ' rencana-sembunyi' : ''}">
+                        <div class="bulan-accordion-header" onclick="toggleBulanLog(this)">
+                            <span class="bulan-nama">${escapeHtml(item.nama)}</span>
+                            <span style="display:flex;align-items:center;gap:8px;">
+                                <span class="bulan-total" style="color:#EF4444;">Rp ${(parseInt(item.nominal) || 0).toLocaleString('id-ID')}</span>
+                                <span class="bulan-arrow">▼</span>
+                            </span>
+                        </div>
+                        <div class="bulan-accordion-body">
+                            <div style="display:flex;gap:8px;">
+                                <button class="btn-mini edit" style="flex:1" onclick="editRencana(${items.indexOf(item)})">✏️ Edit</button>
+                                <button class="btn-mini hapus" style="flex:1" onclick="hapusRencana(${items.indexOf(item)})">🗑️ Hapus</button>
+                            </div>
+                        </div>
+                    </div>`).join('')
+                    + (itemsKeluar.length > 5 ? `<button class="btn-load-more" onclick="expandRencanaList(this)">⬇ Tampilkan ${itemsKeluar.length - 5} lagi</button>` : '');
+            }
+        }
+
+        function expandRencanaList(btn) {
+            const list = btn.parentElement;
+            list.querySelectorAll('.rencana-sembunyi').forEach(el => el.classList.remove('rencana-sembunyi'));
+            btn.remove();
+        }
+
+        function escapeHtml(str) {
+            return String(str || '').replace(/[&<>"']/g, c => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[c]));
+        }
+
+        function tambahRencana() {
+            const tipe = document.getElementById('rencanaTipe').value;
+            const isMasuk = tipe === 'pemasukan';
+            const nama = document.getElementById('rencanaNama').value.trim();
+            const nominal = parseInt(document.getElementById('rencanaNominal').value) || 0;
+            const label = isMasuk ? 'pemasukan' : 'pengeluaran';
+
+            if (!nama) {
+                alert('Isi nama ' + label + ' dulu bos!');
+                return;
+            }
+            if (nominal <= 0) {
+                alert('Nominal harus lebih dari 0 bos!');
+                return;
+            }
+
+            if (!dataRencana[bulanRencana]) dataRencana[bulanRencana] = [];
+            dataRencana[bulanRencana].push({ nama, nominal, tipe });
+            simpanRencana();
+            document.getElementById('rencanaNama').value = '';
+            document.getElementById('rencanaNominal').value = '';
+            renderRencana();
+            if (navigator.vibrate) navigator.vibrate(50);
+            showPopupAuto(isMasuk ? '💵' : '💸', (isMasuk ? 'PEMASUKAN' : 'PENGELUARAN') + ' DITAMBAH!', `${nama} = Rp ${nominal.toLocaleString('id-ID')}`, '✅ OK');
+        }
+
+        function editRencana(i) {
+            const items = getRencanaBulan();
+            const item = items[i];
+            const isMasuk = item.tipe === 'pemasukan';
+            const label = isMasuk ? 'pemasukan' : 'pengeluaran';
+            const namaBaru = prompt('Nama ' + label + ':', item.nama);
+            if (namaBaru === null) return;
+            const nominalBaru = prompt('Nominal (Rp):', item.nominal);
+            if (nominalBaru === null) return;
+            const nominal = parseInt(nominalBaru) || 0;
+            if (!namaBaru.trim() || nominal <= 0) {
+                alert('Data tidak valid bos!');
+                return;
+            }
+            items[i] = { nama: namaBaru.trim(), nominal, tipe: item.tipe };
+            dataRencana[bulanRencana] = items;
+            simpanRencana();
+            renderRencana();
+            showPopupAuto('✏️', (isMasuk ? 'PEMASUKAN' : 'PENGELUARAN') + ' DIUPDATE!', 'Perubahan tersimpan', '✅ OK');
+        }
+
+        function hapusRencana(i) {
+            const items = getRencanaBulan();
+            const isMasuk = items[i] && items[i].tipe === 'pemasukan';
+            if (confirm('Hapus ' + (isMasuk ? 'pemasukan' : 'pengeluaran') + ' ini?')) {
+                items.splice(i, 1);
+                dataRencana[bulanRencana] = items;
+                simpanRencana();
+                renderRencana();
+                showPopupAuto('🗑️', (isMasuk ? 'PEMASUKAN' : 'PENGELUARAN') + ' DIHAPUS!', 'Sudah terhapus', '⚠️ DONE');
             }
         }
     </script>
