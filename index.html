@@ -2573,7 +2573,7 @@
         function cekBackupReminder() {
             const e = new Date, t = e.getDate(), bulanIni = getBulanTahun(), keyBackup = `autoBackup_${bulanIni}_${t}`;
             if ((t === 15 || t === 30) && !localStorage.getItem(keyBackup)) {
-                const data = { dataHarian, dataBulanan, dataRekor, dataTahunan, dataBulananManual, dataBonusDenda, tanggalBackup: new Date().toISOString(), versi: '4.1' };
+                const data = { dataHarian, dataBulanan, dataRekor, dataTahunan, dataBulananManual, dataBonusDenda, dataRencana: dataRencana, tanggalBackup: new Date().toISOString(), versi: '4.3' };
                 const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }), url = URL.createObjectURL(blob), a = document.createElement('a');
                 a.href = url;
                 a.download = `AUTO-backup-gaji-${getTanggalHariIni()}.json`;
@@ -2593,7 +2593,7 @@
         }
 
         function exportBackup() {
-            const e = { dataHarian, dataBulanan, dataRekor, dataTahunan, dataBulananManual, dataBonusDenda, tanggalBackup: new Date().toISOString(), versi: '4.1' }, t = new Blob([JSON.stringify(e, null, 2)], { type: 'application/json' }), n = URL.createObjectURL(t), o = document.createElement('a');
+            const e = { dataHarian, dataBulanan, dataRekor, dataTahunan, dataBulananManual, dataBonusDenda, dataRencana: dataRencana, tanggalBackup: new Date().toISOString(), versi: '4.3' }, t = new Blob([JSON.stringify(e, null, 2)], { type: 'application/json' }), n = URL.createObjectURL(t), o = document.createElement('a');
             o.href = n;
             o.download = `backup-gaji-sicepat-${getTanggalHariIni()}.json`;
             o.click();
@@ -2625,12 +2625,14 @@
                         dataTahunan = t.dataTahunan || [];
                         dataBulananManual = t.dataBulananManual || {};
                         dataBonusDenda = t.dataBonusDenda || {};
+                        dataRencana = t.dataRencana || {};
                         localStorage.setItem('gajiSicepatHarian', JSON.stringify(dataHarian));
                         localStorage.setItem('gajiSicepat', JSON.stringify(dataBulanan));
                         localStorage.setItem('gajiSicepatRekor', JSON.stringify(dataRekor));
                         localStorage.setItem('dataTahunan', JSON.stringify(dataTahunan));
                         localStorage.setItem('dataBulananManual', JSON.stringify(dataBulananManual));
                         localStorage.setItem('dataBonusDenda', JSON.stringify(dataBonusDenda));
+                        localStorage.setItem('gajiSicepatRencana', JSON.stringify(dataRencana));
                         updateAllBulananData();
                         showPopupAuto('🔄', 'RESTORE BERHASIL!', 'Halaman bakal reload', '✅ DONE');
                         setTimeout(() => location.reload(), 1500);
@@ -2848,7 +2850,7 @@
             const token = await driveGetAccessToken();
             if (!token) return;
             try {
-                const data = { dataHarian, dataBulanan, dataRekor, dataTahunan, dataBulananManual, dataBonusDenda, tanggalBackup: new Date().toISOString(), versi: '4.2' };
+                const data = { dataHarian, dataBulanan, dataRekor, dataTahunan, dataBulananManual, dataBonusDenda, dataRencana: dataRencana, tanggalBackup: new Date().toISOString(), versi: '4.3' };
                 const name = 'backup-gaji-sicepat-' + getTanggalHariIni() + '.json';
                 const result = await driveUploadFile(token, name, JSON.stringify(data, null, 2));
                 if (result.id) {
