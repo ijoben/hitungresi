@@ -191,7 +191,9 @@
             <div class="setting-row" style="flex-direction:column;align-items:stretch;gap:8px">
                 <span class="setting-label">Client ID Google (dari Google Cloud Console)</span>
                 <input type="text" class="input-admin" id="inputClientId" placeholder="xxxxx.apps.googleusercontent.com">
-                <button class="btn-setting" style="background:#4285F4;width:100%" onclick="simpanClientId()">💾 Simpan Client ID</button>
+                <span class="setting-label" style="margin-top:4px">Client Secret (wajib untuk tipe Web application)</span>
+                <input type="password" class="input-admin" id="inputClientSecret" placeholder="GOCSPX-...">
+                <button class="btn-setting" style="background:#4285F4;width:100%" onclick="simpanClientId()">💾 Simpan Client ID & Secret</button>
             </div>
             <div class="setting-row">
                 <span class="setting-label">Auto backup ke Drive tgl 15 & 30</span>
@@ -209,7 +211,8 @@
                     3. <strong>OAuth consent screen</strong> → pilih External → tambahkan email kamu sebagai <strong>Test user</strong>.<br>
                     4. <strong>Credentials → Create credentials → OAuth client ID</strong> → pilih tipe <strong>Web application</strong>.<br>
                     5. Di <strong>Authorized redirect URIs</strong>, tambahkan URL halaman admin ini (lihat di bawah), lalu Save.<br>
-                    6. Salin <strong>Client ID</strong>-nya ke kolom di atas → Simpan → Hubungkan.
+                    6. Salin <strong>Client ID</strong> dan <strong>Client Secret</strong> (klik ✏️ pada client → panel kanan muncul keduanya) ke kolom di atas → Simpan → Hubungkan.<br>
+                    7. Penting: untuk tipe Web application, Google mewajibkan <strong>Client Secret</strong> saat tukar kode — tanpa itu muncul error <em>client_secret is missing</em>.
                 </div>
             </details>
             <div class="backup-info" id="driveInfo" style="margin-top:8px;word-break:break-word">—</div>
@@ -338,6 +341,7 @@
         // ==================== GOOGLE DRIVE AUTO BACKUP ====================
         let driveTokens = JSON.parse(localStorage.getItem('driveTokens') || 'null');
         let driveClientId = localStorage.getItem('driveClientId') || '';
+        let driveClientSecret = localStorage.getItem('driveClientSecret') || '';
         let driveAuto = localStorage.getItem('driveAuto') === 'true';
         let driveFolderId = localStorage.getItem('driveFolderId') || '';
         let drivePopupTimer = null;
@@ -353,7 +357,9 @@
 
         function simpanClientId() {
             driveClientId = document.getElementById('inputClientId').value.trim();
+            driveClientSecret = document.getElementById('inputClientSecret').value.trim();
             localStorage.setItem('driveClientId', driveClientId);
+            localStorage.setItem('driveClientSecret', driveClientSecret);
             updateDriveUI();
             showPopupAuto('💾', 'CLIENT ID TERSIMPAN!', 'Sekarang tekan tombol Hubungkan', '🔑 OK');
         }
@@ -453,6 +459,7 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: 'client_id=' + encodeURIComponent(getDriveClientId())
+                        + '&client_secret=' + encodeURIComponent(driveClientSecret)
                         + '&code=' + encodeURIComponent(code)
                         + '&redirect_uri=' + encodeURIComponent(driveRedirectUri())
                         + '&code_verifier=' + encodeURIComponent(verifier || '')
@@ -493,6 +500,7 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: 'client_id=' + encodeURIComponent(driveClientId)
+                        + '&client_secret=' + encodeURIComponent(driveClientSecret)
                         + '&refresh_token=' + encodeURIComponent(driveTokens.refresh_token)
                         + '&grant_type=refresh_token'
                 });
@@ -584,6 +592,7 @@
         // ==================== INIT ====================
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('inputClientId').value = driveClientId;
+            document.getElementById('inputClientSecret').value = driveClientSecret;
             document.getElementById('checkDriveAuto').checked = driveAuto;
             setDriveSectionOpen(false);
             updateDriveUI();
