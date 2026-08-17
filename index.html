@@ -1460,17 +1460,6 @@
                 <div class="backup-info">✅ Auto backup tiap tgl 15 & 30!</div>
             </div>
 
-            <!-- KURIR: Hubungkan Drive masing-masing -->
-            <div class="setting-box" style="border-color:#4285F4">
-                <div class="setting-row">
-                    <span class="setting-label" id="driveStatus">🔌 Backup ke Google Drive</span>
-                    <div class="setting-control">
-                        <button class="btn-setting" style="background:#4285F4" id="btnDriveConnect" onclick="driveConnect()">Hubungkan</button>
-                    </div>
-                </div>
-                <div style="text-align:center;font-size:10px;color:var(--text2);font-weight:700" id="driveSubInfo">Hubungkan akun Google Drive kamu agar backup otomatis tersimpan di cloud.</div>
-            </div>
-
         </div>
 
         <div id="tab-statistik" class="tab-content">
@@ -2651,10 +2640,16 @@
         let driveFolderId = localStorage.getItem('driveFolderId') || '';
         let drivePopupTimer = null;
         const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
-        // Client ID & Secret bawaan untuk kurir — isi sekali di sini oleh admin, semua kurir otomatis pakai.
-        // (Atau set via admin.html → Simpan Client ID & Secret, tersimpan per HP.)
-        const DRIVE_CLIENT_ID_BAWAAN = '759660924641-hek30hmgnsju4gvaqcm1mut7r5orohc6.apps.googleusercontent.com';
-        const DRIVE_CLIENT_SECRET_BAWAAN = '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';
+        // ============================================================
+        // EMBED Client ID & Secret di sini (sekali saja oleh admin):
+        // Semua kurir di HP mana pun langsung bisa Hubungkan → login
+        // Google → backup ke Drive masing-masing. Tanpa perlu buka
+        // admin.html di tiap HP. Contoh:
+        //   const DRIVE_CLIENT_ID_BAWAAN = '123456-abc.apps.googleusercontent.com';
+        //   const DRIVE_CLIENT_SECRET_BAWAAN = 'GOCSPX-xxxxxxxxxxxxxxxxxxxx';
+        // ============================================================
+        const DRIVE_CLIENT_ID_BAWAAN = '';
+        const DRIVE_CLIENT_SECRET_BAWAAN = '';
 
         function getDriveClientId() {
             const input = document.getElementById('inputClientId');
