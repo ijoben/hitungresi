@@ -1160,22 +1160,42 @@
             text-transform: uppercase;
             letter-spacing: .5px;
         }
-        .rencana-add { display: flex; gap: 8px; margin-bottom: 10px; }
-        .rencana-add input, .rencana-add select {
-            flex: 1;
-            min-width: 0;
-            padding: 10px;
+        .rencana-form-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 12px;
+            box-shadow: var(--shadow);
+        }
+        .rencana-tipe {
+            width: 100%;
+            padding: 11px;
             border: 1.5px solid var(--border);
             border-radius: 10px;
-            font-size: 12px;
+            font-size: 13px;
+            font-weight: 800;
+            background: var(--bg);
+            color: var(--text);
+            outline: none;
+            font-family: inherit;
+            cursor: pointer;
+        }
+        .rencana-add-row { display: flex; gap: 8px; margin: 10px 0 12px; }
+        .rencana-add-row input {
+            flex: 1;
+            min-width: 0;
+            padding: 11px;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-size: 13px;
             background: var(--bg);
             color: var(--text);
             font-weight: 700;
             outline: none;
             font-family: inherit;
         }
-        .rencana-add select { flex: 0 0 auto; width: 120px; max-width: 120px; font-size: 12px; }
-        .rencana-add input:focus, .rencana-add select:focus { border-color: var(--primary); }
+        .rencana-add-row input#rencanaNominal { flex: 0 0 auto; width: 110px; text-align: right; }
+        .rencana-tipe:focus, .rencana-add-row input:focus { border-color: var(--primary); }
         .rencana-item {
             display: flex;
             justify-content: space-between;
@@ -1205,17 +1225,24 @@
         .btn-mini.edit { background: #2563EB; }
         .btn-mini.hapus { background: #EF4444; }
         .btn-rencana-tambah {
+            width: 100%;
             background: linear-gradient(135deg, #10B981, #059669);
             color: #fff;
             border: none;
-            padding: 10px 16px;
-            border-radius: 10px;
+            padding: 12px 16px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 800;
+            letter-spacing: .3px;
             white-space: nowrap;
+            box-shadow: 0 3px 8px rgba(16, 185, 129, .25);
+            transition: transform .15s, box-shadow .15s;
         }
-        .btn-rencana-tambah.pengeluaran { background: linear-gradient(135deg, #EF4444, #DC2626); }
+        .btn-rencana-tambah:hover { transform: translateY(-1px); box-shadow: 0 5px 12px rgba(16, 185, 129, .3); }
+        .btn-rencana-tambah:active { transform: scale(.98); }
+        .btn-rencana-tambah.pengeluaran { background: linear-gradient(135deg, #EF4444, #DC2626); box-shadow: 0 3px 8px rgba(239, 68, 68, .25); }
+        .btn-rencana-tambah.pengeluaran:hover { box-shadow: 0 5px 12px rgba(239, 68, 68, .3); }
         .rencana-empty { text-align: center; color: #999; padding: 14px; font-size: 11px; }
         .rencana-sembunyi { display: none; }
         .rencana-bulan-nav {
@@ -1526,15 +1553,18 @@
             </div>
 
             <div class="rencana-section">
-                <div class="rencana-add">
-                    <select id="rencanaTipe">
-                        <option value="pengeluaran">Pengeluaran</option>
-                        <option value="pemasukan">Pemasukan</option>
+                <h5>➕ Catat Baru</h5>
+                <div class="rencana-form-card">
+                    <select id="rencanaTipe" class="rencana-tipe" onchange="ubahLabelRencana()">
+                        <option value="pengeluaran">💸 Pengeluaran</option>
+                        <option value="pemasukan">💵 Pemasukan</option>
                     </select>
-                    <input type="text" id="rencanaNama" placeholder="Nama" maxlength="40">
-                    <input type="number" id="rencanaNominal" min="0" placeholder="Rp" inputmode="numeric" style="max-width:75px">
+                    <div class="rencana-add-row">
+                        <input type="text" id="rencanaNama" placeholder="Nama pengeluaran" maxlength="40">
+                        <input type="number" id="rencanaNominal" min="0" placeholder="Rp" inputmode="numeric">
+                    </div>
+                    <button class="btn-rencana-tambah pengeluaran" id="btnRencanaTambah" onclick="tambahRencana()">➕ Catat Pengeluaran</button>
                 </div>
-                <button class="btn-rencana-tambah" style="width:100%;" onclick="tambahRencana()">➕ TAMBAH</button>
             </div>
 
             <div class="rencana-section">
@@ -1945,6 +1975,7 @@
             autoIsiNol();
             loadRiwayat();
             hitungTotal();
+            ubahLabelRencana();
             tampilLogHarian();
             cekBadgeReminder();
             updatePrediksiTarget();
@@ -3336,6 +3367,15 @@
             return String(str || '').replace(/[&<>"']/g, c => ({
                 '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
             }[c]));
+        }
+
+        function ubahLabelRencana() {
+            const isMasuk = document.getElementById('rencanaTipe').value === 'pemasukan';
+            const btn = document.getElementById('btnRencanaTambah');
+            const nama = document.getElementById('rencanaNama');
+            btn.innerHTML = isMasuk ? '➕ Catat Pemasukan' : '➕ Catat Pengeluaran';
+            btn.classList.toggle('pengeluaran', !isMasuk);
+            nama.placeholder = isMasuk ? 'Nama pemasukan' : 'Nama pengeluaran';
         }
 
         function tambahRencana() {
