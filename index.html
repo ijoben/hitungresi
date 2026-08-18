@@ -1280,7 +1280,23 @@
         .rencana-card.pemasukan { background: linear-gradient(135deg, #10B981, #059669); }
         .rencana-card.pengeluaran { background: linear-gradient(135deg, #EF4444, #DC2626); }
         .rencana-card.sisa { background: linear-gradient(135deg, #3B82F6, #2563EB); }
-        .rencana-card .label { font-size: 10px; font-weight: 800; text-transform: uppercase; opacity: .9; letter-spacing: .5px; }
+        .rencana-card .label {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            opacity: .95;
+            letter-spacing: .5px;
+            display: flex;
+            align-items: center;
+            color: #FFFFFF;
+        }
+        .rencana-card .label .svg-icon {
+            color: #FFFFFF !important;
+            stroke: #FFFFFF !important;
+            width: 16px;
+            height: 16px;
+            margin-right: 4px;
+        }
         .rencana-card .angka { font-size: 13px; font-weight: 900; margin-top: 4px; word-break: break-all; }
         .rencana-card .sub { font-size: 9px; margin-top: 2px; opacity: .85; font-weight: 600; }
         .rencana-card.full { grid-column: 1 / -1; }
@@ -1721,17 +1737,17 @@
         <div id="tab-rencana" class="tab-content">
             <div class="rencana-summary">
                 <div class="rencana-card pemasukan">
-                    <div class="label"><svg class="svg-icon" viewBox="0 0 24 24" style="color:#10B981;margin-right:2px"><line x1="17" y1="7" x2="7" y2="17"></line><polyline points="17 17 7 17 7 7"></polyline></svg> Pemasukan</div>
+                    <div class="label"><svg class="svg-icon" viewBox="0 0 24 24"><line x1="17" y1="7" x2="7" y2="17"></line><polyline points="17 17 7 17 7 7"></polyline></svg> Pemasukan</div>
                     <div class="angka">Rp <span id="rencanaPemasukan">0</span></div>
                     <div class="sub" id="rencanaSubPemasukan">Gaji tgl 20</div>
                 </div>
                 <div class="rencana-card pengeluaran">
-                    <div class="label"><svg class="svg-icon" viewBox="0 0 24 24" style="color:#EF4444;margin-right:2px"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg> Pengeluaran</div>
+                    <div class="label"><svg class="svg-icon" viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg> Pengeluaran</div>
                     <div class="angka">Rp <span id="rencanaPengeluaran">0</span></div>
                     <div class="sub" id="rencanaSubPengeluaran">0 item</div>
                 </div>
                 <div class="rencana-card sisa full">
-                    <div class="label"><svg class="svg-icon" viewBox="0 0 24 24" style="color:#F59E0B;margin-right:2px"><rect x="2" y="6" width="20" height="12" rx="3"></rect><path d="M12 10v4M10 12h4"></path></svg> Sisa</div>
+                    <div class="label"><svg class="svg-icon" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="3"></rect><path d="M12 10v4M10 12h4"></path></svg> Sisa</div>
                     <div class="angka">Rp <span id="rencanaSisa">0</span></div>
                     <div class="sub">Pemasukan - Pengeluaran</div>
                 </div>
