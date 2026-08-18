@@ -3206,8 +3206,8 @@
                 return dataBulan ? (dataBulan.dibayarTanggal5 || 0) : 0;
             }
 
-            // Bulan berjalan: tgl 1-15 → gaji terima tgl 20 (50% periode 1); tgl 16-akhir → gaji terima tgl 5
-            if (tgl >= 1 && tgl <= 15) {
+            // Bulan berjalan: tgl 1-20 → gaji terima tgl 20 (50% periode 1); tgl 21-akhir → gaji terima tgl 5
+            if (tgl >= 1 && tgl <= 20) {
                 if (dataBulan) return dataBulan.dibayarPeriode1 || 0;
                 const el = document.getElementById('gaji1');
                 if (el) return parseInt(el.textContent.replace(/\D/g, '')) || 0;
@@ -3257,7 +3257,7 @@
             if (subMasuk) {
                 const tgl = new Date().getDate();
                 if (bulanRencana === getBulanTahun()) {
-                    subMasuk.textContent = (tgl >= 1 && tgl <= 15) ? 'Gaji terima tgl 20' : 'Gaji terima tgl 5';
+                    subMasuk.textContent = (tgl >= 1 && tgl <= 20) ? 'Gaji terima tgl 20' : 'Gaji terima tgl 5';
                 } else {
                     subMasuk.textContent = 'Gaji terima tgl 5';
                 }
