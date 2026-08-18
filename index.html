@@ -1266,7 +1266,7 @@
                 <button class="btn-dark" onclick="toggleDarkMode()" id="btnDark">🌙</button>
             </div>
         </div>
-        <h2>GAJI KURIR <span id="bulanIni"></span></h2>
+        <h2 id="judulHalaman">GAJI KURIR <span id="bulanIni"></span></h2>
 
         <div id="tab-input" class="tab-content active">
             <div class="total-resi">
@@ -1903,6 +1903,22 @@
                     document.querySelectorAll('.tab-btn').forEach(e => e.classList.remove('active'));
                     document.getElementById('tab-' + tabName).classList.add('active');
                     this.classList.add('active');
+                    const judulHalaman = document.getElementById('judulHalaman');
+                    if (tabName === 'setting') {
+                        judulHalaman.style.display = 'none';
+                    } else {
+                        judulHalaman.style.display = '';
+                        const judulMap = {
+                            'input': 'GAJI KURIR <span id="bulanIni"></span>',
+                            'log': 'RESI HARIAN',
+                            'statistik': 'STATISTIK KURIR',
+                            'rencana': 'RENCANA PENGELUARAN'
+                        };
+                        judulHalaman.innerHTML = judulMap[tabName] || '';
+                        if (tabName === 'input') {
+                            document.getElementById('bulanIni').textContent = new Date().toLocaleDateString('id-ID', { month: 'long', year: 'numeric' }).toUpperCase();
+                        }
+                    }
                     if (tabName === 'log') {
                         logLimit = 10;
                         tampilLogHarian();
